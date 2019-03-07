@@ -8,11 +8,7 @@ function connect() {
     user: 'g_idri1005_10',
     password: 'UX0LGnyi',
     database: 'g_idri1005_10'
-<<<<<<< HEAD
 });
-=======
-  });
->>>>>>> 880ce890a540e02453c32371ea5bba9b787cc8e1
 
   // Connect to MySQL-server
   connection.connect(error => {

@@ -1,7 +1,7 @@
 import { connection } from './mysql_connection';
 
-class StudentService {
-  getStudents(success) {
+class AnsatteService {
+  getAnsatte(success) {
     connection.query('select * from Students', (error, results) => {
       if (error) return console.error(error);
 
@@ -9,8 +9,8 @@ class StudentService {
     });
   }
 
-  getStudent(id, success) {
-    connection.query('select * from Students where id=?', [id], (error, results) => {
+  getAnsatt(success) {
+    connection.query('select * from ansatte', (error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);
@@ -25,4 +25,4 @@ class StudentService {
     });
   }
 }
-export let studentService = new StudentService();
+export let ansatteService = new AnsatteService();

@@ -2,43 +2,111 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import {styles} from './style.js';
-import {loginstyle} from "./login.css";
+import { connection } from "./mysql_connection"
+import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { ansatteService } from './services';
+
+//import {styles} from './style.js';
+//import styles from './DottedBox.css';
+
+//import {loginstyle} from "./login.css";
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
+class Menu extends Component {
+  render() {
+    return (
+      <NavBar brand="WhiteBoard">
+        <NavBar.Link to="/students">Students</NavBar.Link>
+      </NavBar>
+    );
+  }
+}
 
+class Home extends Component {
+  render() {
+    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
+  }
+}
 
 class LogIn extends Component {
+  ansatte = [];
+  test = "";
+  form = null;
+  test2 = "";
+
+  constructor(props) {
+      super(props);
+      this.state = {value: ''};
+
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+      this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+      //alert('A name was submitted: ' + this.state.value);
+      this.test = this.state.value;
+
+      alert(this.ansatte[0]);
+      event.preventDefault();
+
+
+    }
+
+
+
   render() {
     return (
       <div>
-        <div style={styles.DottedBox}>
-          <p style={styles.DottedBox_content}>Get started</p>
+        <div>
           </div>
-<form class='login-form'>
-  <div class="flex-row">
-    <label class="lf--label" for="username">
-      <svg x="0px" y="0px" width="12px" height="13px">
-      </svg>
-    </label>
-    <input id="username" class='lf--input' placeholder='Username' type='text'/>
-  </div>
-  <div class="flex-row">
-    <label class="lf--label" for="password">
-      <svg x="0px" y="0px" width="15px" height="5px">
-      </svg>
-    </label>
-    <input id="password" class='lf--input' placeholder='Password' type='password'/>
-  </div>
-  <input class='lf--submit' type='submit' value='LOGIN'/>
-</form>
-<a class='lf--forgot' href='#'>Forgot password?</a>
-</div>
+          <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
+          <div className="flex-row">
+            <Card>
+              <Form.Label>Brukernavn: </Form.Label>
+              <Form.Input id="username" className='lf--input' placeholder='Brukernavn' type='text' onChange={event => this.test = event.target.value}/>
+              <Form.Label>Passord: </Form.Label>
+              <Form.Input id="password" className='lf--input' placeholder='Passord' type='password'/>
+              <Button.Success onClick={this.login}>Logg inn</Button.Success>
+
+            </Card>
+          </div>
+          <div className="flex-row">
+          </div>
+          <input className='lf--submit' type='submit' value='LOGIN'/>
+        </form>
+        </div>
 
     );
+
   }
+  login(){
+    if (!this.form.checkValidity()) return;
+    ansatteService.getAnsatt(ansatte => {
+        this.ansatte = ansatte;
+    });
+    alert("hello " + this.test);
+    <div>
+    {this.ansatte.map(ansatt => (
+        <p key={ansatt.ansattid}>Haha {ansatt.fornavn}</p>
+    ))}
+    </div>
+    alert("hello " + this.ansatte);
+  }
+
+  // mounted() {
+  //   connection.query('select * from ansatte left join stilling on ansatte.stilling_stillingid = stilling.stillingid where epost=?',[ansatt.epost], (error, results) => {
+  //     if (error) return console.error(error); // If error, show error in console (in red text) and return
+  //
+  //     this.ansatte = results;
+  //   });
+  // }
+
 }
 
 
@@ -46,6 +114,8 @@ class LogIn extends Component {
 ReactDOM.render(
   <HashRouter>
     <div>
+    <Route exact path="/" component={Home} />
+
       <LogIn />
     </div>
   </HashRouter>,

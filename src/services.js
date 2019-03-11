@@ -9,8 +9,8 @@ class AnsatteService {
     });
   }
 
-  getAnsatt(epost,passord,success) {
-    connection.query('select * from ansatte where epost=? and passord=?',[epost,passord], (error, results) => {
+  getAnsatt(epost, passord, success) {
+    connection.query('select * from ansatte where epost=? and passord=?', [epost, passord], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -18,3 +18,7 @@ class AnsatteService {
   }
 }
 export let ansatteService = new AnsatteService();
+
+// class BestillingService {
+//   get
+// }

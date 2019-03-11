@@ -17,75 +17,63 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Menu extends Component {
   render() {
     return (
-      <NavBar brand="WhiteBoard">
+      <NavBar brand="Bestilling">
         <NavBar.Link to="/students">Students</NavBar.Link>
       </NavBar>
     );
   }
 }
 
-class Home extends Component {
+class Side2 extends Component {
   render() {
-    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
-  }
-}
-
-class LogIn extends Component {
-  ansatte = [];
-  epost = "";
-  passord = "";
-  form = null;
+    return(  <div> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
 
 
-  render() {
-    return (
-      <div>
-        <div>
-          </div>
-          <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
-          <div className="flex-row">
-            <Card>
-              <Form.Label>Epost: </Form.Label>
-              <Form.Input id="username" className='lf--input' placeholder='Epost' type='text' onChange={event => this.epost = event.target.value}/>
-              <Form.Label>Passord: </Form.Label>
-              <Form.Input id="password" className='lf--input' placeholder='Passord' type='password' onChange={event => this.passord = event.target.value}/>
-              <Button.Success onClick={this.login}>Logg inn</Button.Success>
+      Fornavn: <input type="text" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)} />
+      Epost: <input type="text" value={this.epost} onChange={event => (this.epost = event.target.value)} /> <br/>
+      Etternavn: <input type="text" value={this.etternavn} onChange={event => (this.fornavn = event.target.value)} />
 
-            </Card>
-          </div>
-          <div className="flex-row">
-          </div>
-        </form>
+      Telefon: <input type="text" value={this.telefon} onChange={event => (this.telefon = event.target.value)} />
+      Adresse: <input type="text" value={this.adresse} onChange={event => (this.adresse = event.target.value)} /> <br/><br/>
+
+      Fra: <input type="date" value={this.start} onChange={event => (this.start = event.target.value)} />
+      Hentetid: <input type="time" value={this.start} onChange={event => (this.start = event.target.value)} />
+      Hentested: <input type="text" value={this.hentested} onChange={event => (this.hentested = event.target.value)} /> <br/>
+      Til: <input type="date" value={this.slutt} onChange={event => (this.slutt = event.target.value)} />
+      Leveringstid: <input type="time" value={this.slutt} onChange={event => (this.slutt = event.target.value)} />
+      Leveringssted: <input type="text" value={this.Leveringssted} onChange={event => (this.hentested = event.target.value)} /> <br/><br/>
+
+      Gruppe: <input type="checkbox" /> <br/>
+      Antall personer: <input type="number" /> <br/><br/>
+
+
+      Terrengsykkel: <input type="checkbox" /> <input type="number" /> <br/>
+      Tandemsykkel: <input type="checkbox" /> <input type="number" /> <br/>
+      Elsykkel for de eldre: <input type="checkbox" /> <input type="number" /> <br/><br/>
+
+      <h6>Ekstrautstyr:</h6>
+      Barnevogn: <input type="number" /> <br/>
+      Barnesete: <input type="number" /> <br/>
+      Bagasjevogn:<input type="number" /> <br/><br/>
+
+      <button type="button" onClick={this.save}>
+        Registrer
+      </button>
         </div>
 
-    );
-
-  }
-  login(){
-    if (!this.form.checkValidity()) return;
-
-    ansatteService.getAnsatt(this.epost,this.passord,ansatte => {
-        console.log(ansatte);
-        if(ansatte.length > 0){
-          this.ansatte = ansatte;
-          //this.ree();
-          alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost)
-        } else {
-          alert("Skriv inn riktig epost og passord.")
-        }
-    });
-  }
-
+  )};
 }
+
 
 
 
 ReactDOM.render(
   <HashRouter>
     <div>
-    <Route exact path="/" component={Home} />
+    <Menu />
+    <Route exact path="/" component={Side2} />
 
-      <LogIn />
+
     </div>
   </HashRouter>,
   document.getElementById('root')

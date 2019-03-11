@@ -69,7 +69,9 @@ class LogIn extends Component {
         if(ansatte.length > 0){
           this.ansatte = ansatte;
           //this.ree();
-          alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost)
+          alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost);
+          window.location.href = "./index.html";
+
         } else {
           alert("Skriv inn riktig epost og passord.")
         }
@@ -88,5 +90,5 @@ ReactDOM.render(
       <LogIn />
     </div>
   </HashRouter>,
-  document.getElementById('app')
+  document.getElementById('root')
 );

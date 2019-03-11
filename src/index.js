@@ -87,18 +87,48 @@ class LogIn extends Component {
   }
   login(){
     if (!this.form.checkValidity()) return;
-    ansatteService.getAnsatt(ansatte => {
-        this.ansatte = ansatte;
+    connection.query('select * from ansatte where epost=?',[this.test], (error, results) => {
+      if (error) return console.error(error);
+
+      if(results.length > 0){
+        this.ansatte = results;
+        this.ree();
+      } else {
+        alert("Skriv inn riktig epost.")
+      }
+      //console.log(this.ansatte[0])
+      // this.ansatte = results;
+      // console.log(this.ansatte[0].fornavn)
+      // this.ree();
     });
-    alert("hello " + this.test);
-    <div>
-    {this.ansatte.map(ansatt => (
-        <p key={ansatt.ansattid}>Haha {ansatt.fornavn}</p>
-    ))}
-    </div>
-    alert("hello " + this.ansatte);
+    // ansatteService.getAnsatt(ansatte => {
+    //     console.log(ansatte);
+    //     //this.ansatte = ansatte;
+    // });
+    // alert("hello " + this.test);
+    // for(let i = 0;i<=this.ansatte.length;i++) {
+    //   //alert(this.ansatte[0].fornavn);
+    //   console.log(this.ansatte.length);
+    // }
+    //
+    // <div>
+    // {this.ansatte.map(ansatt => (
+    //     <p key={ansatt.ansattid}>Haha {ansatt.fornavn}</p>
+    // ))}
+    // </div>
+    // alert("hello " + this.ansatte[0]);
   }
 
+  ree(){
+    alert("Velkommen " + this.ansatte[0].fornavn)
+  }
+  // mounted() {
+  //   connection.query('select fornavn,etternavn from ansatte', (error, results) => {
+  //     if (error) return console.error(error);
+  //
+  //     this.ansatte = results;
+  //   });
+  // }
   // mounted() {
   //   connection.query('select * from ansatte left join stilling on ansatte.stilling_stillingid = stilling.stillingid where epost=?',[ansatt.epost], (error, results) => {
   //     if (error) return console.error(error); // If error, show error in console (in red text) and return

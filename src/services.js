@@ -16,13 +16,5 @@ class AnsatteService {
       success(results);
     });
   }
-
-  updateStudent(id, name, email, success) {
-    connection.query('update Students set name=?, email=? where id=?', [name, email, id], (error, results) => {
-      if (error) return console.error(error);
-
-      success();
-    });
-  }
 }
 export let ansatteService = new AnsatteService();

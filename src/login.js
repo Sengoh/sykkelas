@@ -11,10 +11,18 @@ import { ansatteService } from './services';
 
 //import {loginstyle} from "./login.css";
 
-//win.loadUrl(`file://${__dirname}/page.html`);
-
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
+
+class Menu extends Component {
+  render() {
+    return (
+      <NavBar brand="WhiteBoard">
+        <NavBar.Link to="/students">Students</NavBar.Link>
+      </NavBar>
+    );
+  }
+}
 
 class Home extends Component {
   render() {
@@ -35,6 +43,7 @@ class LogIn extends Component {
         <div>
           </div>
           <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
+          <div className="flex-row">
             <Card>
               <Form.Label>Epost: </Form.Label>
               <Form.Input id="username" className='lf--input' placeholder='Epost' type='text' onChange={event => this.epost = event.target.value}/>
@@ -43,7 +52,9 @@ class LogIn extends Component {
               <Button.Success onClick={this.login}>Logg inn</Button.Success>
 
             </Card>
-
+          </div>
+          <div className="flex-row">
+          </div>
         </form>
         </div>
 
@@ -58,37 +69,15 @@ class LogIn extends Component {
         if(ansatte.length > 0){
           this.ansatte = ansatte;
           //this.ree();
-
           alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost);
-          history.push('/loggedin');
+          window.location.href = "./index.html";
+
         } else {
           alert("Skriv inn riktig epost og passord.")
         }
     });
   }
 
-}
-
-class Forside extends Component {
-  //ansatte = LogIn.ansatte;
-
-  render() {
-    history.push('/');
-    return(
-
-      <div>
-        {this.ansatte.map(ansatt =>(
-          <div key={ansatt.ansattid}>
-            Navn: {ansatt.fornavn} {ansatt.etternavn} <br />
-            Epost: {ansatt.epost} <br />
-            Telefon: {ansatt.telefon} <br />
-          </div>
-        ))}
-        test
-      </div>
-    );
-
-  }
 }
 
 
@@ -99,8 +88,7 @@ ReactDOM.render(
     <Route exact path="/" component={Home} />
 
       <LogIn />
-    <Route exact path="/loggedin" component={Forside} />
     </div>
   </HashRouter>,
-  document.getElementById('app')
+  document.getElementById('root')
 );

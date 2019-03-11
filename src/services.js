@@ -9,11 +9,11 @@ class AnsatteService {
     });
   }
 
-  getAnsatt(success) {
-    connection.query('select fornavn,etternavn from ansatte', (error, results) => {
+  getAnsatt(epost,success) {
+    connection.query('select * from ansatte where epost=?',[epost], (error, results) => {
       if (error) return console.error(error);
 
-      success();
+      success(results);
     });
   }
 

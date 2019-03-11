@@ -87,20 +87,31 @@ class LogIn extends Component {
   }
   login(){
     if (!this.form.checkValidity()) return;
-    connection.query('select * from ansatte where epost=?',[this.test], (error, results) => {
-      if (error) return console.error(error);
 
-      if(results.length > 0){
-        this.ansatte = results;
-        this.ree();
-      } else {
-        alert("Skriv inn riktig epost.")
-      }
-      //console.log(this.ansatte[0])
-      // this.ansatte = results;
-      // console.log(this.ansatte[0].fornavn)
-      // this.ree();
+    ansatteService.getAnsatt(this.test,ansatte => {
+        console.log(ansatte);
+        if(ansatte.length > 0){
+          this.ansatte = ansatte;
+          this.ree();
+        } else {
+          alert("Skriv inn riktig epost.")
+        }
+        //this.ansatte = ansatte;
     });
+    // connection.query('select * from ansatte where epost=?',[this.test], (error, results) => {
+    //   if (error) return console.error(error);
+    //
+    //   if(results.length > 0){
+    //     this.ansatte = results;
+    //     this.ree();
+    //   } else {
+    //     alert("Skriv inn riktig epost.")
+    //   }
+    //   //console.log(this.ansatte[0])
+    //   // this.ansatte = results;
+    //   // console.log(this.ansatte[0].fornavn)
+    //   // this.ree();
+    // });
     // ansatteService.getAnsatt(ansatte => {
     //     console.log(ansatte);
     //     //this.ansatte = ansatte;

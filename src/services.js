@@ -9,8 +9,8 @@ class AnsatteService {
     });
   }
 
-  getAnsatt(epost,success) {
-    connection.query('select * from ansatte where epost=?',[epost], (error, results) => {
+  getAnsatt(epost,passord,success) {
+    connection.query('select * from ansatte where epost=? and passord=?',[epost,passord], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

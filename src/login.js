@@ -1,3 +1,4 @@
+//Dette er fila for innlogging!!
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
@@ -7,7 +8,6 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 
 //import {styles} from './style.js';
-//import styles from './DottedBox.css';
 
 //import {loginstyle} from "./login.css";
 
@@ -50,6 +50,7 @@ class LogIn extends Component {
               <Form.Label>Passord: </Form.Label>
               <Form.Input id="password" className='lf--input' placeholder='Passord' type='password' onChange={event => this.passord = event.target.value}/>
               <Button.Success onClick={this.login}>Logg inn</Button.Success>
+              <a href='./index.html'>Hacker</a>
 
             </Card>
           </div>

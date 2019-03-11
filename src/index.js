@@ -1,3 +1,4 @@
+//Dette er fila for destinasjonssiden!
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
@@ -7,7 +8,6 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 
 //import {styles} from './style.js';
-//import styles from './DottedBox.css';
 
 //import {loginstyle} from "./login.css";
 
@@ -41,7 +41,6 @@ class LogIn extends Component {
               <Form.Label>Passord: </Form.Label>
               <Form.Input id="password" className='lf--input' placeholder='Passord' type='password' onChange={event => this.passord = event.target.value}/>
               <Button.Success onClick={this.login}>Logg inn</Button.Success>
-
             </Card>
 
         </form>
@@ -71,9 +70,9 @@ class LogIn extends Component {
 
 class Forside extends Component {
   //ansatte = LogIn.ansatte;
-
+//  history.push('/'); klippa vekk det her fra 2 lines down
   render() {
-    history.push('/');
+
     return(
 
       <div>
@@ -92,13 +91,11 @@ class Forside extends Component {
 }
 
 
-
 ReactDOM.render(
   <HashRouter>
     <div>
-    <Route exact path="/" component={Home} />
-
-      <LogIn />
+    <LogIn />
+<Route exact path="/" component={Home} />
     <Route exact path="/loggedin" component={Forside} />
     </div>
   </HashRouter>,

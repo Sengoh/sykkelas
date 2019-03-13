@@ -16,5 +16,16 @@ class AnsatteService {
       success(results);
     });
   }
+
+
+
+
+  getKunde(brukerid, success) {
+    connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
 }
 export let ansatteService = new AnsatteService();

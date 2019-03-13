@@ -19,7 +19,7 @@ app.on('ready', () => {
   // Open Development Tools
   mainWindow.openDevTools();
 
-  mainWindow.loadURL('file://' + __dirname + '/public/login.html');
+  mainWindow.loadURL('file://' + __dirname + '/public/index.html');
 });
 
 app.on('window-all-closed', () => {

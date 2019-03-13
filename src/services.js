@@ -17,7 +17,17 @@ class AnsatteService {
     });
   }
 }
+class KundeService {
+  getKunde(id, success) {
+    connection.query('select * from kunder where brukerid=?', [id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
+}
 export let ansatteService = new AnsatteService();
+export let kundeService = new KundeService();
 
 // class BestillingService {
 //   get

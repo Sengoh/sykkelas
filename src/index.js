@@ -17,8 +17,8 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Menu extends Component {
   render() {
     return (
-      <NavBar brand="Sykkelutleie AS">
-        <NavBar.Link to="/kunder">Eventuell meny</NavBar.Link>
+      <NavBar brand="WhiteBoard">
+        <NavBar.Link to="/students">Students</NavBar.Link>
       </NavBar>
     );
   }
@@ -26,153 +26,66 @@ class Menu extends Component {
 
 class Home extends Component {
   render() {
-    return <Card title="Endre bestilling"></Card>;
+    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
   }
 }
 
-
-class BestDetails extends Component {
-  kunder = null;
-  brukerid = 1;
-
+class LogIn extends Component {
+  ansatte = [];
+  epost = "";
+  passord = "";
+  form = null;
 
 
   render() {
-    if (!this.kunder) return null;
-
     return (
+      <div>
+        <div>
+          </div>
+          <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
+          <div className="flex-row">
+            <Card>
+              <Form.Label>Epost: </Form.Label>
+              <Form.Input id="username" className='lf--input' placeholder='Epost' type='text' onChange={event => this.epost = event.target.value}/>
+              <Form.Label>Passord: </Form.Label>
+              <Form.Input id="password" className='lf--input' placeholder='Passord' type='password' onChange={event => this.passord = event.target.value}/>
+              <Button.Success onClick={this.login}>Logg inn</Button.Success>
 
-      <div className="container pt-5">
-        <Card>
-
-          <table className="table">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Fornavn</th>
-                <th scope="col">Etternavn</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">Postnr.</th>
-                <th scope="col">Poststed</th>
-                <th scope="col">E-post</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{this.kunder.fornavn}</td>
-                <td>{this.kunder.etternavn}</td>
-                <td>{this.kunder.addresse}</td>
-                <td>{this.kunder.telefon}</td>
-                <td>{this.kunder.postnr}</td>
-                <td>{this.kunder.poststed}</td>
-                <td>{this.kunder.epost}</td>
-              </tr>
-            </tbody>
-          </table>
-          <button type="button" className="btn btn-primary m-2" onClick={this.edit}>
-            Endre bestilling
-          </button>
-          <button type="button" className="btn btn-danger m-2" onClick={this.delete}>
-            Slett bestilling
-          </button>
-
-        </Card>
-
-      </div>
+            </Card>
+          </div>
+          <div className="flex-row">
+          </div>
+        </form>
+        </div>
 
     );
 
   }
-  mounted() {
-    ansatteService.getKunde(this.brukerid, kunder => {
-      this.kunder = kunder;
+  login(){
+    if (!this.form.checkValidity()) return;
+
+    ansatteService.getAnsatt(this.epost,this.passord,ansatte => {
+        console.log(ansatte);
+        if(ansatte.length > 0){
+          this.ansatte = ansatte;
+          //this.ree();
+          alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost)
+        } else {
+          alert("Skriv inn riktig epost og passord.")
+        }
     });
-  }
-
-  edit() {
-    history.push('/kunder/' + this.brukerid + '/edit');
-  }
-
-  delete() {
-    ansatteService.deleteBest(this.props.match.params.id, () => history.push('/students'));
   }
 
 }
 
-class KundeEdit extends Component {
-  kunder = null;
-
-  render() {
-    if (!this.kunder) return null;
-
-    return (
-
-      <div className="container pt-5">
-        <Card>
-
-          <table className="table">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Fornavn</th>
-                <th scope="col">Etternavn</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">Postnr.</th>
-                <th scope="col">Poststed</th>
-                <th scope="col">E-post</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="text" className="form-control" value={this.kunder.fornavn} onChange={e => (this.kunder.fornavn = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.etternavn} onChange={e => (this.kunder.etternavn = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.addresse} onChange={e => (this.kunder.addresse = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.telefon} onChange={e => (this.kunder.telefon = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.postnr} onChange={e => (this.kunder.postnr = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.poststed} onChange={e => (this.kunder.poststed = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.epost} onChange={e => (this.kunder.epost = e.target.value)} /></td>
-              </tr>
-            </tbody>
-          </table>
-          <button type="button" className="btn btn-success m-2" onClick={this.save}>
-            Lagre
-          </button>
-          <button type="button" className="btn btn-danger m-2" onClick={this.cancel}>
-            Avbryt
-          </button>
-
-        </Card>
-
-      </div>
-    );
-  }
-
-  mounted() {
-    ansatteService.getKunde(this.props.match.params.id, kunder => {
-      this.kunder = kunder;
-    });
-  }
-
-  save() {
-    studentService.updateStudent(this.student, () => {
-      history.push('/students/' + this.props.match.params.id);
-    });
-  }
-
-  cancel() {
-    history.push('/kunder');
-  }
-}
 
 
 ReactDOM.render(
   <HashRouter>
     <div>
-      <Menu />
-      <Route exact path="/" component={Home} />
-      <Route exact path="/kunder" component={BestDetails} />
-      <Route exact path="/kunder/:id/edit" component={KundeEdit} />
+    <Route exact path="/" component={Home} />
 
+      <LogIn />
     </div>
   </HashRouter>,
   document.getElementById('root')

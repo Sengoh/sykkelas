@@ -16,6 +16,7 @@ class AnsatteService {
       success(results);
     });
   }
+<<<<<<< HEAD
 
   getKunde(brukerid, success) {
     connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
@@ -24,6 +25,8 @@ class AnsatteService {
       success(results[0]);
     });
   }
+=======
+>>>>>>> parent of 55daa35... v1
 }
 export let ansatteService = new AnsatteService();
 

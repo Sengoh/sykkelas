@@ -1,0 +1,10 @@
+.DottedBox {
+  margin: 40px;
+  border: 5px dotted pink;
+}
+
+/*.DottedBox_content {
+  font-size: 15px;
+  text-align: center;
+}
+*/

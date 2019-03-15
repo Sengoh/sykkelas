@@ -321,6 +321,6 @@ ReactDOM.render(
     <Route exact path="/kunde/:id" component={Test} />
     </div>
   </HashRouter>,
-  document.getElementById('app')
+  document.getElementById('aktive')
 );
 //<Route exact path="/kunder" component={Test} />

@@ -20,7 +20,6 @@ class AnsatteService {
 
 
 
-
   getKunde(brukerid, success) {
     connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
       if (error) return console.error(error);
@@ -28,7 +27,6 @@ class AnsatteService {
       success(results[0]);
     });
   }
-
 }
 class KundeService {
   getKunde(id, success) {
@@ -42,7 +40,3 @@ class KundeService {
 export let ansatteService = new AnsatteService();
 
 export let kundeService = new KundeService();
-
-// class BestillingService {
-//   get
-// }

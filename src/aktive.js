@@ -167,38 +167,93 @@ class Test extends Component {
       </table>
       <Card>
       <form>
-        <div className="row">
-        <div className="form-group col">
-          <label htmlFor="terreng">Terrengsykkel:</label>
-          <input className="form-check-input" type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true}/>
-          <input id="terreng" style={{width: 4 + 'em'}} type="number" className="form-control" disabled /> <br />
-          <Form.Label>Tandemsykkel:</Form.Label>
-          <input className="form-check-input" type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true} />
-          <input id="tandem" style={{width: 4 + 'em'}} type="number" className="form-control" disabled /><br />
-          <Form.Label>Elsykkel:</Form.Label>
-          <input className="form-check-input" type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
-          <input id="el" style={{width: 4 + 'em'}} type="number" className="form-control" disabled /><br />
+      <div className="row">
+      <div className="col">
+        <legend className="row-form-label row-sm-2 pt-0">Sykler</legend>
+        <div className="row-sm-10">
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true}/>
+            <label className="form-check-label">Terrengsykkel</label>
+            <input id="terreng" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+          </div>
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true} />
+            <label className="form-check-label">Tandemsykkel</label>
+            <input id="tandem" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+          <div className="form-check">
+          </div>
+            <input className="form-check-input" type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
+            <label className="form-check-label">Elsykkel</label>
+            <input id="el" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+          </div>
         </div>
-        <div className="form-group col">
-          <Form.Label>Fra:</Form.Label>
-          <input id="fra" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.fraDato} onChange={this.endreDato}/>
-          <Form.Label>Til:</Form.Label>
-          <input id="til" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.tilDato} onChange={this.endreDato}/>
+      </div>
+      <div className="col">
+        <legend className="row-form-label row-sm-2 pt-0">Dato</legend>
+        <div className="row-sm-10">
+          <div className="form-group">
+            <Form.Label>Fra:</Form.Label>
+            <input id="fra" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.fraDato} onChange={this.endreDato}/>
+            <Form.Label>Til:</Form.Label>
+            <input id="til" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.tilDato} onChange={this.endreDato}/>
+          </div>
         </div>
-        <div className="form-group col">
-          <Form.Label>Fra:</Form.Label>
-          <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onChange={this.endreTid} />
-          <Form.Label>Til:</Form.Label>
-          <input id="levere" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levere} onChange={this.endreTid} />
+      </div>
+      <div className="col">
+        <legend className="row-form-label row-sm-2 pt-0">Tid</legend>
+        <div className="row-sm-10">
+          <div className="form-group">
+            <Form.Label>Fra:</Form.Label>
+            <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onChange={this.endreTid} />
+            <Form.Label>Til:</Form.Label>
+            <input id="levere" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levere} onChange={this.endreTid} />
+          </div>
         </div>
-        <div className="form-group col">
-          <label>Gruppe:</label>
-          <input className="form-check-input" type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} />
-          <input id="gruppe" style={{width: 4 + 'em'}} type="number" className="form-control" disabled /> <br />
+      </div>
+      <div className="col">
+        <legend className="row-form-label row-sm-2 pt-0">Gruppe</legend>
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} />
+            <label>Gruppe</label>
+            <input id="gruppe" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+          </div>
         </div>
+      </div>
+      <Card title="Ekstrautstyr">
+      <div className="form-group row">
+        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-10">
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" id="gridCheck1" />
+            <label className="form-check-label">
+              Example checkbox
+            </label>
+          </div>
         </div>
-        <div className="row">
+      </div>
+      <div className="form-group row">
+        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-10">
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" id="gridCheck1" />
+            <label className="form-check-label">
+              Example checkbox
+            </label>
+          </div>
+          </div>
         </div>
+        <div className="form-group row">
+        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-10">
+          <div className="form-check">
+            <input className="form-check-input" type="checkbox" id="gridCheck1" />
+            <label className="form-check-label">
+              Example checkbox
+            </label>
+          </div>
+          </div>
+        </div>
+      </Card>
       </form>
       </Card>
       </div>

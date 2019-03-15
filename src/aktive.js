@@ -26,7 +26,7 @@ class Home extends Component {
 }
 
 
-class AktiveBestillinger extends Component {
+export class AktiveBestillinger extends Component {
   kundenr = null;
   epost = null;
   tlf = null;
@@ -125,7 +125,7 @@ class AktiveBestillinger extends Component {
 
 }
 //{this.kunde.brukerid}
-class Test extends Component {
+export class Test extends Component {
   kunde = null;
   fraDato = null;
   dd= null;
@@ -161,7 +161,7 @@ class Test extends Component {
               <td>{this.kunde.epost}</td>
               <td>{this.kunde.telefon}</td>
               <td>{this.kunde.addresse}, {this.kunde.postnr} {this.kunde.poststed}</td>
-              <td><Button.Danger><NavLink to="/" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
+              <td><Button.Danger><NavLink to="/Sivert" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
             </tr>
         </tbody>
       </table>
@@ -311,16 +311,19 @@ class Test extends Component {
     })
   }
 }
-ReactDOM.render(
-  <HashRouter>
-    <div>
-    <Route path="/" component={Home} />
-
-    <Route exact path="/" component={AktiveBestillinger} />
-
-    <Route exact path="/kunde/:id" component={Test} />
-    </div>
-  </HashRouter>,
-  document.getElementById('aktive')
-);
+// ReactDOM.render(
+//   <HashRouter>
+//     <div>
+//     <Route path="/" component={Home} />
+//
+//     <Route exact path="/" component={AktiveBestillinger} />
+//
+//     <Route exact path="/kunde/:id" component={Test} />
+//     </div>
+//   </HashRouter>,
+//   document.getElementById('landing')
+// );
 //<Route exact path="/kunder" component={Test} />
+
+// export AktiveBestillinger;
+// export Test;

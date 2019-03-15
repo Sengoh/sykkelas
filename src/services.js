@@ -16,7 +16,7 @@ class AnsatteService {
       success(results);
     });
   }
-<<<<<<< HEAD
+
 
 
 
@@ -28,8 +28,7 @@ class AnsatteService {
       success(results[0]);
     });
   }
-=======
->>>>>>> parent of 55daa35... v1
+
 }
 class KundeService {
   getKunde(id, success) {
@@ -41,11 +40,9 @@ class KundeService {
   }
 }
 export let ansatteService = new AnsatteService();
-<<<<<<< HEAD
-=======
+
 export let kundeService = new KundeService();
 
 // class BestillingService {
 //   get
 // }
->>>>>>> 0c2a19c7a3bb2c6ed9892c6ed7bb65b23e676592

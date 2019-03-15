@@ -7,7 +7,6 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 
 //import {styles} from './style.js';
-//import styles from './DottedBox.css';
 
 //import {loginstyle} from "./login.css";
 
@@ -70,6 +69,7 @@ class LogIn extends Component {
           this.ansatte = ansatte;
           //this.ree();
           alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost)
+          window.location.href = './aktive.html';
         } else {
           alert("Skriv inn riktig epost og passord.")
         }

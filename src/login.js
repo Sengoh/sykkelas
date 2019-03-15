@@ -91,5 +91,5 @@ ReactDOM.render(
       <LogIn />
     </div>
   </HashRouter>,
-  document.getElementById('root')
+  document.getElementById('login')
 );

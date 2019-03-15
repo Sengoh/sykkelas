@@ -42,5 +42,5 @@ ReactDOM.render(
 
     </div>
   </HashRouter>,
-  document.getElementById('root')
+  document.getElementById('landing')
 );

@@ -137,6 +137,11 @@ export class Test extends Component {
   levere = null;
   m = null;
   t = null;
+  terreng = 0;
+  tandem = 0;
+  el = 0;
+  temp = 0;
+  tempM = null;
 
   render() {
     if (!this.kunde) return null;
@@ -172,19 +177,19 @@ export class Test extends Component {
         <legend className="row-form-label row-sm-2 pt-0">Sykler</legend>
         <div className="row-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true}/>
+            <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(1)}/>
             <label className="form-check-label">Terrengsykkel</label>
-            <input id="terreng" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+            <input id="terreng" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
           </div>
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true} />
+            <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(2)} />
             <label className="form-check-label">Tandemsykkel</label>
-            <input id="tandem" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+            <input id="tandem" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
           <div className="form-check">
           </div>
-            <input className="form-check-input" type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
+            <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(3)} />
             <label className="form-check-label">Elsykkel</label>
-            <input id="el" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+            <input id="el" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
           </div>
         </div>
       </div>
@@ -193,10 +198,11 @@ export class Test extends Component {
         <div className="row-sm-10">
           <div className="form-group">
             <Form.Label>Fra:</Form.Label>
-            <input id="fra" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.fraDato} onChange={this.endreDato}/>
+            <input id="fra" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.fraDato} onBlur={this.endreDato} onChange={e => (this.fraDato = e.target.value)} />
             <Form.Label>Til:</Form.Label>
-            <input id="til" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.tilDato} onChange={this.endreDato}/>
+            <input id="til" style={{width: 11 + 'em'}} type="date" className="form-control" value={this.tilDato} onBlur={this.endreDato} onChange={e => (this.tilDato = e.target.value)} />
           </div>
+          <span className="error" id="errorD"></span><br />
         </div>
       </div>
       <div className="col">
@@ -204,10 +210,11 @@ export class Test extends Component {
         <div className="row-sm-10">
           <div className="form-group">
             <Form.Label>Fra:</Form.Label>
-            <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onChange={this.endreTid} />
+            <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onBlur={this.endreTid} onChange={e => (this.hente = e.target.value)} />
             <Form.Label>Til:</Form.Label>
-            <input id="levere" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levere} onChange={this.endreTid} />
+            <input id="levere" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levere} onBlur={this.endreTid} onChange={e => (this.levere = e.target.value)} />
           </div>
+          <span className="error" id="errorT"></span><br />
         </div>
       </div>
       <div className="col">
@@ -259,25 +266,87 @@ export class Test extends Component {
       </div>
     )
   }
+  sykkelValg(sykkel) {
+
+    switch(sykkel) {
+      case 1:
+        if(terreng.disabled) {
+          terreng.disabled = false;
+        } else {
+          terreng.disabled = true;
+          terreng.value = 0;
+        }
+        break;
+      case 2:
+        if(tandem.disabled) {
+          tandem.disabled = false;
+        } else {
+          tandem.disabled = true;
+          tandem.value = 0;
+        }
+        break;
+      case 3:
+          if(el.disabled) {
+            el.disabled = false;
+          } else {
+            el.disabled = true;
+            el.value = 0;
+          }
+          break;
+    }
+  }
   endreDato() {
-    this.fraDato = fra.value;
-    this.tilDato = til.value;
+    errorD.innerHTML = "";
+
+    //Sjekker om hentedatoen skjer etter leveringdatoen, og endrer leveringdatoen hvis den er det
     if(this.fraDato > this.tilDato) {
+      errorD.innerHTML = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
       this.tilDato = this.fraDato;
     }
+
+    //Sjekker om hentedatoen skjer i fortiden, og endrer den hvis den er det
     if(this.fraDato < (this.yyyy + "-0" + this.mm + "-" + this.dd)) {
+      errorD.innerHTML = "Valgt dato er feil. Endret til dagens dato.";
       this.fraDato = (this.yyyy + "-0" + this.mm + "-" + this.dd)
     }
   }
   endreTid() {
-    this.hente = hente.value;
-    this.levere = levere.value;
+    errorT.innerHTML = "";
+
+    //Endrer hentetid minutter
+    this.tempM = Math.ceil(hente.value.split(":")[1]/10)*10;
+    if(this.tempM == 0) {
+      this.tempM = "00";
+    }
+    if(this.tempM >= 60) {
+      this.tempM = "00";
+    }
+    console.log(this.tempM);
+    this.hente = hente.value.split(":")[0] + ":" + this.tempM;
+
+    //Endrer leveringstid minutter
+    this.tempM = Math.ceil(levere.value.split(":")[1]/10)*10;
+    if(this.tempM == 0) {
+      this.tempM = "00";
+    }
+    if(this.tempM >= 60) {
+      this.tempM = "00";
+    }
+    console.log(this.tempM);
+    this.levere = levere.value.split(":")[0] + ":" + this.tempM;
+
+    //Sjekker om hentetiden er etter leverigstiden og endrer leveringstiden hvis den er det
     if(this.fraDato == this.tilDato && this.hente > this.levere) {
       this.levere = this.hente;
+      errorT.innerHTML = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
     }
+
+    //Sjekker om hentetiden skjer i fortiden, og endrer den hvis den er det
     if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.hente < this.t + ":" + this.m) {
       this.hente = this.t + ":" + this.m;
+      errorT.innerHTML = "Hentetider er i fortiden. Hentetid endret.";
     }
+
   }
   toggle(test) {
     console.log(test);

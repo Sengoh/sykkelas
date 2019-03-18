@@ -142,6 +142,68 @@ export class Test extends Component {
   el = 0;
   temp = 0;
   tempM = null;
+  sql = "";
+  sykler = [];
+  current = null;
+
+  handleSubmit(event) {
+        //SCOPE_IDENTITY()
+    this.sql = "insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansatteid,hentested,leveringssted) values (" + this.fraDato + " " + this.hente + ":00" + "," + this.tilDato + " " + this.levere + ":00" + "," + this.props.match.params.id + "," + 1 + "," + 1 + "," + 1 +");";
+    ansatteService.insertLeie(this.fraDato + " " + this.hente + ":00", this.tilDato + " " + this.levere + ":00", this.props.match.params.id, 1, 1, 1,leier => {
+      ansatteService.getPrevious(current => {
+        this.current = current.IDENTITY;
+        console.log(this.current)
+        if(!terreng.disabled && terreng.value != 0) {
+          console.log("test");
+          ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
+            this.sykler = sykler;
+            console.log(this.sykler);
+            for(var i = 0;i<this.sykler.length;i++) {
+              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
+
+              })
+              //this.sql = "";
+              console.log(this.sql);
+            }
+          })
+          //this.sql = "insert into leietaker_has_sykler (leietaker_leieid,sykler_sykkelid) values (" +
+        }
+        if(!tandem.disabled && tandem.value != 0) {
+          console.log("test");
+          ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
+            this.sykler = sykler;
+            console.log(this.sykler);
+            for(var i = 0;i<this.sykler.length;i++) {
+              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
+
+              })
+              //this.sql = "";
+              console.log(this.sql);
+            }
+          })
+        }
+        if(!el.disabled && el.value != 0) {
+          console.log("test");
+          ansatteService.getSykkel("el",parseInt(el.value),sykler => {
+            this.sykler = sykler;
+            console.log(this.sykler);
+            for(var i = 0;i<this.sykler.length;i++) {
+              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
+
+              })
+              //this.sql = "";
+              console.log(this.sql);
+            }
+          })
+        }
+      })
+    })
+
+
+    //alert(this.sql);
+
+  }
+
 
   render() {
     if (!this.kunde) return null;
@@ -171,7 +233,7 @@ export class Test extends Component {
         </tbody>
       </table>
       <Card>
-      <form>
+      <form onSubmit={this.handleSubmit}>
       <div className="row">
       <div className="col">
         <legend className="row-form-label row-sm-2 pt-0">Sykler</legend>
@@ -261,6 +323,7 @@ export class Test extends Component {
           </div>
         </div>
       </Card>
+      <input type="submit" className="btn btn-success" value="Register bestilling" />
       </form>
       </Card>
       </div>

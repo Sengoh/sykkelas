@@ -58,14 +58,17 @@ const template = [
   click(){
     app.quit();
   }
+},
+{
+  label: 'Gå til start',
+  click(){
+    mainWindow.loadURL('file://' + __dirname + '/public/index.html');
+  }
 }
     ]
   }
 ];
 
-if(process.platform == 'darwin'){
-  template.unshift({});
-}
 
 //Add developer tools item if not in production
 if(process.env.NODE_ENV !== 'production'){

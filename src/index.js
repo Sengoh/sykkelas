@@ -61,7 +61,12 @@ class Side2 extends Component {
       </button>
         </div>
 
-  )};
+  );
+}
+
+  mounted() {
+
+  }
 }
 
 

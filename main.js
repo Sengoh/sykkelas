@@ -1,10 +1,11 @@
-const electron = require('electron');
+const {Menu} = require('electron')
+const electron = require('electron')
+const app = electron.app
 const path = require('path');
+const {BrowserWindow} = require('electron')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
 
 // Reload application on changes in src folder
 require('electron-reload')(path.join(__dirname, 'src'), {
@@ -25,3 +26,67 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   app.quit();
 });
+
+function sendAction(action) {
+	const win = BrowserWindow.getAllWindows()[0];
+
+	if (process.platform === 'darwin') {
+		win.restore();
+	}
+
+	win.webContents.send(action);
+}
+
+//Create menu template
+const template = [
+  {
+    label:'Meny',
+    submenu:[
+      {
+    		label: 'Tilbake',
+    		accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
+    		click(item, focusedWindow) {
+    			if (focusedWindow) {
+    				sendAction('back');
+    			}
+    		}
+    	},
+      {
+  label:'Avslutt',
+  //accelerator definerer keyboard shortcuts (https://electronjs.org/docs/api/accelerator), process.platform == 'darwin' er en sjekk for MacOS
+  accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+  click(){
+    app.quit();
+  }
+},
+{
+  label: 'Gå til start',
+  click(){
+    mainWindow.loadURL('file://' + __dirname + '/public/index.html');
+  }
+}
+    ]
+  }
+];
+
+
+//Add developer tools item if not in production
+if(process.env.NODE_ENV !== 'production'){
+  template.push({
+    label: 'Developer Tools',
+    submenu:[
+      {
+        label: 'Toggle DevTools',
+        accelerator: process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
+        click(item,focusedWindow){
+          focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        role:'reload'
+      }
+    ]
+  });
+}
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)

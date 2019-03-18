@@ -28,7 +28,7 @@ class Home extends Component {
     return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
   }
 }
-//keep
+
 class LogIn extends Component {
   ansatte = [];
   epost = "";

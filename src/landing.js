@@ -6,6 +6,7 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import {AktiveBestillinger, Test} from './aktive';
+import AnsattM from './startMeny';
 
 
 import createHashHistory from 'history/createHashHistory';
@@ -39,6 +40,7 @@ class Home extends Component {
 ReactDOM.render(
   <HashRouter>
     <div>
+    <AnsattM />
     <Route exact path="/" component={Home} />
     {/*Bestillinger'*/}
       {/*Ny kunde*/}

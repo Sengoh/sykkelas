@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import LogIn from './login.js';
 import { ansatteService } from './services';
 
 //import {styles} from './style.js';
@@ -14,15 +13,31 @@ import { ansatteService } from './services';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
+class Menu extends Component {
+  render() {
+    return (
+      <NavBar brand="WhiteBoard">
+        <NavBar.Link to="/students">Students</NavBar.Link>
+      </NavBar>
+    );
+  }
+}
 
+class Home extends Component {
+  render() {
+    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
+  }
+}
 
 
 
 ReactDOM.render(
   <HashRouter>
     <div>
-      <LogIn/>
+    <Route exact path="/" component={Home} />
+
+      <LogIn />
     </div>
   </HashRouter>,
-  document.getElementById('landing')
+  document.getElementById('henrik')
 );

@@ -8,7 +8,6 @@ import { ansatteService } from './services';
 import { kundeService } from './services';
 
 //import {styles} from './style.js';
-//import styles from './DottedBox.css';
 
 //import {loginstyle} from "./login.css";
 

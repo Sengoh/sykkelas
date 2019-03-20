@@ -25,7 +25,7 @@ class Home extends Component {
         <a href='./Tharmika.html'>Tharmika</a>
         <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
         <NavBar.Link to="/William.html">William</NavBar.Link>
-        <NavBar.Link to="/Henrik.html">Henrik</NavBar.Link>
+        <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
         <NavBar.Link to="/Sivert">Sivert</NavBar.Link>
         <NavBar.Link to="/aktive">Aktive bestillinger</NavBar.Link>
       </NavBar>
@@ -44,6 +44,7 @@ ReactDOM.render(
       {/*Ny kunde*/}
       <Route exact path="/login" render={()=>{window.location.href="login.html"}} />
       <Route exact path="/aktive" render={()=>{window.location.href="aktive.html"}} />
+      <Route exact path="/Admin" render={()=>{window.location.href="admin.html"}} />
 
       {/*Eksisterende kunde*/}
         <Route exact path="/Sivert" component={AktiveBestillinger} />

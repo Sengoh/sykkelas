@@ -14,23 +14,7 @@ import { ansatteService } from './services';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Menu extends Component {
-  render() {
-    return (
-      <NavBar brand="WhiteBoard">
-        <NavBar.Link to="/students">Students</NavBar.Link>
-      </NavBar>
-    );
-  }
-}
-
-class Home extends Component {
-  render() {
-    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
-  }
-}
-
-class LogIn extends Component {
+class LogIn extends Component{
   ansatte = [];
   epost = "";
   passord = "";
@@ -39,25 +23,40 @@ class LogIn extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          </div>
-          <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
-          <div className="flex-row">
-            <Card>
-              <Form.Label>Epost: </Form.Label>
-              <Form.Input id="username" className='lf--input' placeholder='Epost' type='text' onChange={event => this.epost = event.target.value}/>
-              <Form.Label>Passord: </Form.Label>
-              <Form.Input id="password" className='lf--input' placeholder='Passord' type='password' onChange={event => this.passord = event.target.value}/>
-              <Button.Success onClick={this.login}>Logg inn</Button.Success>
-              <a href='./index.html'>Hacker</a>
+      <div className="container h-100">
+        <div className="d-flex justify-content-center">
 
-            </Card>
+          <div className="card w-50 mt-5">
+            <div className="card-header">
+              <h4>Sykkelutleie AS</h4>
+              <h5>Logg inn</h5>
+
+            </div>
+
+            <div className="card-body">
+             <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
+
+                  <div className="form-group">
+                    <label for="exampleInputEmail1">E-post</label>
+                    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={event => this.epost = event.target.value}/>
+                  </div>
+                  <div className="form-group">
+                    <label for="exampleInputPass">Passord</label>
+                    <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" onChange={event => this.passord = event.target.value}/>
+                  </div>
+                  <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
+                    <label class="form-check-label" for="exampleCheck1">Husk meg</label>
+                  </div>
+                  <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
+                  <br></br><a href='./landing.html'>Midlertidig bypass</a>
+
+              </form>
+            </div>
+
           </div>
-          <div className="flex-row">
-          </div>
-        </form>
         </div>
+      </div>
 
     );
 
@@ -81,15 +80,4 @@ class LogIn extends Component {
 
 }
 
-
-
-ReactDOM.render(
-  <HashRouter>
-    <div>
-    <Route exact path="/" component={Home} />
-
-      <LogIn />
-    </div>
-  </HashRouter>,
-  document.getElementById('login')
-);
+export default LogIn;

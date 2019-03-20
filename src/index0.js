@@ -42,8 +42,8 @@ class Side2 extends Component {
 
       Fra: <input type="date" value={this.start} onChange={event => (this.start = event.target.value)} />
       Til: <input type="date" value={this.slutt} onChange={event => (this.slutt = event.target.value)} />
+      Hentested:  <input type="text" value={this.hentested} onChange={event => (this.hentested = event.target.value)} />
       Leveringssted: <input type="text" value={this.leveringssted} onChange={event => (this.leveringssted = event.target.value)} /> <br/><br/>
-      Hentested:  <input type="text" value={this.hentested} onChange={event => (this.hentested = event.target.value)} /> <br/><br/>
 
       Gruppe: <input type="checkbox" /> <br/>
       Antall personer: <input type="number" /> <br/><br/>

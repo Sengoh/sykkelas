@@ -73,7 +73,7 @@ class BestillingService{
   }
 
   addLeietaker(start, slutt, current, hentested, leveringssted) {
-    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted ) VALUES (?,?,?,1,?,?)", [start, slutt, current, hentested, leveringssted], (error, results) => {
+    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?, 1)", [start, slutt, current, hentested, leveringssted], (error, results) => {
       if(error) return console.error(error);
     });
   }

@@ -22,7 +22,7 @@ class Home extends Component {
     return (
       <NavBar brand="Sykkelutleie AS">
       <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
-        <NavBar.Link to="/Tharmika.html">Tharmika</NavBar.Link>
+        <a href='./Tharmika.html'>Tharmika</a>
         <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
         <NavBar.Link to="/William.html">William</NavBar.Link>
         <NavBar.Link to="/Henrik.html">Henrik</NavBar.Link>

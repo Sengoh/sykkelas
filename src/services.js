@@ -16,10 +16,7 @@ class AnsatteService {
       success(results);
     });
   }
-
-
-
-
+  
   getKunde(brukerid, success) {
     connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
       if (error) return console.error(error);
@@ -58,6 +55,7 @@ class AnsatteService {
   }
 }
 
+
 class BestillingService{
   addKunder(fornavn, etternavn, epost, addresse, postnr, poststed, telefon, success) {
     connection.query("INSERT INTO kunder (fornavn, etternavn, epost, addresse, postnr, poststed, telefon) VALUES (?,?,?,?,?,?,?)", [fornavn, etternavn, epost, addresse, postnr, poststed, telefon], (error, results) => {
@@ -78,7 +76,6 @@ class BestillingService{
     });
   }
 }
-export let ansatteService = new AnsatteService();
 
 class KundeService {
   getKunde(id, success) {
@@ -89,14 +86,6 @@ class KundeService {
     });
   }
 }
-<<<<<<< HEAD
-=======
-
-export let ansatteService = new AnsatteService();
-export let bestillingService = new BestillingService();
->>>>>>> 633ffe24e95b60fdbce27260b6608989306c5712
-
-export let kundeService = new KundeService();
 
 
 class BicycleService {
@@ -137,4 +126,8 @@ class BicycleService {
     );
   }
 }
+
+export let ansatteService = new AnsatteService();
 export let bikeService = new BicycleService();
+export let bestillingService = new BestillingService();
+export let kundeService = new KundeService();

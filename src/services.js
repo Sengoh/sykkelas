@@ -114,6 +114,7 @@ class BicycleService {
     });
   }
 
+
   updateBike(sykler, success) {
     connection.query(
       'update sykler set status=? where id=?',

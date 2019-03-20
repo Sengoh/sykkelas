@@ -89,12 +89,10 @@ class KundeService {
     });
   }
 }
-<<<<<<< HEAD
-=======
 
-export let ansatteService = new AnsatteService();
+
 export let bestillingService = new BestillingService();
->>>>>>> 633ffe24e95b60fdbce27260b6608989306c5712
+
 
 export let kundeService = new KundeService();
 

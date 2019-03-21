@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection";
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import {bikeService} from './bikeservice';
+import {bikeService} from './services';
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
 
 
@@ -27,6 +27,11 @@ class Menu extends Component {
                 Sykler
               </NavLink>
             </td>
+            <td>
+              <NavLink activeStyle={{ color: 'darkblue' }} to="/courses">
+                Courses
+              </NavLink>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -36,6 +41,12 @@ class Menu extends Component {
 
 /*<button className="btn btn-primary btn-large centerButton"
 type="submit" autoFocus onClick={e => this.input = event.target.value}>Send</button>*/
+
+class Home extends Component {
+  render() {
+    return <div>Welcome to WhiteBoard</div>;
+  }
+}
 
 class BikeList extends Component {
   sykler = [];
@@ -58,7 +69,9 @@ class BikeList extends Component {
         <ul>
           {this.sykler.map(sykkel => (
             <div key={sykkel.id}>
-                {sykkel.id}
+              <NavLink activeStyle={{ color:'darkblue'}} to={'/sykler/' + sykkel.id}>
+                {sykkel.status}
+              </NavLink>
             </div>
           ))}
         </ul>
@@ -74,45 +87,19 @@ class BikeList extends Component {
   mounted() {
     bikeService.getBikes(sykler => {
       this.sykler = sykler;
-      console.log(sykler);
-    });
-  }
-}
-
-class BikeDetails extends Component {
-  sykkel = [];
-
-  render() {
-    if (!this.sykkel) return null;
-
-    return (
-      <div>
-      <li>
-      {this.props.match.params.id}
-      {this.sykkel}
-      </li>
-      </div>
-    );
-  }
-
-
-  mounted() {
-    bikeService.getBikedetails(this.props.match.params.id, sykkel => {
-      this.sykkel = sykkel;
-      console.log(sykkel);
     });
   }
 }
 
 
 
-    //
+
 ReactDOM.render(
   <HashRouter>
     <div>
     <Menu />
+    <Route exact path="/" component={Home} />
     <Route exact path="/sykler" component={BikeList} />
-    <Route exact path="/sykler/:id/" component={BikeDetails} />
     </div>
   </HashRouter>,
   document.getElementById('admin')

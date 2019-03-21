@@ -176,6 +176,9 @@ export let bikeService = new BicycleService();
 >>>>>>> 2486480d9188bde97e88e65403c1001a01f0fe2c
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 3098649... 123
+=======
 >>>>>>> parent of 3098649... 123
 =======
 >>>>>>> parent of 3098649... 123

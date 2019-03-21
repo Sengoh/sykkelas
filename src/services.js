@@ -78,38 +78,7 @@ class BestillingService{
     });
   }
 }
-
-class BestillingService {
-  getBestilling(success) {
-    connection.query(
-      'select * from leietaker_has_sykler, leietaker_has_utstyr, leietaker, kunder, sykler, utstyr',
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
-  }
-
-  getLeie(success) {
-    connection.query(
-      'select leieid, fornavn, etternavn from leietaker JOIN kunder on kunder_brukerid=kunder.brukerid',
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
-  }
-
-  getKunde(success) {
-    connection.query('select brukerid, fornavn, etternavn from kunder', (error, result) => {
-      if (error) return console.error(error);
-
-      success(result);
-    });
-  }
-}
+export let ansatteService = new AnsatteService();
 
 class KundeService {
   getKunde(id, success) {
@@ -122,7 +91,10 @@ class KundeService {
 }
 
 
+export let bestillingService = new BestillingService();
 
+
+export let kundeService = new KundeService();
 
 
 class BicycleService {
@@ -165,7 +137,3 @@ class BicycleService {
   }
 }
 export let bikeService = new BicycleService();
-export let bestillingService = new BestillingService();
-export let ansatteService = new AnsatteService();
-
-export let kundeService = new KundeService();

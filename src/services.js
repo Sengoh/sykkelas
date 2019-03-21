@@ -79,6 +79,7 @@ class BestillingService{
   }
 }
 
+<<<<<<< HEAD
 class BestillingService {
   getBestilling(success) {
     connection.query(
@@ -110,7 +111,12 @@ class BestillingService {
     });
   }
 }
+<<<<<<< HEAD
 
+=======
+export let bestillingService = new BestillingService();
+=======
+>>>>>>> parent of 3098649... 123
 class KundeService {
   getKunde(id, success) {
     connection.query('select * from kunder where brukerid=?', [id], (error, results) => {
@@ -165,7 +171,11 @@ class BicycleService {
   }
 }
 export let bikeService = new BicycleService();
+<<<<<<< HEAD
 export let bestillingService = new BestillingService();
 export let ansatteService = new AnsatteService();
 
 export let kundeService = new KundeService();
+=======
+>>>>>>> 2486480d9188bde97e88e65403c1001a01f0fe2c
+>>>>>>> parent of 3098649... 123

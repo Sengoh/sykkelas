@@ -2,38 +2,21 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-
-import { connection } from './mysql_connection';
-import { bestillingService } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
-import GoogleMapReact from 'google-map-react';
-//import { ansatteService } from './services'; fortsatt logget inn som ansatt ved redigering av siden
-
-import { connection } from "./mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
-
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
+// import {  } from './services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import GoogleMapReact from 'google-map-react';
 
 class Menu extends Component {
   render() {
     return (
       <NavBar brand="Aktive bestillinger">
-        <NavBar.Link to="/andre">Andre sider</NavBar.Link>
-
-class Menu extends Component {
-  render() {
-    return (
-      <NavBar brand="WhiteBoard">
-        <NavBar.Link to="/students">Students</NavBar.Link>
+        <NavBar.Link to="/calendar">Kalender</NavBar.Link>
+        <NavBar.Link to="/map">Map</NavBar.Link>
       </NavBar>
     );
   }
@@ -62,14 +45,12 @@ class AktivBestilling extends Component {
                     </tr>
                     <tr>
                       <td>123</td>
-                      <td>kundenavn</td>
+                      <td>fijfre</td>
                       <td>Antall sykler</td>
                       <td>Sykkeltype</td>
                       <td>Ekstra utstyr</td>
                       <td>Sted</td>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
+                      <td>Velg</td>
                     </tr>
                   </tbody>
                 </table>
@@ -97,15 +78,12 @@ class AktivBestilling extends Component {
                       <td>Sykkeltype</td>
                       <td>Ekstra utstyr</td>
                       <td>Sted</td>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
+                      <td>Velg</td>
                     </tr>
                   </tbody>
                 </table>
               </List>
             </Card>
-            <br />
           </List>
         </Card>
       </div>
@@ -113,7 +91,7 @@ class AktivBestilling extends Component {
   }
 }
 
-class GKart extends Component {
+class SimpleMap extends Component {
   static defaultProps = {
     center: {
       lat: 59.95,
@@ -125,45 +103,16 @@ class GKart extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <Card>
-        <div style={{ height: '70vh', width: '45%' }}>
-          <GoogleMapReact defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
-            <AnyReactComponent lat={59.955413} lng={30.337844} text={'Kreyser Avrora'} />
-          </GoogleMapReact>
-        </div>
-        <div>Kalender ved siden av?</div>
-      </Card>
+      <div style={{ height: '70vh', width: '50%' }}>
+        <GoogleMapReact defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
+          <AnyReactComponent lat={59.955413} lng={30.337844} text={'Kreyser Avrora'} />
+        </GoogleMapReact>
+      </div>
     );
   }
 }
 
-class Kalender extends Component {
-  kunder = [];
-
-  render() {
-    return (
-      <Card>
-        <ul>
-          {this.kunder.map(kunde => (
-            <li key={kunde.brukerid}>
-              {kunde.leieid}
-              {kunde.fornavn}
-              {kunde.etternavn}
-            </li>
-          ))}
-        </ul>
-      </Card>
-    );
-  }
-
-  mounted() {
-    bestillingService.getLeie(kunder => {
-      this.kunder = kunder;
-    });
-  }
-}
-
-class Home extends Component {
+class Bestilloversikt extends Component {
   render() {
     return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
   }
@@ -174,8 +123,8 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={AktivBestilling} />
-      <Route exact path="/" component={GKart} />
-      <Route exact path="/" component={Kalender} />
+
+      <Route exact path="/map" component={SimpleMap} />
     </div>
   </HashRouter>,
   document.getElementById('natharek')

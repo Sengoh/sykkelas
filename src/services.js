@@ -73,13 +73,45 @@ class BestillingService{
   }
 
   addLeietaker(start, slutt, current, hentested, leveringssted) {
-    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted ) VALUES (?,?,?,1,?,?)", [start, slutt, current, hentested, leveringssted], (error, results) => {
+    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?, 1)", [start, slutt, current, hentested, leveringssted], (error, results) => {
       if(error) return console.error(error);
     });
   }
 }
 export let ansatteService = new AnsatteService();
 
+class BestillingService {
+  getBestilling(success) {
+    connection.query(
+      'select * from leietaker_has_sykler, leietaker_has_utstyr, leietaker, kunder, sykler, utstyr',
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+
+  getLeie(success) {
+    connection.query(
+      'select leieid, fornavn, etternavn from leietaker JOIN kunder on kunder_brukerid=kunder.brukerid',
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+
+  getKunde(success) {
+    connection.query('select brukerid, fornavn, etternavn from kunder', (error, result) => {
+      if (error) return console.error(error);
+
+      success(result);
+    });
+  }
+}
+export let bestillingService = new BestillingService();
 class KundeService {
   getKunde(id, success) {
     connection.query('select * from kunder where brukerid=?', [id], (error, results) => {

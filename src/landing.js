@@ -6,6 +6,7 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import {AktiveBestillinger, Test} from './aktive';
+import AnsattM from './startMeny';
 
 
 import createHashHistory from 'history/createHashHistory';
@@ -22,7 +23,7 @@ class Home extends Component {
     return (
       <NavBar brand="Sykkelutleie AS">
       <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
-        <NavBar.Link to="/Tharmika.html">Tharmika</NavBar.Link>
+        <a href='./Tharmika.html'>Tharmika</a>
         <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
         <NavBar.Link to="/William.html">William</NavBar.Link>
         <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
@@ -39,6 +40,7 @@ class Home extends Component {
 ReactDOM.render(
   <HashRouter>
     <div>
+    <AnsattM />
     <Route exact path="/" component={Home} />
     {/*Bestillinger'*/}
       {/*Ny kunde*/}

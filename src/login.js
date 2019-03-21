@@ -22,7 +22,6 @@ class LogIn extends Component{
 
   render() {
     return (
-<<<<<<< HEAD
       <div>
         <div />
         <form ref={element => (this.form = element)} className="login-form" onSubmit={this.handleSubmit}>
@@ -51,7 +50,6 @@ class LogIn extends Component{
           <div className="flex-row" />
         </form>
       </div>
-=======
       <div className="container h-100">
         <div className="d-flex justify-content-center">
 
@@ -87,7 +85,6 @@ class LogIn extends Component{
         </div>
       </div>
 
->>>>>>> 2486480d9188bde97e88e65403c1001a01f0fe2c
     );
   }
   login() {
@@ -109,7 +106,6 @@ class LogIn extends Component{
   }
 }
 
-<<<<<<< HEAD
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -120,6 +116,4 @@ ReactDOM.render(
   </HashRouter>,
   document.getElementById('root')
 );
-=======
 export default LogIn;
->>>>>>> 2486480d9188bde97e88e65403c1001a01f0fe2c

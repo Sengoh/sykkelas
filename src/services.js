@@ -80,7 +80,6 @@ class BestillingService{
 }
 export let ansatteService = new AnsatteService();
 
-<<<<<<< HEAD
 class BestillingService {
   getBestilling(success) {
     connection.query(
@@ -113,7 +112,6 @@ class BestillingService {
   }
 }
 export let bestillingService = new BestillingService();
-=======
 class KundeService {
   getKunde(id, success) {
     connection.query('select * from kunder where brukerid=?', [id], (error, results) => {
@@ -171,4 +169,3 @@ class BicycleService {
   }
 }
 export let bikeService = new BicycleService();
->>>>>>> 2486480d9188bde97e88e65403c1001a01f0fe2c

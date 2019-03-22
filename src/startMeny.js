@@ -14,22 +14,6 @@ import { ansatteService } from './services';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Menu extends Component {
-  render() {
-    return (
-      <NavBar brand="Sykkelutleie AS">
-        <NavBar.Link to="/students">Eventuell meny</NavBar.Link>
-      </NavBar>
-    );
-  }
-}
-
-class Home extends Component {
-  render() {
-    return <Card title="Sykkelutleie AS"></Card>;
-  }
-}
-
 
 class AnsattM extends Component {
 

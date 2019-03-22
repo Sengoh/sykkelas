@@ -30,16 +30,6 @@ class Home extends Component {
   }
 }
 
-class Test extends Component {
-  render() {
-    return <Card title="Sykkelutleie AS"></Card>;
-  }
-}
-class Test2 extends Component {
-  render() {
-    return <Card title="Meny for ansatte"></Card>;
-  }
-}
 
 class AnsattM extends Component {
 
@@ -71,7 +61,7 @@ class AnsattM extends Component {
 
   }
   routeChange1() {
-    history.push('/students');
+    history.push('/regB');
   }
   routeChange2() {
     history.push('/students1');

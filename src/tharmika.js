@@ -15,16 +15,20 @@ import {bestillingService } from "./services";
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Menu extends Component {
+
+class Men extends Component {
   render() {
-    return (
-      <NavBar brand="Bestilling">
-        <NavBar.Link to="/students">Students</NavBar.Link>
-      </NavBar>
-    );
+    <NavBar brand="Sykkelutleie AS">
+    <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
+      <a href='./Tharmika.html'>Tharmika</a>
+      <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
+      <NavBar.Link to="/William.html">William</NavBar.Link>
+      <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
+      <NavBar.Link to="/Sivert">Sivert</NavBar.Link>
+      <NavBar.Link to="/aktive">Aktive bestillinger</NavBar.Link>
+    </NavBar>
   }
 }
-
 class Side2 extends Component {
   current = null;
 
@@ -121,17 +125,4 @@ class Side2 extends Component {
   }
 }
 
-
-
-
-ReactDOM.render(
-  <HashRouter>
-    <div>
-    <Menu />
-    <Route exact path="/" component={Side2} />
-
-
-    </div>
-  </HashRouter>,
-  document.getElementById('tharmika')
-);
+export default Side2

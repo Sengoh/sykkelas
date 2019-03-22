@@ -7,28 +7,32 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import {AktiveBestillinger, Test} from './aktive';
 import AnsattM from './startMeny';
+import Side2 from './tharmika';
 
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Menu extends Component {
-  render() {
-
-  }
-}
 
 class Home extends Component {
   render() {
     return (
-      <NavBar brand="Sykkelutleie AS">
-      <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
-        <a href='./Tharmika.html'>Tharmika</a>
-        <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
-        <NavBar.Link to="/William.html">William</NavBar.Link>
-        <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
-        <NavBar.Link to="/Sivert">Sivert</NavBar.Link>
-        <NavBar.Link to="/aktive">Aktive bestillinger</NavBar.Link>
+      <AnsattM>
+        <Nav/ >
+      </AnsattM>
+    );
+  }
+}
+
+
+class Nav extends Component {
+  render() {
+    return (
+      <NavBar to="/aMeny" brand="Sykkelutleie AS">
+        <NavBar.Link to="/regB">Registrer bestilling THAR</NavBar.Link>
+        <NavBar.Link to="/Sivert">Registrer bestilling SIV</NavBar.Link>
+        <NavBar.Link to="/aMeny">Aktiv bestilling</NavBar.Link>
+        <NavBar.Link to="/aMeny">Statistikk</NavBar.Link>
       </NavBar>
 
     );
@@ -40,17 +44,13 @@ class Home extends Component {
 ReactDOM.render(
   <HashRouter>
     <div>
-    <AnsattM />
-    <Route exact path="/" component={Home} />
-    {/*Bestillinger'*/}
-      {/*Ny kunde*/}
-      <Route exact path="/login" render={()=>{window.location.href="login.html"}} />
-      <Route exact path="/aktive" render={()=>{window.location.href="aktive.html"}} />
-      <Route exact path="/Admin" render={()=>{window.location.href="admin.html"}} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/(regB|Sivert)" component={Nav} />
+      <Route exact path="/regB" component={Side2} />
+      <Route exact path="/aMeny" component={AnsattM} />
 
-      {/*Eksisterende kunde*/}
-        <Route exact path="/Sivert" component={AktiveBestillinger} />
-        <Route exact path="/kunde/:id" component={Test} />
+      <Route exact path="/Sivert" component={AktiveBestillinger} />
+      <Route exact path="/kunde/:id" component={Test} />
     </div>
   </HashRouter>,
   document.getElementById('landing')

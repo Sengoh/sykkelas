@@ -8,6 +8,7 @@ import { ansatteService } from './services';
 import {AktiveBestillinger, Test} from './aktive';
 import AnsattM from './startMeny';
 import Side2 from './tharmika';
+import AktivBestilling from './natharek';
 
 
 import createHashHistory from 'history/createHashHistory';
@@ -31,7 +32,7 @@ class Nav extends Component {
       <NavBar to="/aMeny" brand="Sykkelutleie AS">
         <NavBar.Link to="/regB">Registrer bestilling THAR</NavBar.Link>
         <NavBar.Link to="/Sivert">Registrer bestilling SIV</NavBar.Link>
-        <NavBar.Link to="/aMeny">Aktiv bestilling</NavBar.Link>
+        <NavBar.Link to="/nat">Aktiv bestilling</NavBar.Link>
         <NavBar.Link to="/aMeny">Statistikk</NavBar.Link>
       </NavBar>
 
@@ -45,11 +46,12 @@ ReactDOM.render(
   <HashRouter>
     <div>
       <Route exact path="/" component={Home} />
-      <Route exact path="/(regB|Sivert)" component={Nav} />
+      <Route exact path="/(regB|Sivert|nat)" component={Nav} />
       <Route exact path="/regB" component={Side2} />
       <Route exact path="/aMeny" component={AnsattM} />
 
       <Route exact path="/Sivert" component={AktiveBestillinger} />
+      <Route exact path="/nat" component={AktivBestilling} />
       <Route exact path="/kunde/:id" component={Test} />
     </div>
   </HashRouter>,

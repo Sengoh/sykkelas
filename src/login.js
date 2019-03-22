@@ -37,16 +37,16 @@ class LogIn extends Component{
              <form ref={element => (this.form = element)} className='login-form' onSubmit={this.handleSubmit}>
 
                   <div className="form-group">
-                    <label for="exampleInputEmail1">E-post</label>
+                    <label htmlFor="exampleInputEmail1">E-post</label>
                     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={event => this.epost = event.target.value}/>
                   </div>
                   <div className="form-group">
-                    <label for="exampleInputPass">Passord</label>
+                    <label htmlFor="exampleInputPass">Passord</label>
                     <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" onChange={event => this.passord = event.target.value}/>
                   </div>
-                  <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-                    <label class="form-check-label" for="exampleCheck1">Husk meg</label>
+                  <div className="form-group form-check">
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
+                    <label className="form-check-label" htmlFor="exampleCheck1">Husk meg</label>
                   </div>
                   <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
                   <br></br><a href='./landing.html'>Midlertidig bypass</a>

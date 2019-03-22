@@ -64,10 +64,10 @@ class AnsattM extends Component {
     history.push('/regB');
   }
   routeChange2() {
-    history.push('/students1');
+    history.push('/Sivert');
   }
   routeChange3() {
-    history.push('/students1');
+    history.push('/nat');
   }
 
 }

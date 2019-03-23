@@ -20,7 +20,7 @@ class Menu extends Component {
       </NavBar>
     );
   }
-}
+} */}
 
 class AktivBestilling extends Component {
   render() {
@@ -90,6 +90,15 @@ class AktivBestilling extends Component {
     );
   }
 }
+{/*
+class SimpleMap extends Component {
+  static defaultProps = {
+    center: {
+      lat: 59.95,
+      lng: 30.33
+    },
+    zoom: 11
+  };
 
 class SimpleMap extends Component {
   static defaultProps = {

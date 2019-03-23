@@ -7,6 +7,9 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { AktiveBestillinger, Test } from './aktive';
 import AnsattM from './startMeny';
+import Side2 from './tharmika';
+import AktivBestilling from './natharek';
+import BestDetails from './endreBestilling';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -15,7 +18,8 @@ class Menu extends Component {
   render() {}
 }
 
-class Home extends Component {
+
+class Nav extends Component {
   render() {
     return (
       <NavBar brand="Sykkelutleie AS">

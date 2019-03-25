@@ -32,6 +32,16 @@ class Men extends Component {
 class Side2 extends Component {
   current = null;
 
+  // Variabler for sykkelvalg
+  start = '2019-03-25';
+  slutt = '2019-03-25';
+  terreng = 0;
+  querySjekk = 0;
+  sykkelSjekk = 0;
+  hente = "00:00";
+  levere = "01:01";
+  sykler = [[], [], []];
+
   render() {
     return(  <div> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
 
@@ -53,15 +63,15 @@ class Side2 extends Component {
       Leveringstid: <input type="time" value={this.levere} onChange={event => (this.levere = event.target.value)} />
 
       Gruppe: <input type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} /> <br/>
-      Antall personer: <input id="gruppe" placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/><br/>
+      Antall personer: <input id="gruppe" value={this.gruppe} onChange={event => (this.gruppe = event.target.value)} placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/><br/>
 
 
-      Terrengsykkel: <input type="checkbox" onChange={()=>this.sykkelValg(1)}/>
-       <input id="terreng" placeholder='0' style={{width: 8 + 'em'}} type="number"  className="form-control form-control-sm" disabled /> <br/>
-      Tandemsykkel: <input type="checkbox" onChange={()=>this.sykkelValg(2)} />
-      <input id="tandem" placeholder='0' style={{width: 8 + 'em'}} type="number"  className="form-control form-control-sm" disabled /> <br/>
-      Elsykkel for de eldre: <input type="checkbox" onChange={()=>this.sykkelValg(3)} />
-      <input id="el" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
+      Terrengsykkel: <input type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true} />
+       <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled /> 
+      Tandemsykkel: <input type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true}/>
+      <input id="tandem" value={this.tandem} onChange={event => (this.tandem = event.target.value)}placeholder='0' style={{width: 8 + 'em'}} type="number"  className="form-control form-control-sm" disabled /> <br/>
+      Elsykkel for de eldre: <input type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
+      <input id="el" value={this.el} onChange={event => (this.el = event.target.value)} placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
 
       <h6>Ekstrautstyr:</h6>
       Barnevogn: <input type="checkbox" onChange={()=>barnevogn.disabled ? barnevogn.disabled = false : gruppe.disabled = true} /> <br/>
@@ -79,38 +89,46 @@ class Side2 extends Component {
   );
 }
 
-  sykkelValg(sykkel) {
-
-    switch(sykkel) {
-      case 1:
-        if(terreng.disabled) {
-          terreng.disabled = false;
-        } else {
-          terreng.disabled = true;
-          terreng.value = 0;
-        }
-          break;
-      case 2:
-        if(tandem.disabled) {
-          tandem.disabled = false;
-        } else {
-          tandem.disabled = true;
-          tandem.value=0;
-        }
-          break;
-      case 3:
-        if(el.disabled) {
-          el.disabled = false;
-        } else {
-          el.disabled = true;
-          el.value= 0;
-        }
-          break;
+finnSykler(indeks,type,verdi) {
+  ansatteService.getSykkel(type,verdi,sykler => {
+    this.sykler[indeks] = sykler;
+    if(this.sykler[indeks].length == verdi) {
+      return true;
+    } else {
+      return false;
     }
+
+  })
+}
+
+handleSykkel() {
+  if(this.sykkelSjekk == 1) {
+    if(this.querySjekk == 1) {
+      ansatteService.insertLeie(this.start + " " + this.hente + ":00", this.slutt + " " + this.levere + ":00", this.props.match.params.id, 1, this.hentested, this.leveringssted, this.gruppe,leier => {
+          ansatteService.getPrevious(current => {
+            this.current = current.IDENTITY;
+            console.log(this.current)
+            for(var i = 0;i<this.sykler.length;i++) {
+              for(var j = 0;j<this.sykler[i].length;j++) {
+                ansatteService.insertSykkel(this.current,parseInt(this.sykler[i][j].id),sykkel => {
+                  console.log("Complete sykler");
+                })
+              }
+            }
+            console.log("Complete leie");
+          })
+        })
+    } else {
+      return;
+    }
+  } else {
+    console.log("nah");
+    return;
   }
+}
+
 
   add(){
-
     bestillingService.addKunder(this.fornavn, this.etternavn, this.epost, this.addresse, this.postnr, this.poststed, this.telefon, () => {
       history.push("/");
     });
@@ -118,11 +136,52 @@ class Side2 extends Component {
     bestillingService.getKunde(current => {
       this.current = current.IDENTITY;
       console.log(this.current);
-      bestillingService.addLeietaker(this.start + " " + this.hente + ":00", this.slutt + " " + this.levere + ":00", this.current, this.hentested, this.leveringssted, () => {
+      bestillingService.addLeietaker(this.start + " " + this.hente + ":00", this.slutt + " " + this.levere + ":00", this.current, this.hentested, this.leveringssted, this.gruppe, () => {
         history.push("/");
       });
     });
+
+    if (!gruppe.disabled && gruppe.value !=0) {
+      this.gruppe += parseInt(gruppe.value);
+    }
+    else {
+      this.gruppe = 1;
+    }
   }
+
+  submit() {
+    this.sykkelSjekk = 0;
+    this.querySjekk = 0;
+
+    if(!terreng.disabled && terreng.value != 0) {
+      console.log("test");
+      console.log(terreng.value);
+      ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
+        console.log(sykler);
+        if(sykler.length == terreng.value) {
+          console.log("yea");
+          this.sykler[0] = sykler;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+          //this.sykler[0] = sykler;
+        } else {
+          errorTerreng.innerHTML = "Ikke nok sykler.";
+          this.sykler[0] = [];
+          console.log(this.sykler[0]);
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+  }
+
+
 }
 
 export default Side2

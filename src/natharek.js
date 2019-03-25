@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
@@ -130,3 +131,5 @@ ReactDOM.render(
   </HashRouter>,
   document.getElementById('natharek')
 );
+=======
+>>>>>>> d056f2e16cfb8eeedb252629fd00e7783e4edde5

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
@@ -10,8 +9,7 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-import GoogleMapReact from 'google-map-react';
-
+{/*
 class Menu extends Component {
   render() {
     return (
@@ -21,7 +19,7 @@ class Menu extends Component {
       </NavBar>
     );
   }
-}
+} */}
 
 class AktivBestilling extends Component {
   render() {
@@ -91,7 +89,7 @@ class AktivBestilling extends Component {
     );
   }
 }
-{
+{/*
 class SimpleMap extends Component {
   static defaultProps = {
     center: {
@@ -100,7 +98,6 @@ class SimpleMap extends Component {
     },
     zoom: 11
   };
-
 
   render() {
     return (
@@ -118,18 +115,6 @@ class Bestilloversikt extends Component {
   render() {
     return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
   }
-}
+} */}
 
-ReactDOM.render(
-  <HashRouter>
-    <div>
-      <Menu />
-      <Route exact path="/" component={AktivBestilling} />
-
-      <Route exact path="/map" component={SimpleMap} />
-    </div>
-  </HashRouter>,
-  document.getElementById('natharek')
-);
-=======
->>>>>>> d056f2e16cfb8eeedb252629fd00e7783e4edde5
+export default AktivBestilling;

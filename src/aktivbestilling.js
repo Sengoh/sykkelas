@@ -3,7 +3,6 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from './mysql_connection';
-import { bestillingService } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import GoogleMapReact from 'google-map-react';
@@ -18,7 +17,8 @@ class Menu extends Component {
   render() {
     return (
       <NavBar brand="Aktive bestillinger">
-        <NavBar.Link to="/andre">Andre sider</NavBar.Link>
+        <NavBar.Link to="/calendar">Kalender</NavBar.Link>
+        <NavBar.Link to="/map">Map</NavBar.Link>
       </NavBar>
     );
   }
@@ -28,69 +28,65 @@ class AktivBestilling extends Component {
   render() {
     return (
       <div>
+        <div />
         <Card title="Aktive Bestillinger">
           <List>
-            <br />
-            <h5>Dagens bestillinger</h5>
+            Dagens bestillinger
             <Card>
               <List>
                 <table>
                   <tbody>
                     <tr>
-                      <th>BestillingsID</th>
-                      <th>Kunde</th>
-                      <th>Antall sykler</th>
-                      <th>Sykkeltype</th>
-                      <th>Ekstra utstyr</th>
-                      <th>Sted</th>
-                      <th>Sjekk</th>
-                    </tr>
-                    <tr>
-                      <td>123</td>
-                      <td>kundenavn</td>
+                      <td>Bestilling ID:</td>
+                      <td>Kunde</td>
                       <td>Antall sykler</td>
                       <td>Sykkeltype</td>
                       <td>Ekstra utstyr</td>
                       <td>Sted</td>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </List>
-            </Card>
-            <br />
-            <h5>Dagens innleveringer</h5>
-            <Card>
-              <List>
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>BestillingsID</th>
-                      <th>Kunde</th>
-                      <th>Antall sykler</th>
-                      <th>Sykkeltype</th>
-                      <th>Ekstra utstyr</th>
-                      <th>Sted</th>
-                      <th>Ankommet</th>
+                      <td>Velg</td>
                     </tr>
                     <tr>
-                      <td>678</td>
+                      <td>123</td>
                       <td>fijfre</td>
                       <td>Antall sykler</td>
                       <td>Sykkeltype</td>
                       <td>Ekstra utstyr</td>
                       <td>Sted</td>
-                      <td>
-                        <input type="checkbox" />
-                      </td>
+                      <td>Velg</td>
                     </tr>
                   </tbody>
                 </table>
               </List>
             </Card>
-            <br />
+            {'\n'}
+            <Card title="Dagens innleveringer">
+              <Card>
+                <List>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Bestilling ID:</td>
+                        <td>Kunde</td>
+                        <td>Antall sykler</td>
+                        <td>Sykkeltype</td>
+                        <td>Ekstra utstyr</td>
+                        <td>Sted</td>
+                        <td>Velg</td>
+                      </tr>
+                      <tr>
+                        <td>123</td>
+                        <td>fijfre</td>
+                        <td>Antall sykler</td>
+                        <td>Sykkeltype</td>
+                        <td>Ekstra utstyr</td>
+                        <td>Sted</td>
+                        <td>Velg</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </List>
+              </Card>
+            </Card>
           </List>
         </Card>
       </div>
@@ -98,7 +94,7 @@ class AktivBestilling extends Component {
   }
 }
 
-class GKart extends Component {
+class SimpleMap extends Component {
   static defaultProps = {
     center: {
       lat: 59.95,
@@ -110,41 +106,18 @@ class GKart extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <Card>
-        <div style={{ height: '70vh', width: '45%' }}>
-          <GoogleMapReact defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
-            <AnyReactComponent lat={59.955413} lng={30.337844} text={'Kreyser Avrora'} />
-          </GoogleMapReact>
-        </div>
-        <div>Kalender ved siden av?</div>
-      </Card>
+      <div style={{ height: '70vh', width: '50%' }}>
+        <GoogleMapReact defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
+          <AnyReactComponent lat={59.955413} lng={30.337844} text={'Kreyser Avrora'} />
+        </GoogleMapReact>
+      </div>
     );
   }
 }
 
-class Kalender extends Component {
-  kunder = [];
-
+class Bestilloversikt extends Component {
   render() {
-    return (
-      <Card>
-        <ul>
-          {this.kunder.map(kunde => (
-            <li key={kunde.brukerid}>
-              {kunde.leieid}
-              {kunde.fornavn}
-              {kunde.etternavn}
-            </li>
-          ))}
-        </ul>
-      </Card>
-    );
-  }
-
-  mounted() {
-    bestillingService.getLeie(kunder => {
-      this.kunder = kunder;
-    });
+    return <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>;
   }
 }
 
@@ -153,9 +126,9 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={AktivBestilling} />
-      <Route exact path="/" component={GKart} />
-      <Route exact path="/" component={Kalender} />
+
+      <Route exact path="/map" component={SimpleMap} />
     </div>
   </HashRouter>,
-  document.getElementById('aktivb')
+  document.getElementById('root')
 );

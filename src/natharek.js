@@ -8,12 +8,11 @@ import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 //google map
-import GoogleMapReact from 'google-map-react';
 
 //før kopieres spørringene til services
 //import { Bestilling, bestillingService } from './services';
 import { connection } from './mysql_connection';
-
+{/*
 class Menu extends Component {
   render() {
     return (
@@ -35,6 +34,8 @@ class Menu extends Component {
     );
   }
 }
+
+*/}
 
 class AktivBestilling extends Component {
   bestillinger = [];
@@ -140,12 +141,10 @@ class AktivBestilling extends Component {
   }
 }
 
-class EndreBestilling extends Component {
-  render() {
-    return <Card>Endre siden</Card>;
-  }
-}
 
+export default AktivBestilling
+
+{/*
 class SimpleMap extends Component {
   static defaultProps = {
     center: {
@@ -177,3 +176,4 @@ ReactDOM.render(
   </HashRouter>,
   document.getElementById('root')
 );
+*/}

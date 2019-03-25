@@ -21,7 +21,7 @@ class Side2 extends Component {
 
   render() {
     return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
-
+{/*
     <form >
       <div className="form-row">
 
@@ -53,7 +53,7 @@ class Side2 extends Component {
          <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
 
      </form>
-
+*/}
       Fornavn: <input type="text" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)} />
       Epost: <input type="text" value={this.epost} onChange={event => (this.epost = event.target.value)} /> <br/>
       Etternavn: <input type="text" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />

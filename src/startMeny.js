@@ -48,7 +48,7 @@ class AnsattM extends Component {
     history.push('/regB');
   }
   routeChange2() {
-    history.push('/Sivert');
+    history.push('/nat');
   }
   routeChange3() {
     history.push('/nat');

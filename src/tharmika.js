@@ -19,7 +19,6 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Side2 extends Component {
   current = null;
 
-<<<<<<< HEAD
   // Variabler for sykkelvalg
   start = '2019-03-25';
   slutt = '2019-03-25';
@@ -30,8 +29,6 @@ class Side2 extends Component {
   levere = "01:01";
   sykler = [[], [], []];
 
-=======
->>>>>>> ceec78b3077a63bda09e03110c57fce59caac140
   render() {
     return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
 {/*
@@ -88,7 +85,7 @@ class Side2 extends Component {
 
 
       Terrengsykkel: <input type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true} />
-       <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled /> 
+       <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled />
       Tandemsykkel: <input type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true}/>
       <input id="tandem" value={this.tandem} onChange={event => (this.tandem = event.target.value)}placeholder='0' style={{width: 8 + 'em'}} type="number"  className="form-control form-control-sm" disabled /> <br/>
       Elsykkel for de eldre: <input type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />

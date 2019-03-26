@@ -77,6 +77,8 @@ class BestillingService{
     });
   }
 
+
+
   finnSted(success) {
     connection.query("select * from sted;select * from lager;",(error,results) => {
       if(error) return console.error(error);

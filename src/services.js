@@ -26,11 +26,7 @@ class AnsatteService {
   }
 
   getSykkel(type,antall,success) {
-<<<<<<< HEAD
     connection.query("select * from sykler where sykkeltype=? and status = 1 and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
-=======
-    connection.query("select * from sykler where type=? and status = 'i orden' and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
->>>>>>> ceec78b3077a63bda09e03110c57fce59caac140
       if (error) return console.error(error);
 
       success(results);
@@ -80,9 +76,6 @@ class BestillingService{
       if(error) return console.error(error);
     });
   }
-<<<<<<< HEAD
-
-
 
   finnSted(success) {
     connection.query("select * from sted;select * from lager;",(error,results) => {
@@ -91,8 +84,6 @@ class BestillingService{
       success(results);
     });
   }
-=======
->>>>>>> ceec78b3077a63bda09e03110c57fce59caac140
 }
 export let ansatteService = new AnsatteService();
 

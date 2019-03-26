@@ -16,19 +16,6 @@ import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 
-class Men extends Component {
-  render() {
-    <NavBar brand="Sykkelutleie AS">
-    <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
-      <a href='./Tharmika.html'>Tharmika</a>
-      <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
-      <NavBar.Link to="/William.html">William</NavBar.Link>
-      <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
-      <NavBar.Link to="/Sivert">Sivert</NavBar.Link>
-      <NavBar.Link to="/aktive">Aktive bestillinger</NavBar.Link>
-    </NavBar>
-  }
-}
 class Side2 extends Component {
   current = null;
 
@@ -43,9 +30,40 @@ class Side2 extends Component {
   sykler = [[], [], []];
 
   render() {
-    return(  <div> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
+    return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
+{/*
+    <form >
+      <div className="form-row">
 
+         <div className="col mb-3">
+           <label htmlFor="exampleInputEmail1">Fornavn</label>
+           <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)}/>
+         </div>
+         <div className="col mb-3">
+           <label htmlFor="exampleInputPass">Etternavn</label>
+           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
+         </div>
+       </div>
+      <div className="form-row">
 
+         <div className="col mb-3">
+           <label htmlFor="exampleInputEmail1">Adresse</label>
+           <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)}/>
+         </div>
+         <div className="col mb-3">
+           <label htmlFor="exampleInputPass">By</label>
+           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
+         </div>
+         <div className="col mb-3">
+           <label htmlFor="exampleInputPass">Postnummer</label>
+           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
+         </div>
+       </div>
+
+         <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
+
+     </form>
+*/}
       Fornavn: <input type="text" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)} />
       Epost: <input type="text" value={this.epost} onChange={event => (this.epost = event.target.value)} /> <br/>
       Etternavn: <input type="text" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />

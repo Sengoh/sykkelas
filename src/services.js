@@ -29,7 +29,14 @@ class AnsatteService {
   }
 
   getSykkel(type,antall,success) {
-    connection.query("select * from sykler where type=? and status = 1 and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
+    connection.query("select * from sykler where sykkeltype=? and status = 1 and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  getUtstyr(type,antall,success) {
+    connection.query("select * from utstyr where utstyrtype=? ORDER BY RAND() limit ?", [type,antall], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -53,7 +60,14 @@ class AnsatteService {
     connection.query("insert into leietaker_has_sykler (leietaker_leieid,sykler_sykkelid) values (?,?)",[leier,sykkel],(error,results) => {
     if (error) return console.error(error);
 
-    success(results[0]);
+    success(results);
+    })
+  }
+  insertUtstyr(leier,utstyr,success) {
+    connection.query("insert into leietaker_has_utstyr (leietaker_leieid,utstyr_utstyrid) values (?,?)",[leier,utstyr],(error,results) => {
+    if (error) return console.error(error);
+
+    success(results);
     })
   }
 }

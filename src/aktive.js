@@ -155,6 +155,7 @@ export class Test extends Component {
   tempM = null;
   sql = "";
   sykler = [[],[],[]];
+  utstyr = [[],[],[]];
   current = null;
   lager = [];
   steder = [];
@@ -175,8 +176,8 @@ export class Test extends Component {
     })
   }
   handleSykkel() {
-    if(this.sykkelSjekk == 3) {
-      if(this.querySjekk == 3) {
+    if(this.sykkelSjekk == 6) {
+      if(this.querySjekk == 6) {
         ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, 1, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
             ansatteService.getPrevious(current => {
               this.current = current.IDENTITY;
@@ -188,7 +189,15 @@ export class Test extends Component {
                   })
                 }
               }
+              for(var i = 0;i<this.utstyr.length;i++) {
+                for(var j = 0;j<this.utstyr[i].length;j++) {
+                  ansatteService.insertUtstyr(this.current,parseInt(this.utstyr[i][j].utstyrid),sykkel => {
+                    console.log("Complete utstyr");
+                  })
+                }
+              }
               console.log("Complete leie");
+              alert("Bestilling gjennomført")
             })
           })
       } else {
@@ -203,6 +212,9 @@ export class Test extends Component {
     errorTerreng.innerHTML = "";
     errorTandem.innerHTML = "";
     errorEl.innerHTML = "";
+    errorHjelm.innerText = "";
+    errorBarn.innerText = "";
+    errorBagasje.innerText = "";
     this.sykkelSjekk = 0;
     this.querySjekk = 0;
     if(!gruppe.disabled && gruppe.value != 0) {
@@ -285,28 +297,63 @@ export class Test extends Component {
       this.sykkelSjekk++;
       this.handleSykkel();
     }
-
-  //   while(this.sykkelSjekk==3) {
-  //     console.log("ree");
-  //     return;
-  //   }
-  //   // if(this.querySjekk<3) {
-  //   //   return;
-  //   // }
-  //   console.log(this.sykkelSjekk);
-  //   console.log("nah");
-  //   this.sql = "insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansatteid,hentested,leveringssted,personer) values (" + this.fraDato + " " + this.henteTid + ":00" + "," + this.tilDato + " " + this.levereTid + ":00" + "," + this.props.match.params.id + "," + 1 + "," + 1 + "," + 1 +"," + this.antallPersoner +");";
-  //   console.log(this.sykler[0]);
-  // //   if(this.terrengSjekk && this.tandemSjekk && this.elSjekk){
-  // //
-  // // } else {
-  // //   console.log("ree")
-  // //   return;
-  // // }
-  //
-  //
-  //   //alert(this.sql);
-
+    if(hjelm.value != 0) {
+      ansatteService.getUtstyr("hjelm",parseInt(hjelm.value),utstyr=> {
+        if(utstyr.length == hjelm.value) {
+          this.utstyr[0] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorHjelm.innerText = "Ikke nok hjelmer.";
+          this.utstyr[0] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+    if(barnevogn.value != 0) {
+      ansatteService.getUtstyr("barnevogn",parseInt(barnevogn.value),utstyr => {
+        if(utstyr.length == barnevogn.value) {
+          this.utstyr[1] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorBarn.innerText = "Ikke nok barnevogner.";
+          this.utstyr[1] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+    if(bagasje.value != 0) {
+      ansatteService.getUtstyr("bagasjevogn",parseInt(bagasje.value),utstyr => {
+        if(utstyr.length == bagasje.value) {
+          this.utstyr[2] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorBagasje.innerText = "Ikke nok bagasjevogner.";
+          this.utstyr[2] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
   }
 
 
@@ -346,19 +393,19 @@ export class Test extends Component {
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(1)}/>
             <label className="form-check-label">Terrengsykkel</label>
-            <div><span>Antall</span> <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled /> <br /></div>
+            <div><span>Antall</span> <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br /></div>
             <span className="error" id="errorTerreng"></span><br />
           </div>
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(2)} />
             <label className="form-check-label">Tandemsykkel</label>
-            <div><span>Antall</span> <input id="tandem" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled /><br /></div>
+            <div><span>Antall</span> <input id="tandem" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /><br /></div>
             <span className="error" id="errorTandem"></span><br />
           <div className="form-check">
           </div>
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(3)} />
             <label className="form-check-label">Elsykkel</label>
-            <div><span>Antall</span> <input id="el" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled /><br /></div>
+            <div><span>Antall</span> <input id="el" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /><br /></div>
             <span className="error" id="errorEl"></span><br />
           </div>
         </div>
@@ -392,7 +439,7 @@ export class Test extends Component {
         <div className="row-sm-10">
           <div className="form-group">
             <Form.Label>Hentested:</Form.Label>
-            <select id="hente" className="form-control" onChange={this.tester}>
+            <select id="hente" className="form-control">
               {this.lager.map(lager => (
                 <option key={lager.lagerid} value={lager.lagerid}>{lager.lager}</option>
               ))}
@@ -412,7 +459,7 @@ export class Test extends Component {
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} />
             <label>Antall</label>
-            <input id="gruppe" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+            <input id="gruppe" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm"  min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br />
           </div>
         </div>
       </div>
@@ -424,7 +471,8 @@ export class Test extends Component {
             <label className="form-check-label">
               Antall
             </label>
-            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="gridCheck1" />
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="hjelm"  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value}/>
+            <span className="error" id="errorHjelm"></span><br />
           </div>
         </div>
       </div>
@@ -435,7 +483,8 @@ export class Test extends Component {
             <label className="form-check-label">
               Antall
             </label>
-            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="gridCheck1" />
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="barnevogn" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBarn"></span><br />
           </div>
           </div>
         </div>
@@ -446,7 +495,8 @@ export class Test extends Component {
             <label className="form-check-label">
               Antall
             </label>
-            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="gridCheck1" />
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="bagasje" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBagasje"></span><br />
           </div>
           </div>
         </div>
@@ -456,9 +506,6 @@ export class Test extends Component {
       </Card>
       </div>
     )
-  }
-  tester() {
-    console.log(hente.options[hente.selectedIndex].value);
   }
   sykkelValg(sykkel) {
 
@@ -542,14 +589,12 @@ export class Test extends Component {
     }
 
   }
-  toggle(test) {
-    console.log(test);
-    test.value = 10;
-  }
   //
   //onClick={()=>history.push("/")}
   mounted() {
     this.fraDato = new Date();
+    this.ahh = new Date();
+    console.log(this.ahh);
     this.dd = this.fraDato.getDate();
     this.mm = this.fraDato.getMonth()+1;
     this.yyyy = this.fraDato.getFullYear();
@@ -581,19 +626,6 @@ export class Test extends Component {
     })
   }
 }
-// ReactDOM.render(
-//   <HashRouter>
-//     <div>
-//     <Route path="/" component={Home} />
-//
-//     <Route exact path="/" component={AktiveBestillinger} />
-//
-//     <Route exact path="/kunde/:id" component={Test} />
-//     </div>
-//   </HashRouter>,
-//   document.getElementById('landing')
-// );
-//<Route exact path="/kunder" component={Test} />
 
 // export AktiveBestillinger;
 // export Test;

@@ -19,6 +19,7 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Side2 extends Component {
   current = null;
 
+<<<<<<< HEAD
   // Variabler for sykkelvalg
   start = '2019-03-25';
   slutt = '2019-03-25';
@@ -29,6 +30,8 @@ class Side2 extends Component {
   levere = "01:01";
   sykler = [[], [], []];
 
+=======
+>>>>>>> ceec78b3077a63bda09e03110c57fce59caac140
   render() {
     return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
 {/*

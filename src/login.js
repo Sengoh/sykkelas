@@ -26,7 +26,7 @@ class LogIn extends Component{
       <div className="container h-100">
         <div className="d-flex justify-content-center">
 
-          <div className="card w-50 mt-5">
+          <div className="card w-50" style={{marginTop: '25vh'}}>
             <div className="card-header">
               <h4>Sykkelutleie AS</h4>
               <h5>Logg inn</h5>

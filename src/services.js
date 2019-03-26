@@ -17,9 +17,6 @@ class AnsatteService {
     });
   }
 
-
-
-
   getKunde(brukerid, success) {
     connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
       if (error) return console.error(error);
@@ -42,8 +39,8 @@ class AnsatteService {
       success(results);
     });
   }
-  insertLeie(start,slutt,kunde,ansatt,hente,levere,personer,success){
-    connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted,personer) values (?,?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere,personer],(error, results) => {
+  insertLeie(start,slutt,kunde,ansatt,hente,levere,success){
+    connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted) values (?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere],(error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -86,11 +83,16 @@ class BestillingService{
     });
   }
 
-  addLeietaker(start, slutt, current, hentested, leveringssted) {
-    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?, 1)", [start, slutt, current, hentested, leveringssted], (error, results) => {
+
+
+  addLeietaker(start, slutt, current, hentested, leveringssted, personer) {
+    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?,?)", [start, slutt, current, hentested, leveringssted, personer], (error, results) => {
       if(error) return console.error(error);
     });
   }
+
+
+
   finnSted(success) {
     connection.query("select * from sted;select * from lager;",(error,results) => {
       if(error) return console.error(error);

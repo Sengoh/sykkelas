@@ -1,18 +1,19 @@
-import * as React from 'react';
-import { Component } from 'react-simplified';
-import ReactDOM from 'react-dom';
-import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import * as React from "react";
+import { Component } from "react-simplified";
+import ReactDOM from "react-dom";
+import { NavLink, HashRouter, Route } from "react-router-dom";
+import { Card, List, Row, Column, NavBar, Button, Form } from "./widgets";
 
-import createHashHistory from 'history/createHashHistory';
+import createHashHistory from "history/createHashHistory";
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 //google map
 
 //før kopieres spørringene til services
 //import { Bestilling, bestillingService } from './services';
-import { connection } from './mysql_connection';
-{/*
+import { connection } from "./mysql_connection";
+{
+  /*
 class Menu extends Component {
   render() {
     return (
@@ -35,7 +36,8 @@ class Menu extends Component {
   }
 }
 
-*/}
+*/
+}
 
 class AktivBestilling extends Component {
   bestillinger = [];
@@ -67,7 +69,10 @@ class AktivBestilling extends Component {
                       <th>Hentested</th>
                     </tr>
                     {this.bestillinger.map(bestilling => (
-                      <tr key={bestilling.leieid} to={'/1/' + bestilling.leieid}>
+                      <tr
+                        key={bestilling.leieid}
+                        to={"/1/" + bestilling.leieid}
+                      >
                         <td>{bestilling.leieid}</td>
                         <td>
                           {bestilling.fornavn} {bestilling.etternavn}
@@ -100,7 +105,10 @@ class AktivBestilling extends Component {
                       <th>Leveringssted</th>
                     </tr>
                     {this.innleveringer.map(innlevering => (
-                      <tr key={innlevering.leieid} to={'/1/' + innlevering.leieid}>
+                      <tr
+                        key={innlevering.leieid}
+                        to={"/1/" + innlevering.leieid}
+                      >
                         <td>{innlevering.leieid}</td>
                         <td>
                           {innlevering.fornavn} {innlevering.etternavn}
@@ -141,10 +149,9 @@ class AktivBestilling extends Component {
   }
 }
 
+export default AktivBestilling;
 
-export default AktivBestilling
-
-{/*
+/*
 class SimpleMap extends Component {
   static defaultProps = {
     center: {
@@ -163,17 +170,4 @@ class SimpleMap extends Component {
     );
   }
 }
-
-ReactDOM.render(
-  <HashRouter>
-    <div>
-      <Menu />
-      <Route exact path="/" component={AktivBestilling} />
-      <Route exact path="/students/:leieid" component={EndreBestilling} />
-
-      <Route exact path="/" component={SimpleMap} />
-    </div>
-  </HashRouter>,
-  document.getElementById('root')
-);
-*/}
+*/

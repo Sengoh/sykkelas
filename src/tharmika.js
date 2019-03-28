@@ -33,78 +33,185 @@ class Side2 extends Component {
   sql = '';
 
   render() {
-    return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
-{/*
-    <form >
-      <div className="form-row">
+    
+    return(
+      <div className="container">
+        <div className="pt-4">
+          <h4>Bestilling for nye kunder</h4>
+        </div>
 
-         <div className="col mb-3">
-           <label htmlFor="exampleInputEmail1">Fornavn</label>
-           <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)}/>
-         </div>
-         <div className="col mb-3">
-           <label htmlFor="exampleInputPass">Etternavn</label>
-           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
-         </div>
-       </div>
-      <div className="form-row">
+        <form className="pt-5">
+          <div className="form-row">
+             <div className="col mb-3">
+               <label htmlFor="exampleInputFn">Fornavn</label>
+               <input type="text" className="form-control" id="exampleInputFn" aria-describedby="emailHelp" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)}/>
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEn">Etternavn</label>
+               <input type="text" className="form-control" id="exampleInputEn" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
+             </div>
+           </div>
 
-         <div className="col mb-3">
-           <label htmlFor="exampleInputEmail1">Adresse</label>
-           <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)}/>
-         </div>
-         <div className="col mb-3">
-           <label htmlFor="exampleInputPass">By</label>
-           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
-         </div>
-         <div className="col mb-3">
-           <label htmlFor="exampleInputPass">Postnummer</label>
-           <input type="password" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
-         </div>
-       </div>
+          <div className="form-row">
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEmail1">Adresse</label>
+               <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.addresse} onChange={event => (this.addresse = event.target.value)}/>
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Poststed</label>
+               <input type="text" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.poststed} onChange={event => (this.poststed = event.target.value)} />
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Postnummer</label>
+               <input type="number" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.postnr} onChange={event => (this.postnr = event.target.value)} />
+             </div>
+           </div>
 
-         <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
+          <div className="form-row">
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEmail1">E-post</label>
+               <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.epost} onChange={event => (this.epost = event.target.value)}/>
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Telefon</label>
+               <input type="number" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.telefon} onChange={event => (this.telefon = event.target.value)} />
+             </div>
+           </div>
 
-     </form>
-*/}
-      Fornavn: <input type="text" value={this.fornavn} onChange={event => (this.fornavn = event.target.value)} />
-      Epost: <input type="text" value={this.epost} onChange={event => (this.epost = event.target.value)} /> <br/>
-      Etternavn: <input type="text" value={this.etternavn} onChange={event => (this.etternavn = event.target.value)} />
+          <div className="form-row pt-5">
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEmail1">Fra</label>
+               <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.start} onChange={event => (this.start = event.target.value)}/>
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEmail1">Hentetid</label>
+               <input type="time" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.hente} onChange={event => (this.hente = event.target.value)} />
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputEmail1">Hentested</label>
+               <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.hentested} onChange={event => (this.hentested = event.target.value)}/>
+             </div>
+           </div>
 
-      Telefon: <input type="text" value={this.telefon} onChange={event => (this.telefon = event.target.value)} />
-      Adresse: <input type="text" value={this.addresse} onChange={event => (this.addresse = event.target.value)} />
-      Postnr:  <input type="text" value={this.postnr} onChange={event => (this.postnr = event.target.value)} />
-      Poststed: <input type="text" value={this.poststed} onChange={event => (this.poststed = event.target.value)} /> <br/><br/>
+          <div className="form-row">
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Til</label>
+               <input type="date" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.slutt} onChange={event => (this.slutt = event.target.value)} />
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Leveringstid</label>
+               <input type="time" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.levere} onChange={event => (this.levere = event.target.value)} />
+             </div>
+             <div className="col mb-3">
+               <label htmlFor="exampleInputPass">Leveringssted</label>
+               <input type="text" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.leveringssted} onChange={event => (this.leveringssted = event.target.value)} />
+             </div>
+           </div>
 
-      Fra: <input type="date" value={this.start} onChange={event => (this.start = event.target.value)} />
-      Til: <input type="date" value={this.slutt} onChange={event => (this.slutt = event.target.value)} />
-      Hentested:  <input type="text" value={this.hentested} onChange={event => (this.hentested = event.target.value)} />
-      Hentetid: <input type="time" value={this.hente} onChange={event => (this.hente = event.target.value)} />
-      Leveringssted: <input type="text" value={this.leveringssted} onChange={event => (this.leveringssted = event.target.value)} /> <br/><br/>
-      Leveringstid: <input type="time" value={this.levere} onChange={event => (this.levere = event.target.value)} />
+          <div className="form-row pt-5">
 
-      Gruppe: <input type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} /> <br/>
-      Antall personer: <input id="gruppe" value={this.gruppe} onChange={event => (this.gruppe = event.target.value)} placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/><br/>
+             <div className="col-4 mb-3">
+             <h5>Gruppebestilling</h5>
+               <div className="form-check mb-2">
+                <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={() => gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} />
+                <label className="form-check-label" htmlFor="autoSizingCheck">
+                  Gruppe
+                </label>
+              </div>
+              <div className="col mb-3">
+                <label htmlFor="gruppe">Antall personer</label>
+                <input type="number" id="gruppe" className="form-control" aria-describedby="emailHelp" value={this.gruppe} onChange={event => (this.gruppe = event.target.value)} disabled />
+              </div>
+             </div>
 
 
-      Terrengsykkel: <input type="checkbox" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true} />
-       <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled />
-      Tandemsykkel: <input type="checkbox" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true}/>
-      <input id="tandem" value={this.tandem} onChange={event => (this.tandem = event.target.value)}placeholder='0' style={{width: 8 + 'em'}} type="number"  className="form-control form-control-sm" disabled /> <br/>
-      Elsykkel for de eldre: <input type="checkbox" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
-      <input id="el" value={this.el} onChange={event => (this.el = event.target.value)} placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
+             <div className="col-4 mb-3">
+             <h5>Sykkeltype</h5>
 
-      <h6>Ekstrautstyr:</h6>
-      Barnevogn: <input type="checkbox" onChange={()=>barnevogn.disabled ? barnevogn.disabled = false : gruppe.disabled = true} /> <br/>
-                <input id="barnevogn" placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
-      Barnesete: <input type="checkbox" onChange={()=>barnesete.disabled ? barnesete.disabled = false : barnesete.disabled = true} /> <br/>
-                <input id="barnesete" placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
-      Bagasjevogn:<input type="checkbox" onChange={()=>bagasjevogn.disabled ? bagasjevogn.disabled = false : barnevogn.disabled = true} /> <br/>
-                <input id="bagasjevogn" placeholder="0" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br/>
+               <div className="form-check mb-2">
+                <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>terreng.disabled ? terreng.disabled = false : terreng.disabled = true} />
+                <label className="form-check-label" htmlFor="autoSizingCheck">
+                  Terrengsykkel
+                </label>
+                </div>
+                <div className="col mb-3">
+                  <label htmlFor="terreng">Antall</label>
+                  <input type="number" id="terreng" className="form-control" aria-describedby="emailHelp" value={this.terreng} onChange={event => (this.terreng = event.target.value)} disabled />
+              </div>
 
-      <Button.Success onClick={this.add} type="button">
-        Registrer bestilling
-      </Button.Success>
+
+            <div className="form-check mb-2">
+             <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>tandem.disabled ? tandem.disabled = false : tandem.disabled = true} />
+             <label className="form-check-label" htmlFor="autoSizingCheck">
+               Tandemsykkel
+             </label>
+           </div>
+           <div className="col mb-3">
+             <label htmlFor="tandem">Antall</label>
+             <input type="number" id="tandem" className="form-control" aria-describedby="emailHelp" value={this.tandem} onChange={event => (this.tandem = event.target.value)} disabled />
+           </div>
+
+
+           <div className="form-check mb-2">
+            <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>el.disabled ? el.disabled = false : el.disabled = true} />
+            <label className="form-check-label" htmlFor="autoSizingCheck">
+              El-sykkel
+            </label>
+           </div>
+           <div className="col mb-3">
+             <label htmlFor="el">Antall</label>
+             <input type="number" id="el" className="form-control" aria-describedby="emailHelp" value={this.el} onChange={event => (this.el = event.target.value)} disabled />
+           </div>
+
+           </div>
+
+             <div className="col-4 mb-3">
+             <h5>Ekstrautstyr</h5>
+             <div className="form-check mb-2">
+              <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>barnevogn.disabled ? barnevogn.disabled = false : barnevogn.disabled = true} />
+              <label className="form-check-label" htmlFor="autoSizingCheck">
+                Barnevogn
+              </label>
+              </div>
+              <div className="col mb-3">
+                <label htmlFor="gruppe">Antall</label>
+                <input type="number" id="barnevogn" className="form-control" aria-describedby="emailHelp" value={this.barnevogn} onChange={event => (this.barnevogn = event.target.value)} disabled />
+              </div>
+
+
+            <div className="form-check mb-2">
+             <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>barnesete.disabled ? barnesete.disabled = false : barnesete.disabled = true} />
+             <label className="form-check-label" htmlFor="autoSizingCheck">
+               Barnesete
+             </label>
+           </div>
+           <div className="col mb-3">
+             <label htmlFor="gruppe">Antall</label>
+             <input type="number" id="barnesete" className="form-control" aria-describedby="emailHelp" value={this.barnesete} onChange={event => (this.barnesete = event.target.value)} disabled />
+           </div>
+
+
+           <div className="form-check mb-2">
+            <input className="form-check-input" type="checkbox" id="autoSizingCheck" onChange={()=>bagasjevogn.disabled ? bagasjevogn.disabled = false : barnevogn.disabled = true} />
+            <label className="form-check-label" htmlFor="autoSizingCheck">
+              Bagasjevogn
+            </label>
+           </div>
+           <div className="col mb-3">
+             <label htmlFor="gruppe">Antall</label>
+             <input type="number" id="bagasjevogn" className="form-control" aria-describedby="emailHelp" value={this.bagasjevogn} onChange={event => (this.bagasjevogn = event.target.value)} disabled />
+           </div>
+
+           </div>
+
+           </div>
+
+           <button type="button" onClick={this.add} className="btn btn-primary float-right mb-5">Registrer bestilling</button>
+
+         </form>
+
+
+
         </div>
 
   );

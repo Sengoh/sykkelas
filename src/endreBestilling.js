@@ -1,15 +1,10 @@
-//Dette er fila for destinasjonssiden!
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react-simplified';
-import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
+import { ansatteService, bestillingService } from './services';
 
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
 
 //win.loadUrl(`file://${__dirname}/page.html`);
 
@@ -17,109 +12,36 @@ import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 
-class BestDetails extends Component {
-  kunder = null;
-  brukerid = 1;
-
-
-
-  render() {
-    if (!this.kunder) return null;
-
-    return (
-
-      <div className="container pt-5">
-        <Card>
-
-          <table className="table">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Fornavn</th>
-                <th scope="col">Etternavn</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">Postnr.</th>
-                <th scope="col">Poststed</th>
-                <th scope="col">E-post</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{this.kunder.fornavn}</td>
-                <td>{this.kunder.etternavn}</td>
-                <td>{this.kunder.addresse}</td>
-                <td>{this.kunder.telefon}</td>
-                <td>{this.kunder.postnr}</td>
-                <td>{this.kunder.poststed}</td>
-                <td>{this.kunder.epost}</td>
-              </tr>
-            </tbody>
-          </table>
-          <button type="button" className="btn btn-primary m-2" onClick={this.edit}>
-            Endre bestilling
-          </button>
-          <button type="button" className="btn btn-danger m-2" onClick={this.delete}>
-            Slett bestilling
-          </button>
-
-        </Card>
-
-      </div>
-
-
-    );
-
-  }
-
-  mounted() {
-    ansatteService.getKunde(this.brukerid, kunder => {
-      this.kunder = kunder;
-    });
-  }
-
-  edit() {
-    history.push('/kunder/' + this.brukerid + '/edit');
-  }
-
-  delete() {
-    ansatteService.deleteBest(this.props.match.params.id, () => history.push('/students'));
-  }
-
-}
-
 class BestEdit extends Component {
-  kunder = null;
+  bestillinger = [];
+  innleveringer = [];
 
   render() {
-    if (!this.kunder) return null;
 
     return (
 
       <div className="container pt-5">
-        <Card>
-
           <table className="table">
             <thead className="thead-dark">
               <tr>
-                <th scope="col">Fornavn</th>
-                <th scope="col">Etternavn</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">Postnr.</th>
-                <th scope="col">Poststed</th>
-                <th scope="col">E-post</th>
+                <th scope="col">Kunde</th>
+                <th scope="col">Antall sykler</th>
+                <th scope="col">Sykkeltype</th>
+                <th scope="col">Ekstra utstyr</th>
+                <th scope="col">Hentested</th>
               </tr>
             </thead>
             <tbody>
+            {this.bestillinger.map(bestilling => (
               <tr>
-                <td><input type="text" className="form-control" value={this.kunder.fornavn} onChange={e => (this.kunder.fornavn = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.etternavn} onChange={e => (this.kunder.etternavn = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.addresse} onChange={e => (this.kunder.addresse = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.telefon} onChange={e => (this.kunder.telefon = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.postnr} onChange={e => (this.kunder.postnr = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.poststed} onChange={e => (this.kunder.poststed = e.target.value)} /></td>
-                <td><input type="text" className="form-control" value={this.kunder.epost} onChange={e => (this.kunder.epost = e.target.value)} /></td>
+                <td><input value={bestilling.fornavn} onChange={e => (this.bestilling.fornavn = e.target.value)}/></td>
+                <td><input value={bestilling.antall} onChange={e => (this.bestilling.antall = e.target.value)}/></td>
+                <td><input value={bestilling.sykkeltype} onChange={e => (this.bestilling.sykkeltype= e.target.value)}/></td>
+                <td><input value={bestilling.utstyrtype} onChange={e => (this.bestilling.utstyrtype= e.target.value)}/></td>
+                <td><input value={bestilling.sted} onChange={e => (this.bestilling.sted = e.target.value)}/></td>
+
               </tr>
+            ))}
             </tbody>
           </table>
           <button type="button" className="btn btn-success m-2" onClick={this.save}>
@@ -129,41 +51,43 @@ class BestEdit extends Component {
             Avbryt
           </button>
 
-        </Card>
 
       </div>
     );
   }
 
   mounted() {
-    ansatteService.getKunde(this.props.match.params.id, kunder => {
-      this.kunder = kunder;
+      bestillingService.getBest(this.props.match.params.leieid, bestilling => {
+      this.bestillinger = bestilling;
     });
+{/*
+    connection.query(
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.leveringssted=sted.stedid GROUP BY leieid',
+      (error, results) => {
+        if (error) return console.error(error);
+
+        this.innleveringer = results;
+      }
+    );
+
+    */}
   }
 
   save() {
-    studentService.updateStudent(this.student, () => {
-      history.push('/students/' + this.props.match.params.id);
+    bestillingService.updateBest(this.bestillinger, () => {
+      history.push('/nat');
+    });
+  }
+  
+  delete() {
+    bestillingService.updateBest(this.bestillinger, () => {
+      history.push('/nat');
     });
   }
 
   cancel() {
-    history.push('/kunder');
+    history.push('/nat');
   }
 }
 
-export default BestDetails
-
-{/*
-ReactDOM.render(
-  <HashRouter>
-    <div>
-      <Menu />
-      <Route exact path="/" component={Home} />
-      <Route exact path="/kunder" component={BestDetails} />
-      <Route exact path="/kunder/:id/edit" component={KundeEdit} />
-    </div>
-  </HashRouter>,
-  document.getElementById('app')
-);
-*/}
+export { BestEdit };

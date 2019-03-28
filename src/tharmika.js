@@ -20,6 +20,8 @@ class Side2 extends Component {
   current = null;
 
   // Variabler for sykkelvalg
+  fornavn = '';
+  etternavn = '';
   start = '2019-03-25';
   slutt = '2019-03-25';
   terreng = 0;
@@ -28,6 +30,7 @@ class Side2 extends Component {
   hente = "00:00";
   levere = "01:01";
   sykler = [[], [], []];
+  sql = '';
 
   render() {
     return(  <div className="container"> <Card title="Bestillingsside">Registrer bestilling</Card><br/>
@@ -160,7 +163,7 @@ handleSykkel() {
     });
 
     if (!gruppe.disabled && gruppe.value !=0) {
-      this.gruppe += parseInt(gruppe.value);
+      this.gruppe = parseInt(gruppe.value);
     }
     else {
       this.gruppe = 1;
@@ -174,22 +177,16 @@ handleSykkel() {
     if(!terreng.disabled && terreng.value != 0) {
       console.log("test");
       console.log(terreng.value);
-      ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
-        console.log(sykler);
-        if(sykler.length == terreng.value) {
-          console.log("yea");
-          this.sykler[0] = sykler;
-          this.querySjekk++;
-          this.sykkelSjekk++;
-          this.handleSykkel();
-          //this.sykler[0] = sykler;
-        } else {
-          errorTerreng.innerHTML = "Ikke nok sykler.";
-          this.sykler[0] = [];
-          console.log(this.sykler[0]);
-          this.sykkelSjekk++;
-          this.handleSykkel();
+      ansatteService.insertSykkel("terreng",parseInt(terreng.value),sykler => {
+        this.sykler = sykler;
+        console.log(this.sykler);
+        for(var i = 0;i<this.sykler.length;i++){
+          ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
+
+          })
+          history.push('/');
         }
+
 
       })
     } else {

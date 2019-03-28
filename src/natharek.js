@@ -3,6 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { ansatteService, bestillingService } from './services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -67,7 +68,7 @@ class AktivBestilling extends Component {
                       <th>Hentested</th>
                     </tr>
                     {this.bestillinger.map(bestilling => (
-                      <tr key={bestilling.leieid} to={'/1/' + bestilling.leieid}>
+                      <tr key={bestilling.leieid}>
                         <td>{bestilling.leieid}</td>
                         <td>
                           {bestilling.fornavn} {bestilling.etternavn}
@@ -77,7 +78,9 @@ class AktivBestilling extends Component {
                         <td>{bestilling.utstyrtype}</td>
                         <td>{bestilling.sted}</td>
                         <td>
-                          <button>Endre</button>
+                          <button type="button" className="btn btn-primary" key={bestilling.leieid} onClick={()=>history.push("/kunde/"+ bestilling.leieid + "/edit")} >
+                            Endre
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -121,7 +124,15 @@ class AktivBestilling extends Component {
     );
   }
 
+  edit () {
+    history.push('/kunde/edit');
+    console.log(this.bestilling.leieid);
+  }
+
   mounted() {
+
+
+
     connection.query(
       'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.hentested=sted.stedid GROUP BY leieid',
       (error, results) => {

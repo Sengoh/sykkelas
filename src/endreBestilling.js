@@ -78,6 +78,12 @@ class BestEdit extends Component {
       history.push('/nat');
     });
   }
+  
+  delete() {
+    bestillingService.updateBest(this.bestillinger, () => {
+      history.push('/nat');
+    });
+  }
 
   cancel() {
     history.push('/nat');

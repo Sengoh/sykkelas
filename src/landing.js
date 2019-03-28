@@ -9,24 +9,21 @@ import {AktiveBestillinger, Test} from './aktive';
 import AnsattM from './startMeny';
 import Side2 from './tharmika';
 import AktivBestilling from './natharek';
-import Statistikk from './Statistikk';
 import {BestEdit, BestDetails} from './endreBestilling';
 
 
-import createHashHistory from 'history/createHashHistory';
+import createHashHistory from "history/createHashHistory";
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
-
 
 class Home extends Component {
   render() {
     return (
       <AnsattM>
-        <Nav/ >
+        <Nav />
       </AnsattM>
     );
   }
 }
-
 
 class Nav extends Component {
   render() {
@@ -35,15 +32,12 @@ class Nav extends Component {
         <NavBar.Link to="/regB">Registrer bestilling THAR</NavBar.Link>
         <NavBar.Link to="/Sivert">Registrer bestilling SIV</NavBar.Link>
         <NavBar.Link to="/nat">Aktiv bestilling</NavBar.Link>
-        <NavBar.Link to="/stat">Statistikk</NavBar.Link>
         <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
-      </NavBar>
 
+      </NavBar>
     );
   }
 }
-
-
 
 ReactDOM.render(
   <HashRouter>
@@ -54,7 +48,7 @@ ReactDOM.render(
       <Route exact path="/aMeny" component={AnsattM} />
       <Route exact path="/Sivert" component={AktiveBestillinger} />
       <Route exact path="/nat" component={AktivBestilling} />
-      <Route exact path="/stat" component={Statistikk} />
+  
       <Route exact path="/loggut" render={()=>{window.location.href="public/login.html"}} />
       <Route exact path="/kunde/:leieid/edit" component={Nav} />
       <Route exact path="/kunde/:leieid/edit" component={BestEdit} />
@@ -63,6 +57,6 @@ ReactDOM.render(
       <Route exact path="/kunde/:id" component={Test} />
     </div>
   </HashRouter>,
-  document.getElementById('landing')
+  document.getElementById("landing")
 );
 //<Route exact path="/Sivert" render={()=>{window.location.href="Sivert.html"}} />

@@ -33,6 +33,7 @@ class Side2 extends Component {
   sql = '';
 
   render() {
+    
     return(
       <div className="container">
         <div className="pt-4">
@@ -208,6 +209,7 @@ class Side2 extends Component {
            <button type="button" onClick={this.add} className="btn btn-primary float-right mb-5">Registrer bestilling</button>
 
          </form>
+
 
 
         </div>

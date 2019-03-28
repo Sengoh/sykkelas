@@ -26,7 +26,14 @@ class AnsatteService {
   }
 
   getSykkel(type,antall,success) {
-    connection.query("select * from sykler where type=? and status = 'i orden' and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
+    connection.query("select * from sykler where sykkeltype=? and status = 1 and tilgjengelig = 1 ORDER BY RAND() limit ?", [type,antall], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  getUtstyr(type,antall,success) {
+    connection.query("select * from utstyr where utstyrtype=? ORDER BY RAND() limit ?", [type,antall], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -50,7 +57,14 @@ class AnsatteService {
     connection.query("insert into leietaker_has_sykler (leietaker_leieid,sykler_sykkelid) values (?,?)",[leier,sykkel],(error,results) => {
     if (error) return console.error(error);
 
-    success(results[0]);
+    success(results);
+    })
+  }
+  insertUtstyr(leier,utstyr,success) {
+    connection.query("insert into leietaker_has_utstyr (leietaker_leieid,utstyr_utstyrid) values (?,?)",[leier,utstyr],(error,results) => {
+    if (error) return console.error(error);
+
+    success(results);
     })
   }
 }
@@ -71,9 +85,21 @@ class BestillingService{
     });
   }
 
-  addLeietaker(start, slutt, current, hentested, leveringssted) {
-    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?, 1)", [start, slutt, current, hentested, leveringssted], (error, results) => {
+
+
+  addLeietaker(start, slutt, current, hentested, leveringssted, personer) {
+    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?,?)", [start, slutt, current, hentested, leveringssted, personer], (error, results) => {
       if(error) return console.error(error);
+    });
+  }
+
+
+
+  finnSted(success) {
+    connection.query("select * from sted;select * from lager;",(error,results) => {
+      if(error) return console.error(error);
+
+      success(results);
     });
   }
 

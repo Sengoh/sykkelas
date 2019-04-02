@@ -39,9 +39,9 @@ class AktivBestilling extends Component {
                 <td>{bestilling.leieid}</td>
                 <td>{bestilling.fornavn} {bestilling.etternavn}</td>
                 <td>{bestilling.antall}</td>
-                <td>{bestilling.start.getHours()}:{bestilling.start.getMinutes()} {bestilling.start.getDate()}.{bestilling.start.getMonth()}.{bestilling.start.getFullYear()}</td>
+                <td>{bestilling.start.getHours()}:{bestilling.start.getMinutes()} {bestilling.start.getDate()}.{bestilling.start.getMonth()+1}.{bestilling.start.getFullYear()}</td>
                 <td>{bestilling.lager}</td>
-                <td>{bestilling.slutt.getHours()}:{bestilling.slutt.getMinutes()} {bestilling.slutt.getDate()}.{bestilling.slutt.getMonth()}.{bestilling.slutt.getFullYear()}</td>
+                <td>{bestilling.slutt.getHours()}:{bestilling.slutt.getMinutes()} {bestilling.slutt.getDate()}.{bestilling.slutt.getMonth()+1}.{bestilling.slutt.getFullYear()}</td>
                 <td>{bestilling.sted}</td>
                 <td>
                   <button type="button" className="btn btn-primary" key={bestilling.leieid} onClick={()=>history.push("/kunde/"+ bestilling.leieid + "/edit")} >

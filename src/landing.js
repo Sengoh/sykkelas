@@ -7,9 +7,10 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import {AktiveBestillinger, Test} from './aktive';
 import AnsattM from './startMeny';
-import Side2 from './tharmika';
+import {Kunde, Bestilling} from './tharmika';
 import AktivBestilling from './natharek';
 import {BestEdit, BestDetails} from './endreBestilling';
+import Best from './bestilling';
 
 
 import createHashHistory from "history/createHashHistory";
@@ -43,13 +44,14 @@ ReactDOM.render(
   <HashRouter>
     <div>
       <Route exact path="/" component={Home} />
-      <Route exact path="/(regB|Sivert|nat)" component={Nav} />
-      <Route exact path="/regB" component={Side2} />
+      <Route exact path="/(regB|Sivert|nat|register)" component={Nav} />
+      <Route exact path="/regB" component={Best} />
+
       <Route exact path="/aMeny" component={AnsattM} />
       <Route exact path="/Sivert" component={AktiveBestillinger} />
       <Route exact path="/nat" component={AktivBestilling} />
-  
-      <Route exact path="/loggut" render={()=>{window.location.href="public/login.html"}} />
+
+      <Route exact path="/loggut" render={()=>{window.location.href="public/index.html"}} />
       <Route exact path="/kunde/:leieid/edit" component={Nav} />
       <Route exact path="/kunde/:leieid/edit" component={BestEdit} />
 

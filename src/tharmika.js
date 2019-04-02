@@ -1,16 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react-simplified';
-import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
-import {bestillingService } from "./services";
-
-//import {styles} from './style.js';
-//import styles from './DottedBox.css';
-
-//import {loginstyle} from "./login.css";
+import { ansatteService, bestillingService } from './services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -97,6 +90,7 @@ export class Kunde extends Component {
   add(){
     bestillingService.addKunder(this.state.fn, this.state.en, this.state.epost, this.state.addresse, this.state.postnr, this.state.poststed, this.state.tlf, () => {
     });
+    this.setState({ vis: "container d-none"})
   }
 
 
@@ -137,7 +131,11 @@ export class Bestilling extends Component {
              </div>
              <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Hentested</label>
-               <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.hentested} onChange={event => this.setState({ hentested: event.target.value})}/>
+               <select className="custom-select" onChange={event => this.setState({ hentested: event.target.value})}>
+                 <option defaultValue>Velg sted</option>
+                 <option value="1">Haugastøl</option>
+                 <option value="2">Finse</option>
+               </select>
              </div>
            </div>
 
@@ -152,7 +150,14 @@ export class Bestilling extends Component {
              </div>
              <div className="col mb-3">
                <label htmlFor="exampleInputPass">Leveringssted</label>
-               <input type="text" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.state.leveringssted} onChange={event => this.setState({ leveringssted: event.target.value})} />
+               <select className="custom-select" onChange={event => this.setState({ leveringssted: event.target.value})}>
+                 <option defaultValue>Velg sted</option>
+                 <option value="1">Haugastøl</option>
+                 <option value="2">Finse</option>
+                 <option value="3">Flåm</option>
+                 <option value="4">Voss</option>
+                 <option value="5">Myrdal</option>
+               </select>
              </div>
            </div>
 
@@ -198,6 +203,8 @@ export class Bestilling extends Component {
     bestillingService.addLeietakerNyK(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.bid.brukerid, this.state.hentested, this.state.leveringssted, this.state.gruppe, () => {
     });
     this.props.onClick(this.state.bid.brukerid)
+    this.setState({ vis: "container d-none"})
+
   }
 
 }

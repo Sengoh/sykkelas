@@ -66,6 +66,7 @@ class AktivBestilling extends Component {
         if (error) return console.error(error);
 
         this.bestillinger = results;
+        console.log(this.bestillinger[0].leieid);
       }
     );
 

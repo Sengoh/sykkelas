@@ -19,7 +19,9 @@ class AktivBestilling extends Component {
   render() {
     return (
       <div className="container">
-        <input type="date" id="dato" onInput={this.finnBestillinger}/>
+        <div className="py-3 col-3">
+          <input type="date" className="form-control" id="dato" onInput={this.finnBestillinger}/>
+        </div>
         <table className="table">
           <thead className="thead-light">
             <tr>

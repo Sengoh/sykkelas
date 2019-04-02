@@ -121,21 +121,21 @@ export class Bestilling extends Component {
   render() {
     return(
       <div className={this.state.vis}>
-        <div className="pt-4">
+        <div className="pt-4 pb-5">
           <h4>Bestilling for nye kunder</h4>
         </div>
 
         <form>
           <div className="form-row pt-5">
-             <div className="col mb-3">
+             <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Fra</label>
                <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.start} onChange={event => this.setState({ start: event.target.value})}/>
              </div>
-             <div className="col mb-3">
+             <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Hentetid</label>
                <input type="time" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.hente} onChange={event => this.setState({ hente: event.target.value})} />
              </div>
-             <div className="col mb-3">
+             <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Hentested</label>
                <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.hentested} onChange={event => this.setState({ hentested: event.target.value})}/>
              </div>
@@ -176,7 +176,7 @@ export class Bestilling extends Component {
 
             </div>
 
-            <button type="button" onClick={this.add2} className="btn btn-primary float-right mb-5">Neste</button>
+            <button type="button" onClick={this.add2} className="btn btn-primary float-right mb-5">Registrer bestilling</button>
 
           </form>
 
@@ -373,7 +373,7 @@ export class Ekstrautstyr extends Component {
 
             </div>
 
-            <button type="button" onClick={this.add3} className="btn btn-primary float-right mb-5">Registrer bestilling</button>
+            <button type="button" onClick={this.add3} className="btn btn-primary float-right mb-5">Legg til</button>
 
           </form>
 

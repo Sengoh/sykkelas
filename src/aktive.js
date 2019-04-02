@@ -146,8 +146,6 @@ export class Test extends Component {
   utstyr = [[],[],[]];
   current = null;
 
-    })
-  }
   handleSykkel() {
     if(this.sykkelSjekk == 6) {
       if(this.querySjekk == 6) {

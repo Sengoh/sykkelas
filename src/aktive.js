@@ -6,6 +6,7 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { kundeService } from './services';
+import { bestillingService } from './services';
 
 //import {styles} from './style.js';
 
@@ -126,25 +127,48 @@ export class AktiveBestillinger extends Component {
 //{this.kunde.brukerid}
 export class Test extends Component {
   kunde = null;
+
+  //Variabler for dato
   fraDato = null;
+  tilDato = null;
   dd= null;
   mm= null;
   yyyy = null;
-  tilDato = null;
-  hente = null;
+
+  //Variabler for tid
+  henteTid = null;
+  levereTid = null;
   tid = null;
-  levere = null;
   m = null;
   t = null;
+
+  //Variabler for sykkelvalg
+  hente = null;
+  levere = null;
   terreng = 0;
   tandem = 0;
   el = 0;
+  querySjekk = 0;
+  sykkelSjekk = 0;
+  lager = [];
+  steder = [];
+  antallPersoner = 1;
+
   temp = 0;
   tempM = null;
   sql = "";
   sykler = [[],[],[]];
   utstyr = [[],[],[]];
   current = null;
+
+
+  syklerInfo = null;
+  utstyrInfo = null;
+
+  listTerreng = [];
+  listTandem = [];
+  listEl = [];
+
 
   handleSykkel() {
     if(this.sykkelSjekk == 6) {
@@ -168,7 +192,8 @@ export class Test extends Component {
                 }
               }
               console.log("Complete leie");
-              alert("Bestilling gjennomført")
+              alert("Bestilling gjennomført");
+              history.push("/bestilling/" + this.current);
             })
           })
       } else {
@@ -178,11 +203,12 @@ export class Test extends Component {
       console.log("nah");
       return;
     }
+    console.log(this.sykkelSjekk);
   }
   handleSubmit(event) {
-    errorTerreng.innerHTML = "";
-    errorTandem.innerHTML = "";
-    errorEl.innerHTML = "";
+    errorTerreng.innerText = "";
+    errorTandem.innerText = "";
+    errorEl.innerText = "";
     errorHjelm.innerText = "";
     errorBarn.innerText = "";
     errorBagasje.innerText = "";
@@ -205,41 +231,61 @@ export class Test extends Component {
           this.handleSykkel();
           //this.sykler[0] = sykler;
         } else {
-          errorTerreng.innerHTML = "Ikke nok sykler.";
+          errorTerreng.innerText = "Ikke nok sykler.";
           this.sykler[0] = [];
           console.log(this.sykler[0]);
           this.sykkelSjekk++;
           this.handleSykkel();
         }
-        if(!tandem.disabled && tandem.value != 0) {
-          console.log("test");
-          ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
-            this.sykler = sykler;
-            console.log(this.sykler);
-            for(var i = 0;i<this.sykler.length;i++) {
-              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
-
-              })
-              //this.sql = "";
-              console.log(this.sql);
-            }
-          })
-        }
-        if(!el.disabled && el.value != 0) {
-          console.log("test");
-          ansatteService.getSykkel("el",parseInt(el.value),sykler => {
-            this.sykler = sykler;
-            console.log(this.sykler);
-            for(var i = 0;i<this.sykler.length;i++) {
-              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
-
-              })
-              //this.sql = "";
-              console.log(this.sql);
-            }
-          })
-        }
       })
+  } else {
+    this.querySjekk++;
+    this.sykkelSjekk++;
+    this.handleSykkel();
+  }
+  if(!tandem.disabled && tandem.value != 0) {
+    console.log("test");
+
+    ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
+      if(sykler.length == tandem.value) {
+        console.log("yea");
+        this.sykler[1] = sykler;
+        this.querySjekk++;
+        this.sykkelSjekk++;
+        this.handleSykkel();
+        //this.sykler[0] = sykler;
+      } else {
+        errorTandem.innerText = "Ikke nok sykler.";
+        this.sykler[1] = [];
+        console.log(this.sykler[1]);
+        this.sykkelSjekk++;
+        this.handleSykkel();
+      }
+    })
+  } else {
+    this.querySjekk++;
+    this.sykkelSjekk++;
+    this.handleSykkel();
+  }
+  if(!el.disabled && el.value != 0) {
+    console.log("test");
+    ansatteService.getSykkel("el",parseInt(el.value),sykler => {
+      if(sykler.length == el.value) {
+        console.log("yea");
+        this.sykler[2] = sykler;
+        this.querySjekk++;
+        this.sykkelSjekk++;
+        this.handleSykkel();
+        //this.sykler[0] = sykler;
+      } else {
+        errorEl.innerText = "Ikke nok sykler.";
+        this.sykler[2] = [];
+        this.elSjekk = false;
+        console.log(this.sykler[2]);
+        this.sykkelSjekk++;
+        this.handleSykkel();
+      }
+    })
     } else {
       this.querySjekk++;
       this.sykkelSjekk++;
@@ -341,7 +387,7 @@ export class Test extends Component {
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(1)}/>
             <label className="form-check-label">Terrengsykkel</label>
-            <div><span>Antall</span> <input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br /></div>
+            <div><span>Antall</span><input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br /></div>
             <span className="error" id="errorTerreng"></span><br />
           </div>
           <div className="form-check">
@@ -375,7 +421,7 @@ export class Test extends Component {
         <div className="row-sm-10">
           <div className="form-group">
             <Form.Label>Fra:</Form.Label>
-            <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onBlur={this.endreTid} onChange={e => (this.hente = e.target.value)} />
+            <input id="henteTid" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.henteTid} onBlur={this.endreTid} onChange={e => (this.henteTid = e.target.value)} />
             <Form.Label>Til:</Form.Label>
             <input id="levereTid" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levereTid} onBlur={this.endreTid} onChange={e => (this.levereTid = e.target.value)} />
           </div>
@@ -399,7 +445,6 @@ export class Test extends Component {
               ))}
             </select>
           </div>
-          <span className="error" id="errorT"></span><br />
         </div>
       </div>
       <div className="col">
@@ -413,12 +458,11 @@ export class Test extends Component {
       </div>
       <Card title="Ekstrautstyr">
       <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Hjelm</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
             <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="hjelm"  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value}/>
             <span className="error" id="errorHjelm"></span><br />
@@ -426,12 +470,11 @@ export class Test extends Component {
         </div>
       </div>
       <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Barnevogn</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
             <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="barnevogn" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
             <span className="error" id="errorBarn"></span><br />
@@ -439,12 +482,11 @@ export class Test extends Component {
           </div>
         </div>
         <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Bagasjevogn</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
             <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="bagasje" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
             <span className="error" id="errorBagasje"></span><br />
@@ -488,25 +530,25 @@ export class Test extends Component {
     }
   }
   endreDato() {
-    errorD.innerHTML = "";
+    errorD.innerText = "";
 
     //Sjekker om hentedatoen skjer etter leveringdatoen, og endrer leveringdatoen hvis den er det
     if(this.fraDato > this.tilDato) {
-      errorD.innerHTML = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
+      errorD.innerText = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
       this.tilDato = this.fraDato;
     }
 
     //Sjekker om hentedatoen skjer i fortiden, og endrer den hvis den er det
     if(this.fraDato < (this.yyyy + "-0" + this.mm + "-" + this.dd)) {
-      errorD.innerHTML = "Valgt dato er feil. Endret til dagens dato.";
+      errorD.innerText = "Valgt dato er feil. Endret til dagens dato.";
       this.fraDato = (this.yyyy + "-0" + this.mm + "-" + this.dd)
     }
   }
   endreTid() {
-    errorT.innerHTML = "";
+    errorT.innerText = "";
 
     //Endrer hentetid minutter
-    this.tempM = Math.ceil(hente.value.split(":")[1]/10)*10;
+    this.tempM = Math.ceil(henteTid.value.split(":")[1]/10)*10;
     if(this.tempM == 0) {
       this.tempM = "00";
     }
@@ -514,10 +556,10 @@ export class Test extends Component {
       this.tempM = "00";
     }
     console.log(this.tempM);
-    this.hente = hente.value.split(":")[0] + ":" + this.tempM;
+    this.henteTid = henteTid.value.split(":")[0] + ":" + this.tempM;
 
     //Endrer leveringstid minutter
-    this.tempM = Math.ceil(levere.value.split(":")[1]/10)*10;
+    this.tempM = Math.ceil(levereTid.value.split(":")[1]/10)*10;
     if(this.tempM == 0) {
       this.tempM = "00";
     }
@@ -525,18 +567,20 @@ export class Test extends Component {
       this.tempM = "00";
     }
     console.log(this.tempM);
-    this.levere = levere.value.split(":")[0] + ":" + this.tempM;
+    this.levereTid = levereTid.value.split(":")[0] + ":" + this.tempM;
 
     //Sjekker om hentetiden er etter leverigstiden og endrer leveringstiden hvis den er det
-    if(this.fraDato == this.tilDato && this.hente > this.levere) {
-      this.levere = this.hente;
-      errorT.innerHTML = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
+    if(this.fraDato == this.tilDato && this.henteTid > this.levereTid) {
+      console.log("wut");
+      this.levereTid = this.henteTid;
+      errorT.innerText = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
     }
 
     //Sjekker om hentetiden skjer i fortiden, og endrer den hvis den er det
-    if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.hente < this.t + ":" + this.m) {
-      this.hente = this.t + ":" + this.m;
-      errorT.innerHTML = "Hentetider er i fortiden. Hentetid endret.";
+    if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.henteTid < this.t + ":" + this.m) {
+      console.log("wat");
+      this.henteTid = this.t + ":" + this.m;
+      errorT.innerText = "Hentetiden er i fortiden. Hentetid endret.";
     }
 
   }
@@ -546,14 +590,14 @@ export class Test extends Component {
     this.fraDato = new Date();
     this.ahh = new Date();
     console.log(this.ahh);
-    this.dd = this.fraDato.getDate();
+    this.dd = ("0" + this.fraDato.getDate()).slice(-2);
     this.mm = this.fraDato.getMonth()+1;
     this.yyyy = this.fraDato.getFullYear();
     console.log(this.yyyy);
     this.fraDato = this.yyyy + "-0" + this.mm + "-" + this.dd;
     console.log(this.fraDato);
     this.tilDato = this.fraDato;
-    this.hente = new Date();
+    this.henteTid = new Date();
     this.tid = new Date();
     this.m = Math.ceil(this.tid.getMinutes()/10)*10;
     this.t = this.tid.getHours()
@@ -563,13 +607,115 @@ export class Test extends Component {
     } else if (this.m >= 0 && this.m < 10) {
       this.m = "10";
     }
-    this.hente = this.t + ":" + this.m;
-    this.levere = this.hente;
+    this.henteTid = this.t + ":" + this.m;
+    this.levereTid = this.henteTid;
     kundeService.getKunde(this.props.match.params.id,kunde =>{
       this.kunde = kunde;
+    })
+    bestillingService.finnSted(steder => {
+      this.lager = steder[1];
+      this.steder = steder[0];
     })
   }
 }
 
+export class Kvittering extends Component {
+  bestilling = null;
+  sykler = null;
+  utstyr = null;
+  terreng = 0;
+  tandem = 0;
+  el = 0;
+
+  render() {
+    if (!this.bestilling || !this.sykler || !this.utstyr) return null;
+
+    return(
+      <div>
+        {/*<Card title="Kvittering">
+        <p>Kunde: {this.bestilling.fornavn} {this.bestilling.etternavn}</p>
+        <h5>Sykler</h5>
+        <p>Terreng: {this.bestilling.sykkelid} {this.bestilling.tester} sykler</p>
+        <p>Tandem: sykler</p>
+        <p>El: sykler</p>
+        <h5>Tid og sted</h5>
+
+        <br />
+        <p>Antall personer: </p>
+        // {for(var i = 0;i<this.bestilling.length;i++) {
+        //
+        // }}
+        </Card>*/}
+        <Card title="Kvittering">
+        <p>Bestillingsnummer: {this.props.match.params.id}</p>
+        <p>Kunde: {this.bestilling.fornavn} {this.bestilling.etternavn}</p>
+        <div className="row">
+          <div className="col-2">
+            <h5>Sykler</h5>
+            <p>Terreng: {this.sykkelInfo("terreng")}</p>
+            <p>Tandem: {this.sykkelInfo("tandem")}</p>
+            <p>El: {this.sykkelInfo("el")}</p>
+          </div>
+          <div className="col-2">
+            <h5>Utstyr</h5>
+            <p>Hjelmer: {this.utstyrInfo("hjelm")}</p>
+            <p>Barnevogner: {this.utstyrInfo("barnevogn")}</p>
+            <p>Bagasjevogner: {this.utstyrInfo("bagasjevogn")}</p>
+          </div>
+        </div>
+        <h5>Tid og sted</h5>
+        <div className="row">
+          <div className="col-2">
+            <h6>Hente</h6>
+            <p>Dato: {this.bestilling.start.getDate()}.{this.bestilling.start.getMonth()}.{this.bestilling.start.getFullYear()}</p>
+            <p>Tid: {this.bestilling.start.getHours()}:{this.bestilling.start.getMinutes()}</p>
+            <p>Hentedted: {this.bestilling.lager}</p>
+          </div>
+          <div className="col-2">
+            <h6>Levere</h6>
+            <p>Dato: {this.bestilling.slutt.getDate()}.{this.bestilling.slutt.getMonth()}.{this.bestilling.slutt.getFullYear()}</p>
+            <p>Tid: {this.bestilling.slutt.getHours()}:{this.bestilling.slutt.getMinutes()}</p>
+            <p>Leveringssted: {this.bestilling.sted}</p>
+          </div>
+
+        </div>
+        <NavLink to="/Sivert">Tilbake</NavLink>
+        </Card>
+      </div>
+    )
+  }
+  sykkelInfo(type) {
+    for(var i = 0;i<this.sykler.length;i++) {
+      if(this.sykler[i].sykkeltype == type) {
+        return this.sykler[i].t;
+      }
+    }
+    return 0;
+  }
+  utstyrInfo(type) {
+    for(var i = 0;i<this.utstyr.length;i++) {
+      if(this.utstyr[i].utstyrtype == type) {
+        return this.utstyr[i].t;
+      }
+    }
+    return 0;
+  }
+  mounted() {
+    console.log(this.props.location.pathname);
+    kundeService.kvittering(this.props.match.params.id,bestilling => {
+      this.bestilling = bestilling;
+      console.log(this.bestilling);
+
+    })
+    kundeService.kvitteringSykler(this.props.match.params.id,sykler => {
+      this.sykler = sykler;
+      console.log(this.sykler);
+    })
+    kundeService.kvitteringUtstyr(this.props.match.params.id,utstyr => {
+      this.utstyr = utstyr;
+      console.log(this.utstyr);
+    })
+  }
+}
 // export AktiveBestillinger;
 // export Test;

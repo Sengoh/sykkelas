@@ -5,7 +5,7 @@ import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
-import {AktiveBestillinger, Test} from './aktive';
+import {AktiveBestillinger, Test, Kvittering} from './aktive';
 import AnsattM from './startMeny';
 import Side2 from './tharmika';
 import AktivBestilling from './natharek';
@@ -59,6 +59,7 @@ ReactDOM.render(
 
 
       <Route exact path="/kunde/:id" component={Test} />
+      <Route exact path="/bestilling/:id" component={Kvittering} />
     </div>
   </HashRouter>,
   document.getElementById('landing')

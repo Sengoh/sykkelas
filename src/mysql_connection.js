@@ -7,7 +7,8 @@ function connect() {
     host: 'mysql.stud.iie.ntnu.no',
     user: 'g_idri1005_10',
     password: 'UX0LGnyi',
-    database: 'g_idri1005_10'
+    database: 'g_idri1005_10',
+    multipleStatements: true
 });
 
   // Connect to MySQL-server

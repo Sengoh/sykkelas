@@ -409,7 +409,7 @@ export class Ekstrautstyr extends Component {
 
   componentDidUpdate() {
     bestillingService.getLeieId(this.props.bid, svar => {
-      this.setState({lid: svar})
+      this.setState({lid: svar.leieid})
     });
 
   }

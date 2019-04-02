@@ -69,6 +69,8 @@ class AnsatteService {
   }
 }
 
+
+
 class BestillingService{
   addKunder(fornavn, etternavn, epost, addresse, postnr, poststed, telefon, success) {
     connection.query("INSERT INTO kunder (fornavn, etternavn, epost, addresse, postnr, poststed, telefon) VALUES (?,?,?,?,?,?,?)", [fornavn, etternavn, epost, addresse, postnr, poststed, telefon], (error, results) => {
@@ -101,15 +103,45 @@ class BestillingService{
     });
   }
 
-  getInfo(success) {
-    connection.query("select count(case when sykkeltype = 'terreng' then 1 end) as terreng, count(case when sykkeltype = 'el' then 1 end) as tandem,count(case when sykkeltype = 'el' then 1 end) as el from sykler where tilgjengelig=1 and status=1;select * from utstyr;",(error,results) => {
-      if(error) return console.error(error);
+  getBest(leieid, success) {
+    connection.query(
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.hentested=sted.stedid WHERE leieid=? GROUP BY leieid', [leieid],
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results)
+      }
+    )
   }
+  getBest1() {
+    connection.query(
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.hentested=sted.stedid GROUP BY leieid',
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results)
+      }
+    )
+  }
+  updateBest() {
+  connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted) values (?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results)
+      }
+    )
+  }
+
 }
-export let ansatteService = new AnsatteService();
+// getInfo(success) {
+//   connection.query("select count(case when sykkeltype = 'terreng' then 1 end) as terreng, count(case when sykkeltype = 'el' then 1 end) as tandem,count(case when sykkeltype = 'el' then 1 end) as el from sykler where tilgjengelig=1 and status=1;select * from utstyr;",(error,results) => {
+//     if(error) return console.error(error);
+//
+//     success(results);
+//   });
+// }
+
 
 class KundeService {
   getKunde(id, success) {
@@ -150,11 +182,6 @@ class KundeService {
 }
 // left join leietaker_has_sykler on leieid = leietaker_leieid left join leietaker_has_utstyr on leieid = leietaker_leieid left join sykler on sykler_sykkelid = sykler.id left join utstyr on utstyr_utstyrid = utstyrid
 
-export let bestillingService = new BestillingService();
-
-
-export let kundeService = new KundeService();
-
 
 class BicycleService {
   getBikes(success) {
@@ -172,7 +199,6 @@ class BicycleService {
       success(results[0]);
     });
   }
-
 
   updateBike(sykler, success) {
     connection.query(
@@ -195,4 +221,8 @@ class BicycleService {
     );
   }
 }
+
 export let bikeService = new BicycleService();
+export let ansatteService = new AnsatteService();
+export let kundeService = new KundeService();
+export let bestillingService = new BestillingService();

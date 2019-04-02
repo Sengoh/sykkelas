@@ -32,8 +32,22 @@ class AnsatteService {
       success(results);
     });
   }
+  getSykkel1(type,success) {
+    connection.query("select * from sykler where sykkeltype=? and status = 1 and tilgjengelig = 1 ORDER BY RAND()", [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   getUtstyr(type,antall,success) {
     connection.query("select * from utstyr where utstyrtype=? ORDER BY RAND() limit ?", [type,antall], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  getUtstyr1(type,success) {
+    connection.query("select * from utstyr where utstyrtype=? ORDER BY RAND()", [type], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -84,11 +98,29 @@ class BestillingService{
       success(results[0]);
     });
   }
+  getKundeId(fn, en, epost, tlf, success) {
+    connection.query("SELECT brukerid FROM kunder WHERE fornavn=? AND etternavn=? AND epost=? AND telefon=?", [fn, en, epost, tlf], (error, results) => {
+      if(error) return console.error(error);
+      success(results[0]);
+    });
+  }
+  getLeieId(bid, success) {
+    connection.query("SELECT leieid FROM leietaker WHERE kunder_brukerid=?", [bid], (error, results) => {
+      if(error) return console.error(error);
+      success(results[0]);
+    });
+  }
 
 
 
   addLeietaker(start, slutt, current, hentested, leveringssted, personer) {
     connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?,?)", [start, slutt, current, hentested, leveringssted, personer], (error, results) => {
+      if(error) return console.error(error);
+    });
+  }
+
+  addLeietakerNyK(start, slutt, bid, hentested, leveringssted, personer) {
+    connection.query("INSERT INTO leietaker (start, slutt, kunder_brukerid, ansatte_ansattid, hentested, leveringssted, personer ) VALUES (?,?,?,1,?,?,?)", [start, slutt, bid, hentested, leveringssted, personer], (error, results) => {
       if(error) return console.error(error);
     });
   }
@@ -105,7 +137,7 @@ class BestillingService{
 
   getBest(leieid, success) {
     connection.query(
-      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.hentested=sted.stedid WHERE leieid=? GROUP BY leieid', [leieid],
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE leieid=? GROUP BY leieid', [leieid],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -123,7 +155,16 @@ class BestillingService{
       }
     )
   }
-  updateBest() {
+  updateBest(start,slutt,hente,levere, personer, leieid, success) {
+  connection.query('UPDATE leietaker SET start = ?, slutt = ?, hentested = ?, leveringssted = ?, personer = ? WHERE leieid = ?',[start,slutt,hente,levere, personer, leieid],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success()
+      }
+    )
+  }
+  updateBesttest() {
   connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted) values (?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere],
       (error, results) => {
         if (error) return console.error(error);

@@ -161,12 +161,14 @@ export class Test extends Component {
   utstyr = [[],[],[]];
   current = null;
 
+
   syklerInfo = null;
   utstyrInfo = null;
 
   listTerreng = [];
   listTandem = [];
   listEl = [];
+
 
   handleSykkel() {
     if(this.sykkelSjekk == 6) {

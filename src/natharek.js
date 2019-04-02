@@ -14,32 +14,7 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 //før kopieres spørringene til services
 //import { Bestilling, bestillingService } from './services';
 import { connection } from "./mysql_connection";
-{
-  /*
-class Menu extends Component {
-  render() {
-    return (
-      <Row>
-        <Column>
-          <NavBar brand="Home (Landing)" />
-        </Column>
-        <Column>
-          <NavBar>
-            <NavBar.Link to="/bestillingsreg">Registrere bestilling</NavBar.Link>
-            <NavBar.Link to="/statistikk">Statistikk</NavBar.Link>
-            <NavBar.Link to="/kalender">Kalender</NavBar.Link>
-          </NavBar>
-        </Column>
-        <Column right>
-          <Button.Danger small>Logg ut</Button.Danger>
-        </Column>
-      </Row>
-    );
-  }
-}
 
-*/
-}
 
 class AktivBestilling extends Component {
   bestillinger = [];
@@ -93,38 +68,7 @@ class AktivBestilling extends Component {
               </List>
             </Card>
             <br />
-            <h6>Dagens innleveringer</h6>
-            <Card>
-              <List>
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>BestillingsID</th>
-                      <th>Kunde</th>
-                      <th>Antall sykler</th>
-                      <th>Sykkeltype</th>
-                      <th>Ekstra utstyr</th>
-                      <th>Leveringssted</th>
-                    </tr>
-                    {this.innleveringer.map(innlevering => (
-                      <tr
-                        key={innlevering.leieid}
-                        to={"/1/" + innlevering.leieid}
-                      >
-                        <td>{innlevering.leieid}</td>
-                        <td>
-                          {innlevering.fornavn} {innlevering.etternavn}
-                        </td>
-                        <td>{innlevering.antall}</td>
-                        <td>{innlevering.sykkeltype}</td>
-                        <td>{innlevering.utstyrtype}</td>
-                        <td>{innlevering.sted}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </List>
-            </Card>
+          
           </List>
         </Card>
       </div>
@@ -148,14 +92,7 @@ class AktivBestilling extends Component {
         this.bestillinger = results;
       }
     );
-    connection.query(
-      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.leveringssted=sted.stedid GROUP BY leieid',
-      (error, results) => {
-        if (error) return console.error(error);
 
-        this.innleveringer = results;
-      }
-    );
   }
 }
 

@@ -174,6 +174,16 @@ class BestillingService{
     )
   }
 
+  getBestilling(dato, success) {
+    connection.query(
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE cast(start as Date) = ? GROUP BY leieid',
+      [dato],(error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      });
+  }
+
 }
 // getInfo(success) {
 //   connection.query("select count(case when sykkeltype = 'terreng' then 1 end) as terreng, count(case when sykkeltype = 'el' then 1 end) as tandem,count(case when sykkeltype = 'el' then 1 end) as el from sykler where tilgjengelig=1 and status=1;select * from utstyr;",(error,results) => {

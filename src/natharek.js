@@ -15,9 +15,11 @@ import { connection } from "./mysql_connection";
 class AktivBestilling extends Component {
   bestillinger = [];
 
+
   render() {
     return (
       <div className="container">
+        <input type="date" id="dato" onInput={this.finnBestillinger}/>
         <table className="table">
           <thead className="thead-light">
             <tr>
@@ -58,7 +60,12 @@ class AktivBestilling extends Component {
     history.push('/kunde/edit');
     console.log(this.bestilling.leieid);
   }
+  finnBestillinger() {
+    bestillingService.getBestilling(dato.value,results => {
 
+    this.bestillinger = results;
+    })
+  }
   mounted() {
     connection.query(
       'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid GROUP BY leieid',

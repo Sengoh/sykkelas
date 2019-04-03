@@ -6,7 +6,7 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import {bestillingService } from "./services";
-import {Kunde, Bestilling, Ekstrautstyr } from "./tharmika";
+import {Kunde, Bestilling, Ekstrautstyr } from "./BestillingNyKunde";
 
 
 import createHashHistory from 'history/createHashHistory';

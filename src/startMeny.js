@@ -29,7 +29,7 @@ class AnsattM extends Component {
             className="btn btn-light m-2"
             onClick={this.routeChange2}
           >
-            Aktive bestillinger
+            Bestillingsoversikt
           </button>
           <button
             type="button"
@@ -46,7 +46,7 @@ class AnsattM extends Component {
     history.push("/regB");
   }
   routeChange2() {
-    history.push("/nat");
+    history.push("/bestillingsOversikt");
   }
   routeChange3() {
     history.push("/statistikk");

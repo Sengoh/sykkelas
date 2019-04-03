@@ -8,11 +8,6 @@ import { ansatteService } from './services';
 import { kundeService } from './services';
 import { bestillingService } from './services';
 
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
-
-//win.loadUrl(`file://${__dirname}/page.html`);
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -39,21 +34,20 @@ export class AktiveBestillinger extends Component {
   render() {
     return (
       <div>
-      <Card>
-      <form className="row">
-      <div className="form-group col">
-        <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
-      </div>
-      <div className="form-group col">
-        <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
-      </div>
-      <div className="form-group col">
-        <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
-      </div>
-      </form>
-      </Card>
+        <div className="container">
+        <form className="row pb-3 pt-4">
+        <div className="form-group col">
+          <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
+        </div>
+        <div className="form-group col">
+          <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
+        </div>
+        <div className="form-group col">
+          <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
+        </div>
+        </form>
           <table className='table table-hover'>
-          <thead>
+          <thead className="thead-light">
             <tr>
               <th style={{width: 1 + 'em'}} scope="col">Kundenummer</th>
               <th scope="col"><NavLink to={'/kunder/'}></NavLink>Navn</th>
@@ -78,6 +72,7 @@ export class AktiveBestillinger extends Component {
           }
           </tbody>
         </table>
+        </div>
       </div>
     );
   }
@@ -355,7 +350,7 @@ export class Test extends Component {
     if (!this.kunde) return null;
 
     return(
-      <div>
+      <div className="container">
         <table className='table'>
         <thead>
           <tr>

@@ -2,14 +2,13 @@ import React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService, bestillingService } from './services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 
-class BestEdit extends Component {
+class EndreBestilling extends Component {
   bestillinger = [];
   state = {
     start: "",
@@ -25,7 +24,7 @@ class BestEdit extends Component {
 
     return (
 
-      <div className="container pt-5">
+      <div className="container pt-4">
           <table className="table">
             <thead className="thead-light">
               <tr>
@@ -36,6 +35,7 @@ class BestEdit extends Component {
                 <th scope="col">Hentested</th>
                 <th scope="col">Leveringstid</th>
                 <th scope="col">Leveringssted</th>
+                <th scope="col">Gruppe</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -45,12 +45,13 @@ class BestEdit extends Component {
                 <td>{bestilling.leieid}</td>
                 <td>{bestilling.fornavn} {bestilling.etternavn}</td>
                 <td>{bestilling.antall}</td>
-                <td>{bestilling.start.getHours()}:{bestilling.start.getMinutes()} {bestilling.start.getDate()}.{bestilling.start.getMonth()}.{bestilling.start.getFullYear()}</td>
+                <td>{bestilling.start.getHours()}:{bestilling.start.getMinutes()}<br></br>{bestilling.start.getDate()}.{bestilling.start.getMonth()}.{bestilling.start.getFullYear()}</td>
                 <td>{bestilling.lager}</td>
                 <td>{bestilling.slutt.getHours()}:{bestilling.slutt.getMinutes()} {bestilling.slutt.getDate()}.{bestilling.slutt.getMonth()}.{bestilling.slutt.getFullYear()}</td>
                 <td>{bestilling.sted}</td>
+                <td>{bestilling.personer}</td>
                 <td>
-                  <button type="button" className="btn btn-danger" key={bestilling.leieid} onClick={()=>history.push("/kunde/"+ bestilling.leieid + "/edit")} >
+                  <button type="button" className="btn btn-danger" onClick={this.delete} >
                     Slett
                   </button>
                 </td>
@@ -58,12 +59,12 @@ class BestEdit extends Component {
             ))}
             </tbody>
           </table>
-          <hr className="pt-3 pb-4"></hr>
+          <hr className="pt-1 pb-4"></hr>
+
           <div>
             <h4>Endre bestilling</h4>
           </div>
           {this.bestillinger.map(bestilling => (
-
           <form>
             <div className="form-row pt-5">
                <div className="col mb-3">
@@ -76,7 +77,7 @@ class BestEdit extends Component {
                </div>
                <div className="col mb-3">
                  <label htmlFor="exampleInputEmail1">Hentested</label>
-                 <select className="custom-select" onChange={event => this.setState({ hentested: event.target.value})}>
+                 <select className="custom-select" id="hent" onChange={event => this.setState({ hentested: event.target.value})}>
                    <option defaultValue>Velg sted</option>
                    <option value="1">Haugastøl</option>
                    <option value="2">Finse</option>
@@ -95,7 +96,7 @@ class BestEdit extends Component {
                </div>
                <div className="col mb-3">
                  <label htmlFor="exampleInputPass">Leveringssted</label>
-                 <select className="custom-select" onChange={event => this.setState({ leveringssted: event.target.value})}>
+                 <select className="custom-select" id="lev" onChange={event => this.setState({ leveringssted: event.target.value})}>
                    <option defaultValue>Velg sted</option>
                    <option value="1">Haugastøl</option>
                    <option value="2">Finse</option>
@@ -122,10 +123,7 @@ class BestEdit extends Component {
                  </div>
                 </div>
 
-
-
               </div>
-
 
             </form>
           ))}
@@ -143,29 +141,41 @@ class BestEdit extends Component {
   mounted() {
       bestillingService.getBest(this.props.match.params.leieid, bestilling => {
       this.bestillinger = bestilling;
-      console.log(this.props.match.params.leieid);
+      console.log(bestilling);
+      this.setState({
+        start: bestilling[0].start.getFullYear()+"-"+(bestilling[0].start.getMonth() < 10 ? '0'+bestilling[0].start.getMonth() :bestilling[0].start.getMonth())+"-"+(bestilling[0].start.getDate() < 10 ? '0'+bestilling[0].start.getDate() :bestilling[0].start.getDate()),
+        slutt: bestilling[0].slutt.getFullYear()+"-"+(bestilling[0].slutt.getMonth() < 10 ? '0'+bestilling[0].slutt.getMonth() :bestilling[0].slutt.getMonth())+"-"+(bestilling[0].slutt.getDate() < 10 ? '0'+bestilling[0].slutt.getDate() :bestilling[0].slutt.getDate()),
+        hente: (bestilling[0].start.getHours() < 10 ? '0'+bestilling[0].start.getHours() :bestilling[0].start.getHours())+":"+(bestilling[0].start.getMinutes() < 10 ? '0'+bestilling[0].start.getMinutes() :bestilling[0].start.getMinutes()),
+        levere: (bestilling[0].slutt.getHours() < 10 ? '0'+bestilling[0].slutt.getHours() :bestilling[0].slutt.getHours())+":"+(bestilling[0].slutt.getMinutes() < 10 ? '0'+bestilling[0].slutt.getMinutes() :bestilling[0].slutt.getMinutes()),
+        hentested: bestilling[0].lager,
+        leveringssted: bestilling[0].sted,
+        gruppe: bestilling[0].personer
+      })
     });
-
-    console.log(this.bestillinger);
   }
 
   save() {
-    bestillingService.updateBest(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.hentested, this.state.leveringssted, this.state.gruppe, this.props.match.params.leieid, () => {
-
-    });
-    history.push('/nat');
+    if (hent.value != "" && lev.value != "") {
+      bestillingService.updateBest(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.hentested, this.state.leveringssted, this.state.gruppe, this.props.match.params.leieid, () => {
+        alert("Bestilling oppdatert")
+        history.push('/bestillingsOversikt');
+      })
+    }
 
   }
 
   delete() {
-    bestillingService.updateBest(this.bestillinger, () => {
-      history.push('/nat');
+    bestillingService.deleteBest(this.props.match.params.leieid, () => {
+      bestillingService.deleteBest(this.props.match.params.leieid, () => {
+        history.push('/bestillingsOversikt');
+        alert("Bestilling " + this.props.match.params.leieid + " slettet")
+      })
     });
   }
 
   cancel() {
-    history.push('/nat');
+    history.push('/bestillingsOversikt');
   }
 }
 
-export { BestEdit };
+export { EndreBestilling };

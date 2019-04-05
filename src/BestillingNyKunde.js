@@ -34,7 +34,7 @@ export class Kunde extends Component {
     return(
       <div className={this.state.vis}>
         <div className="pt-4">
-          <h4>Bestilling for nye kunder</h4>
+          <h4>Registrer ny kunde</h4>
         </div>
 
         <form className="pt-5">
@@ -116,7 +116,7 @@ export class Bestilling extends Component {
     return(
       <div className={this.state.vis}>
         <div className="pt-4 pb-5">
-          <h4>Bestilling for nye kunder</h4>
+          <h4>Registrer bestilling</h4>
         </div>
 
         <form>
@@ -274,7 +274,7 @@ export class Ekstrautstyr extends Component {
     return(
       <div className={this.state.vis}>
         <div className="pt-4">
-          <h4>Bestilling for nye kunder</h4>
+          <h4>Legg til sykler og ekstrautstyr</h4>
         </div>
 
         <form>

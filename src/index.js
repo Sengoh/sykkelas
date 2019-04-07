@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
@@ -7,15 +7,8 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import LogIn from './login.js';
 import { ansatteService } from './services';
 
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
-
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
-
-
-
 
 
 ReactDOM.render(

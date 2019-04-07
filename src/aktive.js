@@ -6,12 +6,8 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { kundeService } from './services';
+import { bestillingService } from './services';
 
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
-
-//win.loadUrl(`file://${__dirname}/page.html`);
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -38,21 +34,20 @@ export class AktiveBestillinger extends Component {
   render() {
     return (
       <div>
-      <Card>
-      <form className="row">
-      <div className="form-group col">
-        <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
-      </div>
-      <div className="form-group col">
-        <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
-      </div>
-      <div className="form-group col">
-        <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
-      </div>
-      </form>
-      </Card>
+        <div className="container">
+        <form className="row pb-3 pt-4">
+        <div className="form-group col">
+          <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
+        </div>
+        <div className="form-group col">
+          <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
+        </div>
+        <div className="form-group col">
+          <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
+        </div>
+        </form>
           <table className='table table-hover'>
-          <thead>
+          <thead className="thead-light">
             <tr>
               <th style={{width: 1 + 'em'}} scope="col">Kundenummer</th>
               <th scope="col"><NavLink to={'/kunder/'}></NavLink>Navn</th>
@@ -77,6 +72,7 @@ export class AktiveBestillinger extends Component {
           }
           </tbody>
         </table>
+        </div>
       </div>
     );
   }
@@ -126,81 +122,227 @@ export class AktiveBestillinger extends Component {
 //{this.kunde.brukerid}
 export class Test extends Component {
   kunde = null;
+
+  //Variabler for dato
   fraDato = null;
+  tilDato = null;
   dd= null;
   mm= null;
   yyyy = null;
-  tilDato = null;
-  hente = null;
+
+  //Variabler for tid
+  henteTid = null;
+  levereTid = null;
   tid = null;
-  levere = null;
   m = null;
   t = null;
+
+  //Variabler for sykkelvalg
+  hente = null;
+  levere = null;
   terreng = 0;
   tandem = 0;
   el = 0;
+  querySjekk = 0;
+  sykkelSjekk = 0;
+  lager = [];
+  steder = [];
+  antallPersoner = 1;
+
   temp = 0;
   tempM = null;
   sql = "";
-  sykler = [];
+  sykler = [[],[],[]];
+  utstyr = [[],[],[]];
   current = null;
 
+
+  syklerInfo = null;
+  utstyrInfo = null;
+
+  listTerreng = [];
+  listTandem = [];
+  listEl = [];
+
+
+  handleSykkel() {
+    if(this.sykkelSjekk == 6) {
+      if(this.querySjekk == 6) {
+        ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, 1, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
+            ansatteService.getPrevious(current => {
+              this.current = current.IDENTITY;
+              console.log(this.current)
+              for(var i = 0;i<this.sykler.length;i++) {
+                for(var j = 0;j<this.sykler[i].length;j++) {
+                  ansatteService.insertSykkel(this.current,parseInt(this.sykler[i][j].id),sykkel => {
+                    console.log("Complete sykler");
+                  })
+                }
+              }
+              for(var i = 0;i<this.utstyr.length;i++) {
+                for(var j = 0;j<this.utstyr[i].length;j++) {
+                  ansatteService.insertUtstyr(this.current,parseInt(this.utstyr[i][j].utstyrid),sykkel => {
+                    console.log("Complete utstyr");
+                  })
+                }
+              }
+              console.log("Complete leie");
+              alert("Bestilling gjennomført");
+              history.push("/bestilling/" + this.current);
+            })
+          })
+      } else {
+        return;
+      }
+    } else {
+      console.log("nah");
+      return;
+    }
+    console.log(this.sykkelSjekk);
+  }
   handleSubmit(event) {
-        //SCOPE_IDENTITY()
-    this.sql = "insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansatteid,hentested,leveringssted) values (" + this.fraDato + " " + this.hente + ":00" + "," + this.tilDato + " " + this.levere + ":00" + "," + this.props.match.params.id + "," + 1 + "," + 1 + "," + 1 +");";
-    ansatteService.insertLeie(this.fraDato + " " + this.hente + ":00", this.tilDato + " " + this.levere + ":00", this.props.match.params.id, 1, 1, 1,leier => {
-      ansatteService.getPrevious(current => {
-        this.current = current.IDENTITY;
-        console.log(this.current)
-        if(!terreng.disabled && terreng.value != 0) {
-          console.log("test");
-          ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
-            this.sykler = sykler;
-            console.log(this.sykler);
-            for(var i = 0;i<this.sykler.length;i++) {
-              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
+    errorTerreng.innerText = "";
+    errorTandem.innerText = "";
+    errorEl.innerText = "";
+    errorHjelm.innerText = "";
+    errorBarn.innerText = "";
+    errorBagasje.innerText = "";
+    this.sykkelSjekk = 0;
+    this.querySjekk = 0;
+    if(!gruppe.disabled && gruppe.value != 0) {
+      this.antallPersoner += parseInt(gruppe.value);
+    }
 
-              })
-              //this.sql = "";
-              console.log(this.sql);
-            }
-          })
-          //this.sql = "insert into leietaker_has_sykler (leietaker_leieid,sykler_sykkelid) values (" +
-        }
-        if(!tandem.disabled && tandem.value != 0) {
-          console.log("test");
-          ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
-            this.sykler = sykler;
-            console.log(this.sykler);
-            for(var i = 0;i<this.sykler.length;i++) {
-              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
-
-              })
-              //this.sql = "";
-              console.log(this.sql);
-            }
-          })
-        }
-        if(!el.disabled && el.value != 0) {
-          console.log("test");
-          ansatteService.getSykkel("el",parseInt(el.value),sykler => {
-            this.sykler = sykler;
-            console.log(this.sykler);
-            for(var i = 0;i<this.sykler.length;i++) {
-              ansatteService.insertSykkel(this.current,this.sykler[i].sykkelid,sykkel => {
-
-              })
-              //this.sql = "";
-              console.log(this.sql);
-            }
-          })
+    if(!terreng.disabled && terreng.value != 0) {
+      console.log("test");
+      console.log(terreng.value);
+      ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
+        console.log(sykler);
+        if(sykler.length == terreng.value) {
+          console.log("yea");
+          this.sykler[0] = sykler;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+          //this.sykler[0] = sykler;
+        } else {
+          errorTerreng.innerText = "Ikke nok sykler.";
+          this.sykler[0] = [];
+          console.log(this.sykler[0]);
+          this.sykkelSjekk++;
+          this.handleSykkel();
         }
       })
+  } else {
+    this.querySjekk++;
+    this.sykkelSjekk++;
+    this.handleSykkel();
+  }
+  if(!tandem.disabled && tandem.value != 0) {
+    console.log("test");
+
+    ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
+      if(sykler.length == tandem.value) {
+        console.log("yea");
+        this.sykler[1] = sykler;
+        this.querySjekk++;
+        this.sykkelSjekk++;
+        this.handleSykkel();
+        //this.sykler[0] = sykler;
+      } else {
+        errorTandem.innerText = "Ikke nok sykler.";
+        this.sykler[1] = [];
+        console.log(this.sykler[1]);
+        this.sykkelSjekk++;
+        this.handleSykkel();
+      }
     })
-
-
-    //alert(this.sql);
-
+  } else {
+    this.querySjekk++;
+    this.sykkelSjekk++;
+    this.handleSykkel();
+  }
+  if(!el.disabled && el.value != 0) {
+    console.log("test");
+    ansatteService.getSykkel("el",parseInt(el.value),sykler => {
+      if(sykler.length == el.value) {
+        console.log("yea");
+        this.sykler[2] = sykler;
+        this.querySjekk++;
+        this.sykkelSjekk++;
+        this.handleSykkel();
+        //this.sykler[0] = sykler;
+      } else {
+        errorEl.innerText = "Ikke nok sykler.";
+        this.sykler[2] = [];
+        this.elSjekk = false;
+        console.log(this.sykler[2]);
+        this.sykkelSjekk++;
+        this.handleSykkel();
+      }
+    })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+    if(hjelm.value != 0) {
+      ansatteService.getUtstyr("hjelm",parseInt(hjelm.value),utstyr=> {
+        if(utstyr.length == hjelm.value) {
+          this.utstyr[0] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorHjelm.innerText = "Ikke nok hjelmer.";
+          this.utstyr[0] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+    if(barnevogn.value != 0) {
+      ansatteService.getUtstyr("barnevogn",parseInt(barnevogn.value),utstyr => {
+        if(utstyr.length == barnevogn.value) {
+          this.utstyr[1] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorBarn.innerText = "Ikke nok barnevogner.";
+          this.utstyr[1] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
+    if(bagasje.value != 0) {
+      ansatteService.getUtstyr("bagasjevogn",parseInt(bagasje.value),utstyr => {
+        if(utstyr.length == bagasje.value) {
+          this.utstyr[2] = utstyr;
+          this.querySjekk++;
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        } else {
+          errorBagasje.innerText = "Ikke nok bagasjevogner.";
+          this.utstyr[2] = [];
+          this.sykkelSjekk++;
+          this.handleSykkel();
+        }
+      })
+    } else {
+      this.querySjekk++;
+      this.sykkelSjekk++;
+      this.handleSykkel();
+    }
   }
 
 
@@ -208,7 +350,7 @@ export class Test extends Component {
     if (!this.kunde) return null;
 
     return(
-      <div>
+      <div className="container">
         <table className='table'>
         <thead>
           <tr>
@@ -240,17 +382,20 @@ export class Test extends Component {
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(1)}/>
             <label className="form-check-label">Terrengsykkel</label>
-            <input id="terreng" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+            <div><span>Antall</span><input id="terreng" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br /></div>
+            <span className="error" id="errorTerreng"></span><br />
           </div>
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(2)} />
             <label className="form-check-label">Tandemsykkel</label>
-            <input id="tandem" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+            <div><span>Antall</span> <input id="tandem" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /><br /></div>
+            <span className="error" id="errorTandem"></span><br />
           <div className="form-check">
           </div>
             <input className="form-check-input" type="checkbox" onChange={()=>this.sykkelValg(3)} />
             <label className="form-check-label">Elsykkel</label>
-            <input id="el" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /><br />
+            <div><span>Antall</span> <input id="el" placeholder='0' style={{width: 8 + 'em',display: "inline"}} type="number" className="form-control form-control-sm" disabled  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /><br /></div>
+            <span className="error" id="errorEl"></span><br />
           </div>
         </div>
       </div>
@@ -271,53 +416,75 @@ export class Test extends Component {
         <div className="row-sm-10">
           <div className="form-group">
             <Form.Label>Fra:</Form.Label>
-            <input id="hente" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.hente} onBlur={this.endreTid} onChange={e => (this.hente = e.target.value)} />
+            <input id="henteTid" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.henteTid} onBlur={this.endreTid} onChange={e => (this.henteTid = e.target.value)} />
             <Form.Label>Til:</Form.Label>
-            <input id="levere" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levere} onBlur={this.endreTid} onChange={e => (this.levere = e.target.value)} />
+            <input id="levereTid" style={{width: 11 + 'em'}} type="time" className="form-control" step="600" value={this.levereTid} onBlur={this.endreTid} onChange={e => (this.levereTid = e.target.value)} />
           </div>
           <span className="error" id="errorT"></span><br />
+        </div>
+      </div>
+      <div className="col">
+        <legend className="row-form-label row-sm-2 pt-0">Hente og levere</legend>
+        <div className="row-sm-10">
+          <div className="form-group">
+            <Form.Label>Hentested:</Form.Label>
+            <select id="hente" className="form-control">
+              {this.lager.map(lager => (
+                <option key={lager.lagerid} value={lager.lagerid}>{lager.lager}</option>
+              ))}
+            </select>
+            <Form.Label>Leveringssted:</Form.Label>
+            <select id="levere" className="form-control">
+              {this.steder.map(sted => (
+                <option key={sted.stedid} value={sted.stedid}>{sted.sted}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="col">
         <legend className="row-form-label row-sm-2 pt-0">Gruppe</legend>
           <div className="form-check">
             <input className="form-check-input" type="checkbox" onChange={()=>gruppe.disabled ? gruppe.disabled = false : gruppe.disabled = true} />
-            <label>Gruppe</label>
-            <input id="gruppe" style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm" disabled /> <br />
+            <label>Antall</label>
+            <input id="gruppe" placeholder='0' style={{width: 8 + 'em'}} type="number" className="form-control form-control-sm"  min='0' disabled onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} /> <br />
           </div>
         </div>
       </div>
       <Card title="Ekstrautstyr">
       <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Hjelm</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="hjelm"  min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value}/>
+            <span className="error" id="errorHjelm"></span><br />
           </div>
         </div>
       </div>
       <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Barnevogn</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="barnevogn" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBarn"></span><br />
           </div>
           </div>
         </div>
         <div className="form-group row">
-        <div className="col-sm-2">Checkbox</div>
+        <div className="col-sm-2">Bagasjevogn</div>
         <div className="col-sm-10">
           <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="gridCheck1" />
             <label className="form-check-label">
-              Example checkbox
+              Antall
             </label>
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="bagasje" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBagasje"></span><br />
           </div>
           </div>
         </div>
@@ -358,25 +525,25 @@ export class Test extends Component {
     }
   }
   endreDato() {
-    errorD.innerHTML = "";
+    errorD.innerText = "";
 
     //Sjekker om hentedatoen skjer etter leveringdatoen, og endrer leveringdatoen hvis den er det
     if(this.fraDato > this.tilDato) {
-      errorD.innerHTML = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
+      errorD.innerText = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
       this.tilDato = this.fraDato;
     }
 
     //Sjekker om hentedatoen skjer i fortiden, og endrer den hvis den er det
     if(this.fraDato < (this.yyyy + "-0" + this.mm + "-" + this.dd)) {
-      errorD.innerHTML = "Valgt dato er feil. Endret til dagens dato.";
+      errorD.innerText = "Valgt dato er feil. Endret til dagens dato.";
       this.fraDato = (this.yyyy + "-0" + this.mm + "-" + this.dd)
     }
   }
   endreTid() {
-    errorT.innerHTML = "";
+    errorT.innerText = "";
 
     //Endrer hentetid minutter
-    this.tempM = Math.ceil(hente.value.split(":")[1]/10)*10;
+    this.tempM = Math.ceil(henteTid.value.split(":")[1]/10)*10;
     if(this.tempM == 0) {
       this.tempM = "00";
     }
@@ -384,10 +551,10 @@ export class Test extends Component {
       this.tempM = "00";
     }
     console.log(this.tempM);
-    this.hente = hente.value.split(":")[0] + ":" + this.tempM;
+    this.henteTid = henteTid.value.split(":")[0] + ":" + this.tempM;
 
     //Endrer leveringstid minutter
-    this.tempM = Math.ceil(levere.value.split(":")[1]/10)*10;
+    this.tempM = Math.ceil(levereTid.value.split(":")[1]/10)*10;
     if(this.tempM == 0) {
       this.tempM = "00";
     }
@@ -395,37 +562,37 @@ export class Test extends Component {
       this.tempM = "00";
     }
     console.log(this.tempM);
-    this.levere = levere.value.split(":")[0] + ":" + this.tempM;
+    this.levereTid = levereTid.value.split(":")[0] + ":" + this.tempM;
 
     //Sjekker om hentetiden er etter leverigstiden og endrer leveringstiden hvis den er det
-    if(this.fraDato == this.tilDato && this.hente > this.levere) {
-      this.levere = this.hente;
-      errorT.innerHTML = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
+    if(this.fraDato == this.tilDato && this.henteTid > this.levereTid) {
+      console.log("wut");
+      this.levereTid = this.henteTid;
+      errorT.innerText = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
     }
 
     //Sjekker om hentetiden skjer i fortiden, og endrer den hvis den er det
-    if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.hente < this.t + ":" + this.m) {
-      this.hente = this.t + ":" + this.m;
-      errorT.innerHTML = "Hentetider er i fortiden. Hentetid endret.";
+    if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.henteTid < this.t + ":" + this.m) {
+      console.log("wat");
+      this.henteTid = this.t + ":" + this.m;
+      errorT.innerText = "Hentetiden er i fortiden. Hentetid endret.";
     }
 
-  }
-  toggle(test) {
-    console.log(test);
-    test.value = 10;
   }
   //
   //onClick={()=>history.push("/")}
   mounted() {
     this.fraDato = new Date();
-    this.dd = this.fraDato.getDate();
+    this.ahh = new Date();
+    console.log(this.ahh);
+    this.dd = ("0" + this.fraDato.getDate()).slice(-2);
     this.mm = this.fraDato.getMonth()+1;
     this.yyyy = this.fraDato.getFullYear();
     console.log(this.yyyy);
     this.fraDato = this.yyyy + "-0" + this.mm + "-" + this.dd;
     console.log(this.fraDato);
     this.tilDato = this.fraDato;
-    this.hente = new Date();
+    this.henteTid = new Date();
     this.tid = new Date();
     this.m = Math.ceil(this.tid.getMinutes()/10)*10;
     this.t = this.tid.getHours()
@@ -435,26 +602,115 @@ export class Test extends Component {
     } else if (this.m >= 0 && this.m < 10) {
       this.m = "10";
     }
-    this.hente = this.t + ":" + this.m;
-    this.levere = this.hente;
+    this.henteTid = this.t + ":" + this.m;
+    this.levereTid = this.henteTid;
     kundeService.getKunde(this.props.match.params.id,kunde =>{
       this.kunde = kunde;
     })
+    bestillingService.finnSted(steder => {
+      this.lager = steder[1];
+      this.steder = steder[0];
+    })
   }
 }
-// ReactDOM.render(
-//   <HashRouter>
-//     <div>
-//     <Route path="/" component={Home} />
-//
-//     <Route exact path="/" component={AktiveBestillinger} />
-//
-//     <Route exact path="/kunde/:id" component={Test} />
-//     </div>
-//   </HashRouter>,
-//   document.getElementById('landing')
-// );
-//<Route exact path="/kunder" component={Test} />
 
+export class Kvittering extends Component {
+  bestilling = null;
+  sykler = null;
+  utstyr = null;
+  terreng = 0;
+  tandem = 0;
+  el = 0;
+
+  render() {
+    if (!this.bestilling || !this.sykler || !this.utstyr) return null;
+
+    return(
+      <div>
+        {/*<Card title="Kvittering">
+        <p>Kunde: {this.bestilling.fornavn} {this.bestilling.etternavn}</p>
+        <h5>Sykler</h5>
+        <p>Terreng: {this.bestilling.sykkelid} {this.bestilling.tester} sykler</p>
+        <p>Tandem: sykler</p>
+        <p>El: sykler</p>
+        <h5>Tid og sted</h5>
+
+        <br />
+        <p>Antall personer: </p>
+        // {for(var i = 0;i<this.bestilling.length;i++) {
+        //
+        // }}
+        </Card>*/}
+        <Card title="Kvittering">
+        <p>Bestillingsnummer: {this.props.match.params.id}</p>
+        <p>Kunde: {this.bestilling.fornavn} {this.bestilling.etternavn}</p>
+        <div className="row">
+          <div className="col-2">
+            <h5>Sykler</h5>
+            <p>Terreng: {this.sykkelInfo("terreng")}</p>
+            <p>Tandem: {this.sykkelInfo("tandem")}</p>
+            <p>El: {this.sykkelInfo("el")}</p>
+          </div>
+          <div className="col-2">
+            <h5>Utstyr</h5>
+            <p>Hjelmer: {this.utstyrInfo("hjelm")}</p>
+            <p>Barnevogner: {this.utstyrInfo("barnevogn")}</p>
+            <p>Bagasjevogner: {this.utstyrInfo("bagasjevogn")}</p>
+          </div>
+        </div>
+        <h5>Tid og sted</h5>
+        <div className="row">
+          <div className="col-2">
+            <h6>Hente</h6>
+            <p>Dato: {this.bestilling.start.getDate()}.{this.bestilling.start.getMonth()}.{this.bestilling.start.getFullYear()}</p>
+            <p>Tid: {this.bestilling.start.getHours()}:{this.bestilling.start.getMinutes()}</p>
+            <p>Hentedted: {this.bestilling.lager}</p>
+          </div>
+          <div className="col-2">
+            <h6>Levere</h6>
+            <p>Dato: {this.bestilling.slutt.getDate()}.{this.bestilling.slutt.getMonth()}.{this.bestilling.slutt.getFullYear()}</p>
+            <p>Tid: {this.bestilling.slutt.getHours()}:{this.bestilling.slutt.getMinutes()}</p>
+            <p>Leveringssted: {this.bestilling.sted}</p>
+          </div>
+
+        </div>
+        <NavLink to="/Sivert">Tilbake</NavLink>
+        </Card>
+      </div>
+    )
+  }
+  sykkelInfo(type) {
+    for(var i = 0;i<this.sykler.length;i++) {
+      if(this.sykler[i].sykkeltype == type) {
+        return this.sykler[i].t;
+      }
+    }
+    return 0;
+  }
+  utstyrInfo(type) {
+    for(var i = 0;i<this.utstyr.length;i++) {
+      if(this.utstyr[i].utstyrtype == type) {
+        return this.utstyr[i].t;
+      }
+    }
+    return 0;
+  }
+  mounted() {
+    console.log(this.props.location.pathname);
+    kundeService.kvittering(this.props.match.params.id,bestilling => {
+      this.bestilling = bestilling;
+      console.log(this.bestilling);
+
+    })
+    kundeService.kvitteringSykler(this.props.match.params.id,sykler => {
+      this.sykler = sykler;
+      console.log(this.sykler);
+    })
+    kundeService.kvitteringUtstyr(this.props.match.params.id,utstyr => {
+      this.utstyr = utstyr;
+      console.log(this.utstyr);
+    })
+  }
+}
 // export AktiveBestillinger;
 // export Test;

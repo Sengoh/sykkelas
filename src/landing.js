@@ -1,58 +1,62 @@
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
-import {AktiveBestillinger, Test} from './aktive';
+import { connection } from "./mysql_connection"
+import {AktiveBestillinger, Test, Kvittering} from './aktive';
 import AnsattM from './startMeny';
+import BestillingsOversikt from './BestillingsOversikt';
+import {EndreBestilling, BestDetails} from './EndreBestilling';
+import Best from './bestilling';
 
-
-import createHashHistory from 'history/createHashHistory';
+import createHashHistory from "history/createHashHistory";
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
-
-class Menu extends Component {
-  render() {
-
-  }
-}
 
 class Home extends Component {
   render() {
     return (
-      <NavBar brand="Sykkelutleie AS">
-      <Card title="Sykkelutleie AS"><NavBar.Link to="/login">Logg inn for ansatte</NavBar.Link></Card>
-        <a href='./Tharmika.html'>Tharmika</a>
-        <NavBar.Link to="/Natharek.html">Natharek</NavBar.Link>
-        <NavBar.Link to="/William.html">William</NavBar.Link>
-        <NavBar.Link to="/Admin">Lagersiden</NavBar.Link>
-        <NavBar.Link to="/Sivert">Sivert</NavBar.Link>
-        <NavBar.Link to="/aktive">Aktive bestillinger</NavBar.Link>
-      </NavBar>
-
+      <AnsattM />
     );
   }
 }
 
-
+class Nav extends Component {
+  render() {
+    return (
+      <NavBar to="/aMeny" brand="SykkelUtleie AS">
+        <NavBar.Link to="/regB">Registrer bestilling ny kunde</NavBar.Link>
+        <NavBar.Link to="/Sivert">Registrer bestilling eksisterende kunde</NavBar.Link>
+        <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
+        <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
+      </NavBar>
+    );
+  }
+}
 
 ReactDOM.render(
   <HashRouter>
     <div>
-    <AnsattM />
-    <Route exact path="/" component={Home} />
-    {/*Bestillinger'*/}
-      {/*Ny kunde*/}
-      <Route exact path="/login" render={()=>{window.location.href="login.html"}} />
-      <Route exact path="/aktive" render={()=>{window.location.href="aktive.html"}} />
-      <Route exact path="/Admin" render={()=>{window.location.href="admin.html"}} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/aMeny" component={AnsattM} />
+      <Route exact path="/(regB|Sivert|bestillingsOversikt|register)" component={Nav} />
 
-      {/*Eksisterende kunde*/}
-        <Route exact path="/Sivert" component={AktiveBestillinger} />
-        <Route exact path="/kunde/:id" component={Test} />
+      <Route exact path="/regB" component={Best} />
+
+      <Route exact path="/Sivert" component={AktiveBestillinger} />
+      <Route exact path="/kunde/:id" component={Test} />
+      <Route exact path="/bestilling/:id" component={Kvittering} />
+
+      <Route exact path="/bestillingsOversikt" component={BestillingsOversikt} />
+      <Route exact path="/bestillingsOversikt/:leieid/edit" component={Nav} />
+      <Route exact path="/bestillingsOversikt/:leieid/edit" component={EndreBestilling} />
+
+      <Route exact path="/loggut" render={()=>{window.location.href="public/index.html"}} />
+
+
+
+
     </div>
   </HashRouter>,
-  document.getElementById('landing')
+  document.getElementById("landing")
 );
-//<Route exact path="/Sivert" render={()=>{window.location.href="Sivert.html"}} />

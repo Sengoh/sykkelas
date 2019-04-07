@@ -28,6 +28,11 @@ class Menu extends Component {
                 Sykkelverksted
               </NavLink>
             </td>
+            <td>
+              <NavLink activeStyle={{ color: 'darkblue' }} to="/courses">
+                Courses
+              </NavLink>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -37,6 +42,12 @@ class Menu extends Component {
 
 /*<button className="btn btn-primary btn-large centerButton"
 type="submit" autoFocus onClick={e => this.input = event.target.value}>Send</button>*/
+
+class Home extends Component {
+  render() {
+    return <div>Welcome to WhiteBoard</div>;
+  }
+}
 
 class BikeList extends Component {
   sykler = [];
@@ -75,7 +86,6 @@ class BikeList extends Component {
   mounted() {
     bikeService.getBikes(sykler => {
       this.sykler = sykler;
-      console.log(sykler);
     });
   }
 }
@@ -151,6 +161,8 @@ ReactDOM.render(
     <Route exact path="/sykkel" component={BikeList} />
     <Route exact path="/sykkel/:id/" component={BikeDetails} />
     <Route exact path="/utleie" component={Utleie} />
+    <Route exact path="/" component={Home} />
+    <Route exact path="/sykler" component={BikeList} />
     </div>
   </HashRouter>,
   document.getElementById('admin')

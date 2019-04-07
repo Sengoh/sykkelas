@@ -12,13 +12,28 @@ class BicycleService {
   /*bikeDetails(success) {
     connection.query('select * from sykler INNER JOIN sykkelstatus on sykler.status=sykkelstatus.Statusid', (error, results))
   }*/
-  getBikedetails(success, id, sykkel) {
-    connection.query('select * from sykler where id=?', [id, sykkel], (error, results) => {
+  getBikedetails(id, success) {
+    connection.query('SELECT * FROM sykler INNER JOIN sykkelstatus on sykler.status=sykkelstatus.Statusid where id=?', [id], (error, results) => {
       if (error) return console.error(error);
 
-      success(results);
+      success(results[0]);
     });
   }
+
+  getBikeStatus(success) {
+    connection.query('SELECT * FROM sykkelstatus', (error, results) => {
+      if (error) return console.error(error);
+      success(results);
+
+    });
+  }
+
+/*  getStatusMessage(success) {
+    connection.query('SELECT status FROM sykler where id=? INNER JOIN sykkelstatus on sykler.status=sykkelstatus.Statusid', (error, results) => {
+      if (error) return console.error(error);
+      success(results);
+    });
+  } */
 
 
   updateBike(sykler, success) {
@@ -41,6 +56,24 @@ class BicycleService {
         if (error) return console.error(error);
       }
     );
+  }
+  collapsible(){
+  //https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate
+  var coll = document.getElementsByClassName("collapsible");
+  console.log(coll);
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
   }
 }
 export let bikeService = new BicycleService();

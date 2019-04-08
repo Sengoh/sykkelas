@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
-import { ansatteService, bestillingService } from './services';
+import { connection } from "../mysql_connection"
+import { ansatteService, bestillingService } from '../services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -17,7 +17,8 @@ class EndreBestilling extends Component {
     levere: "",
     hentested: null,
     leveringssted: null,
-    gruppe: null
+    gruppe: null,
+    err: "alert alert-danger d-none"
   }
 
   render() {
@@ -64,9 +65,12 @@ class EndreBestilling extends Component {
           <div>
             <h4>Endre bestilling</h4>
           </div>
+          <div class={this.state.err}>
+            Endring mislykket, velg hentested og leveringssted!
+          </div>
           {this.bestillinger.map(bestilling => (
           <form>
-            <div className="form-row pt-5">
+            <div className="form-row pt-3">
                <div className="col mb-3">
                  <label htmlFor="exampleInputEmail1">Fra</label>
                  <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.start} onChange={event => this.setState({ start: event.target.value})}/>
@@ -141,7 +145,7 @@ class EndreBestilling extends Component {
   mounted() {
       bestillingService.getBest(this.props.match.params.leieid, bestilling => {
       this.bestillinger = bestilling;
-      console.log(bestilling);
+      // Henter bestilling og oppdaterer state
       this.setState({
         start: bestilling[0].start.getFullYear()+"-"+(bestilling[0].start.getMonth() < 10 ? '0'+bestilling[0].start.getMonth() :bestilling[0].start.getMonth())+"-"+(bestilling[0].start.getDate() < 10 ? '0'+bestilling[0].start.getDate() :bestilling[0].start.getDate()),
         slutt: bestilling[0].slutt.getFullYear()+"-"+(bestilling[0].slutt.getMonth() < 10 ? '0'+bestilling[0].slutt.getMonth() :bestilling[0].slutt.getMonth())+"-"+(bestilling[0].slutt.getDate() < 10 ? '0'+bestilling[0].slutt.getDate() :bestilling[0].slutt.getDate()),
@@ -155,11 +159,13 @@ class EndreBestilling extends Component {
   }
 
   save() {
-    if (hent.value != "" && lev.value != "") {
+    if (hent.value != "Velg sted" && lev.value != "Velg sted") {
       bestillingService.updateBest(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.hentested, this.state.leveringssted, this.state.gruppe, this.props.match.params.leieid, () => {
         alert("Bestilling oppdatert")
         history.push('/bestillingsOversikt');
       })
+    } else {
+      this.setState({err: "alert alert-danger d-block"})
     }
 
   }

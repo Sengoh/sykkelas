@@ -369,7 +369,7 @@ export class Test extends Component {
               <td>{this.kunde.epost}</td>
               <td>{this.kunde.telefon}</td>
               <td>{this.kunde.addresse}, {this.kunde.postnr} {this.kunde.poststed}</td>
-              <td><Button.Danger><NavLink to="/Sivert" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
+              <td><Button.Danger><NavLink to="/eksisKunde" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
             </tr>
         </tbody>
       </table>
@@ -674,7 +674,7 @@ export class Kvittering extends Component {
           </div>
 
         </div>
-        <NavLink to="/Sivert">Tilbake</NavLink>
+        <NavLink to="/eksisKunde">Tilbake</NavLink>
         </Card>
       </div>
     )

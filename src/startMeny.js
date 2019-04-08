@@ -12,10 +12,7 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class AnsattM extends Component {
   render() {
     return (
-      <div
-        className="container d-flex justify-content-center"
-        style={{ marginTop: "35vh" }}
-      >
+      <div className="container d-flex justify-content-center" style={{ marginTop: "35vh" }}>
         <Card>
           <button
             type="button"

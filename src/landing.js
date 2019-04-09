@@ -46,7 +46,6 @@ class Nav extends Component {
       <NavBar to="/aMeny" brand="SykkelUtleie AS">
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
-        <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
         <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
         <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
 
@@ -54,7 +53,7 @@ class Nav extends Component {
     );
   }
   loggUt() {
-    window.location.href="public/index.html"
+    window.location.href="../public/index.html";
   }
   mounted() {
     ansatteService.getLogin(ansattid,ansatt => {

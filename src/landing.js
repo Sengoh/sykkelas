@@ -53,7 +53,7 @@ class Nav extends Component {
     );
   }
   loggUt() {
-    window.location.href="../public/index.html";
+    window.location.href="../public/index.html"
   }
   mounted() {
     ansatteService.getLogin(ansattid,ansatt => {
@@ -81,7 +81,6 @@ ReactDOM.render(
       <Route exact path="/bestillingsOversikt/:leieid/edit" component={Nav} />
       <Route exact path="/bestillingsOversikt/:leieid/edit" component={EndreBestilling} />
 
-      <Route exact path="/loggut" render={()=>{window.location.href="public/index.html"}} />
 
 
 

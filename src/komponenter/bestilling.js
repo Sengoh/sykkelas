@@ -18,14 +18,14 @@ export class BestMeny extends Component{
         <Card>
           <button
             type="button"
-            className="btn btn-light m-2"
+            className="btn btn-secondary m-2"
             onClick={this.routeChange1}
           >
             Ny kunde
           </button>
           <button
             type="button"
-            className="btn btn-light m-2"
+            className="btn btn-secondary m-2"
             onClick={this.routeChange2}
           >
             Eksisterende kunde

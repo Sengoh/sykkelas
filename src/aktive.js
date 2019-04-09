@@ -36,11 +36,19 @@ export class AktiveBestillinger extends Component {
   whereState = "";
   i = 0;
   kunder = [];
+  kunder2 = [{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"}];
 
   render() {
     return (
       <div>
+      <div>
+        {this.kunder2.map(kunde =>(
+          <button></button>
+        ))}
+      </div>
         <div className="container">
+
+        {/*Sjema for å søke etter kunde med kundenummer,epost eller telefon*/}
         <form className="row pb-3 pt-4">
         <div className="form-group col">
           <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
@@ -52,6 +60,8 @@ export class AktiveBestillinger extends Component {
           <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
         </div>
         </form>
+
+          {/*Tabell som viser kunder*/}
           <table className='table table-hover'>
           <thead className="thead-light">
             <tr>
@@ -64,6 +74,7 @@ export class AktiveBestillinger extends Component {
             </tr>
           </thead>
           <tbody>
+          {/*Sjekker om kunder har blitt funnet for søket og viser dem, eller viser tilbakemelding om at ingen kunde er funnet*/}
           {this.kunder.length>0 ?
             this.kunder.map(kunder => (
               <tr key={kunder.brukerid} onClick={()=>history.push("/kunde/"+ kunder.brukerid)}>
@@ -83,6 +94,8 @@ export class AktiveBestillinger extends Component {
     );
   }
   //onClick={()=>history.push("/kunde/"+ kunder.brukerid)}
+
+  //Funksjon som finner kunde som tilfredstiller søket
   finnKunde() {
     this.where = [];
     this.kundenr = kundenummer.value;
@@ -91,20 +104,29 @@ export class AktiveBestillinger extends Component {
     this.whereState = "";
     this.sql = "select * from kunder where";
 
+    //Sjekker om søket bruker kundenummer
     if(this.kundenr != " "){
 	     this.where.push(" brukerid LIKE '%"+this.kundenr+"%'");
     }
+
+    //Sjekker om søket bruker epost
     if(this.epost != " "){
  	     this.where.push(" epost LIKE '%"+this.epost+"%'");
     }
+
+    //Sjekker om søket bruker telefon
     if(this.tlf != " "){
   	   this.where.push(" telefon LIKE '%"+this.tlf+"%'");
     }
+
+    //Lager sql spørring med valgt filtre
     for(this.i=0;this.i<(this.where.length-1);this.i++){
 	     this.whereState += this.where[this.i] + " AND ";
      }
      this.whereState += this.where[this.where.length-1];
      this.sql += this.whereState + ";";
+
+     //Kjører sql spørringen som er laget og finner kunder
      connection.query(this.sql,(error, results) => {
       if (error) return console.error(error);
 
@@ -170,14 +192,22 @@ export class Test extends Component {
   listTandem = [];
   listEl = [];
 
-
+  //Funksjon som kjører for hver sykkel-og utstyrstype, og lagrer ny bestilling hvis alt stemmer
   handleSykkel() {
+
+    //Sjekker om alle sykkel- og utstyrtypene har blitt sjekket
     if(this.sykkelSjekk == 6) {
+
+      //Sjekker om det er nok av alle sykkel- og utstyrstype for de som har blitt valgt
       if(this.querySjekk == 6) {
+
+        //Lagrer ny bestilling med all valgt informasjon
         ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, ansattid, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
+            //Finner leieid til den nye bestillingen
             ansatteService.getPrevious(current => {
               this.current = current.IDENTITY;
               console.log(this.current)
+              //Legger til syklene som er valgt til den nye bestillingen
               for(var i = 0;i<this.sykler.length;i++) {
                 for(var j = 0;j<this.sykler[i].length;j++) {
                   ansatteService.insertSykkel(this.current,parseInt(this.sykler[i][j].id),sykkel => {
@@ -185,6 +215,7 @@ export class Test extends Component {
                   })
                 }
               }
+              //Legger til utstyr som er valgt til den nye bestillingen
               for(var i = 0;i<this.utstyr.length;i++) {
                 for(var j = 0;j<this.utstyr[i].length;j++) {
                   ansatteService.insertUtstyr(this.current,parseInt(this.utstyr[i][j].utstyrid),sykkel => {
@@ -193,37 +224,52 @@ export class Test extends Component {
                 }
               }
               console.log("Complete leie");
+              //Gir tilbakemelding om at bestillingen er gjennomført, og videresender til kvitteringsside
               alert("Bestilling gjennomført");
               history.push("/bestilling/" + this.current);
             })
           })
+      //Returnerer hvis det ikke er nok sykler eller utstyr
       } else {
         return;
       }
+    //Returnerer hvis alle syklene og utstyrene ikke har blitt sjekket enda
     } else {
       console.log("nah");
       return;
     }
     console.log(this.sykkelSjekk);
   }
+
+  //Funksjon som kjører når skjemaet sendes
   handleSubmit(event) {
+
+    //Setter alle feilmeldinger til blankt
     errorTerreng.innerText = "";
     errorTandem.innerText = "";
     errorEl.innerText = "";
     errorHjelm.innerText = "";
     errorBarn.innerText = "";
     errorBarnesete.innerText = "";
+
     this.sykkelSjekk = 0;
     this.querySjekk = 0;
+
+    //Sjekker om gruppe er valgt og legger til antall personer i gruppen
     if(!gruppe.disabled && gruppe.value != 0) {
       this.antallPersoner += parseInt(gruppe.value);
     }
 
+    //Sjekker om terreng er valgt
     if(!terreng.disabled && terreng.value != 0) {
       console.log("test");
       console.log(terreng.value);
+
+      //Sjekker om det finnes nok antall terreng sykler
       ansatteService.getSykkel("terreng",parseInt(terreng.value),sykler => {
         console.log(sykler);
+
+        //Hvis det finnes nok sykler, lagres syklene i en array
         if(sykler.length == terreng.value) {
           console.log("yea");
           this.sykler[0] = sykler;
@@ -231,6 +277,8 @@ export class Test extends Component {
           this.sykkelSjekk++;
           this.handleSykkel();
           //this.sykler[0] = sykler;
+
+        //Hvis det ikke finnes nok sykler, sendes en tilbakemelding om dette
         } else {
           errorTerreng.innerText = "Ikke nok sykler.";
           this.sykler[0] = [];
@@ -239,15 +287,21 @@ export class Test extends Component {
           this.handleSykkel();
         }
       })
+  //Kjører hvis terreng ikke er valgt
   } else {
     this.querySjekk++;
     this.sykkelSjekk++;
     this.handleSykkel();
   }
+
+  //Sjekker om tandem er valgt
   if(!tandem.disabled && tandem.value != 0) {
     console.log("test");
 
+    //Sjekker om det finnes nok antall tandem sykler
     ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
+
+      //Hvis det finnes nok sykler, lagres syklene i en array
       if(sykler.length == tandem.value) {
         console.log("yea");
         this.sykler[1] = sykler;
@@ -255,6 +309,8 @@ export class Test extends Component {
         this.sykkelSjekk++;
         this.handleSykkel();
         //this.sykler[0] = sykler;
+
+      //Hvis det ikke finnes nok sykler, sendes en tilbakemelding om dette
       } else {
         errorTandem.innerText = "Ikke nok sykler.";
         this.sykler[1] = [];
@@ -263,14 +319,22 @@ export class Test extends Component {
         this.handleSykkel();
       }
     })
+
+  //Kjører hvis tandem ikke er valgt
   } else {
     this.querySjekk++;
     this.sykkelSjekk++;
     this.handleSykkel();
   }
+
+  //Sjekker om elsykkel er valgt
   if(!el.disabled && el.value != 0) {
     console.log("test");
+
+    //Sjekker om det finnes nok antall elsykler
     ansatteService.getSykkel("el",parseInt(el.value),sykler => {
+
+      //Hvis det finnes nok sykler, lagres syklene i en array
       if(sykler.length == el.value) {
         console.log("yea");
         this.sykler[2] = sykler;
@@ -278,6 +342,8 @@ export class Test extends Component {
         this.sykkelSjekk++;
         this.handleSykkel();
         //this.sykler[0] = sykler;
+
+      //Hvis det ikke finnes nok sykler, sendes en tilbakemelding om dette
       } else {
         errorEl.innerText = "Ikke nok sykler.";
         this.sykler[2] = [];
@@ -287,6 +353,8 @@ export class Test extends Component {
         this.handleSykkel();
       }
     })
+
+    //Kjører hvis elsykkel ikke er valgt
     } else {
       this.querySjekk++;
       this.sykkelSjekk++;
@@ -501,7 +569,9 @@ export class Test extends Component {
       </div>
     )
   }
+  //Funksjon som endrer disabler og enabler input-feltene for sykkeltypene
   sykkelValg(sykkel) {
+
 
     switch(sykkel) {
       case 1:
@@ -587,7 +657,10 @@ export class Test extends Component {
   }
   //
   //onClick={()=>history.push("/")}
+
+  //Henter dato, tid, kundeinfo og hente og leveringsinfo når komponentet lastes
   mounted() {
+    //Henter dato
     this.fraDato = new Date();
     this.ahh = new Date();
     console.log(this.ahh);
@@ -598,8 +671,11 @@ export class Test extends Component {
     this.fraDato = this.yyyy + "-0" + this.mm + "-" + this.dd;
     console.log(this.fraDato);
     this.tilDato = this.fraDato;
+
+    //Henter tid
     this.henteTid = new Date();
     this.tid = new Date();
+    //Finner nærmeste tiende minutt
     this.m = Math.ceil(this.tid.getMinutes()/10)*10;
     this.t = this.tid.getHours()
     if(this.m >= 60) {
@@ -610,9 +686,13 @@ export class Test extends Component {
     }
     this.henteTid = this.t + ":" + this.m;
     this.levereTid = this.henteTid;
+
+    //Henter kundeinfo
     kundeService.getKunde(this.props.match.params.id,kunde =>{
       this.kunde = kunde;
     })
+
+    //Henter hentested og leveringssted
     bestillingService.finnSted(steder => {
       this.lager = steder[1];
       this.steder = steder[0];

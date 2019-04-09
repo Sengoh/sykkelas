@@ -63,8 +63,6 @@ class LogIn extends Component{
                     <label className="form-check-label" htmlFor="exampleCheck1">Husk meg</label>
                   </div>
                   <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
-                  <br></br><a href='./landing.html'>Midlertidig bypass</a>
-
               </form>
             </div>
 

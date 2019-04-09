@@ -53,6 +53,9 @@ class Nav extends Component {
       </NavBar>
     );
   }
+  loggUt() {
+    window.location.href="public/index.html"
+  }
   mounted() {
     ansatteService.getLogin(ansattid,ansatt => {
       this.ansatt = ansatt;

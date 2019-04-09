@@ -15,22 +15,25 @@ export class BestMeny extends Component{
   render() {
     return (
       <div className="container d-flex justify-content-center" style={{ marginTop: "35vh" }}>
-        <Card>
+
+        <div className="card border-dark">
+          <div className="card-body">
           <button
             type="button"
-            className="btn btn-secondary m-2"
+            className="btn btn-light m-2"
             onClick={this.routeChange1}
           >
             Ny kunde
           </button>
           <button
             type="button"
-            className="btn btn-secondary m-2"
+            className="btn btn-light m-2"
             onClick={this.routeChange2}
           >
             Eksisterende kunde
           </button>
-        </Card>
+          </div>
+        </div>
       </div>
 
     )

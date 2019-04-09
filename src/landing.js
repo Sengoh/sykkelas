@@ -9,10 +9,8 @@ import AnsattM from './startMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
 import {Best, BestMeny} from './komponenter/bestilling';
-//import {Kunde, Bestilling} from './tharmika';
-import AktivBestilling from './natharek';
-//import {BestEdit, BestDetails} from './endreBestilling';
-//import Best from './bestilling';
+import { ansatteService } from './services';
+
 
 let remote = require('electron').remote;
 let session = remote.session;
@@ -45,14 +43,10 @@ class Nav extends Component {
     if(!this.ansatt) return null;
 
     return (
-      <NavBar to="/aMeny" brand="Sykkelutleie AS">
-        <NavBar.Link to="/regB">Registrer bestilling THAR</NavBar.Link>
-        <NavBar.Link to="/Sivert">Registrer bestilling SIV</NavBar.Link>
-        <NavBar.Link to="/nat">Aktiv bestilling</NavBar.Link>
-        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
-        <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
-
-
+      <NavBar to="/aMeny" brand="SykkelUtleie AS">
+        <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
+        <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
+        <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
       </NavBar>
     );
   }

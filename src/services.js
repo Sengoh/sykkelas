@@ -17,6 +17,14 @@ class AnsatteService {
     });
   }
 
+  getLogin(id,success) {
+    connection.query('select * from ansatte where ansattid=?',[id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
+
   getKunde(brukerid, success) {
     connection.query('select * from kunder where brukerid=?', [brukerid], (error, results) => {
       if (error) return console.error(error);
@@ -54,7 +62,7 @@ class AnsatteService {
     });
   }
   insertLeie(start,slutt,kunde,ansatt,hente,levere,personer,success){
-    connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted,personer) values (?,?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere,personer],(error, results) => {
+    connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted,personer,registrert) values (?,?,?,?,?,?,?,CURRENT_TIMESTAMP)",[start,slutt,kunde,ansatt,hente,levere,personer],(error, results) => {
       if (error) return console.error(error);
 
       success(results);

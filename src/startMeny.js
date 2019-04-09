@@ -12,11 +12,9 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class AnsattM extends Component {
   render() {
     return (
-      <div
-        className="container d-flex justify-content-center"
-        style={{ marginTop: "35vh" }}
-      >
-        <Card>
+      <div className="container d-flex justify-content-center" style={{ marginTop: "35vh" }}>
+      <div className="card border-dark">
+        <div className="card-body">
           <button
             type="button"
             className="btn btn-light m-2"
@@ -38,7 +36,8 @@ class AnsattM extends Component {
           >
             Statistikk
           </button>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }

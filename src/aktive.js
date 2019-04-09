@@ -7,7 +7,13 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { kundeService } from './services';
 import { bestillingService } from './services';
-
+let remote = require('electron').remote;
+let session = remote.session;
+let ansattid;
+session.defaultSession.cookies.get({},(err,cookies) => {
+  if(err) console.error(err);
+  ansattid = cookies[0].value;
+})
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -168,7 +174,7 @@ export class Test extends Component {
   handleSykkel() {
     if(this.sykkelSjekk == 6) {
       if(this.querySjekk == 6) {
-        ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, 1, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
+        ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, ansattid, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
             ansatteService.getPrevious(current => {
               this.current = current.IDENTITY;
               console.log(this.current)
@@ -206,7 +212,7 @@ export class Test extends Component {
     errorEl.innerText = "";
     errorHjelm.innerText = "";
     errorBarn.innerText = "";
-    errorBagasje.innerText = "";
+    errorBarnesete.innerText = "";
     this.sykkelSjekk = 0;
     this.querySjekk = 0;
     if(!gruppe.disabled && gruppe.value != 0) {
@@ -324,15 +330,15 @@ export class Test extends Component {
       this.sykkelSjekk++;
       this.handleSykkel();
     }
-    if(bagasje.value != 0) {
-      ansatteService.getUtstyr("bagasjevogn",parseInt(bagasje.value),utstyr => {
-        if(utstyr.length == bagasje.value) {
+    if(barnesete.value != 0) {
+      ansatteService.getUtstyr("barnesete",parseInt(barnesete.value),utstyr => {
+        if(utstyr.length == barnesete.value) {
           this.utstyr[2] = utstyr;
           this.querySjekk++;
           this.sykkelSjekk++;
           this.handleSykkel();
         } else {
-          errorBagasje.innerText = "Ikke nok bagasjevogner.";
+          errorBarnesete.innerText = "Ikke nok barnesete.";
           this.utstyr[2] = [];
           this.sykkelSjekk++;
           this.handleSykkel();
@@ -369,7 +375,7 @@ export class Test extends Component {
               <td>{this.kunde.epost}</td>
               <td>{this.kunde.telefon}</td>
               <td>{this.kunde.addresse}, {this.kunde.postnr} {this.kunde.poststed}</td>
-              <td><Button.Danger><NavLink to="/Sivert" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
+              <td><Button.Danger><NavLink to="/eksisKunde" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
             </tr>
         </tbody>
       </table>
@@ -477,14 +483,14 @@ export class Test extends Component {
           </div>
         </div>
         <div className="form-group row">
-        <div className="col-sm-2">Bagasjevogn</div>
+        <div className="col-sm-2">Barnesete</div>
         <div className="col-sm-10">
           <div className="form-check">
             <label className="form-check-label">
               Antall
             </label>
-            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="bagasje" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
-            <span className="error" id="errorBagasje"></span><br />
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="barnesete" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBarnesete"></span><br />
           </div>
           </div>
         </div>
@@ -655,7 +661,7 @@ export class Kvittering extends Component {
             <h5>Utstyr</h5>
             <p>Hjelmer: {this.utstyrInfo("hjelm")}</p>
             <p>Barnevogner: {this.utstyrInfo("barnevogn")}</p>
-            <p>Bagasjevogner: {this.utstyrInfo("bagasjevogn")}</p>
+            <p>Barnesete: {this.utstyrInfo("barnesete")}</p>
           </div>
         </div>
         <h5>Tid og sted</h5>
@@ -674,7 +680,7 @@ export class Kvittering extends Component {
           </div>
 
         </div>
-        <NavLink to="/Sivert">Tilbake</NavLink>
+        <NavLink to="/eksisKunde">Tilbake</NavLink>
         </Card>
       </div>
     )
@@ -712,5 +718,7 @@ export class Kvittering extends Component {
     })
   }
 }
+
+
 // export AktiveBestillinger;
 // export Test;

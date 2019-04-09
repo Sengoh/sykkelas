@@ -1,14 +1,14 @@
 import React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService, bestillingService } from './services';
+import { connection } from "../mysql_connection"
+import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
+import { ansatteService, bestillingService } from '../services';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-
+// Regstrerer kunde
 export class Kunde extends Component {
 
   state = {
@@ -20,7 +20,9 @@ export class Kunde extends Component {
     addresse: "",
     poststed: "",
     postnr: null,
-    vis: "container d-block"
+    vis: "container d-block",
+    err: "alert alert-danger d-none"
+
   }
 
   endre = event => {
@@ -33,11 +35,14 @@ export class Kunde extends Component {
 
     return(
       <div className={this.state.vis}>
-        <div className="pt-4">
-          <h4>Registrer ny kunde</h4>
+        <div className="pt-4 pb-3">
+          <h4>1. Registrer kunde</h4>
+        </div>
+        <div class={this.state.err}>
+          Sjekk at alle feltene er utfylt!
         </div>
 
-        <form className="pt-5">
+        <form className="pt-2">
           <div className="form-row">
              <div className="col mb-3">
                <label htmlFor="exampleInputFn">Fornavn</label>
@@ -88,39 +93,49 @@ export class Kunde extends Component {
 
 
   add(){
-    bestillingService.addKunder(this.state.fn, this.state.en, this.state.epost, this.state.addresse, this.state.postnr, this.state.poststed, this.state.tlf, () => {
-    });
-    this.setState({ vis: "container d-none"})
+    if (this.state.fn != "" && this.state.en != "" && this.state.epost != "" && this.state.tlf != null && this.state.postnr != null && this.state.addresse != "" && this.state.poststed != "") {
+      bestillingService.addKunder(this.state.fn, this.state.en, this.state.epost, this.state.addresse, this.state.postnr, this.state.poststed, this.state.tlf, () => {
+      });
+      this.setState({ vis: "container d-none"})
+    } else {
+      this.setState({err: "alert alert-danger d-block"})
+    }
+
   }
 
 
 
 }
 
+// Registerer bestilling
 export class Bestilling extends Component {
 
   state = {
     bid: null,
-    start: '2019-03-25',
-    slutt: '2019-03-25',
-    hente: "00:00",
-    levere: "00:00",
+    start: "",
+    slutt: "",
+    hente: "",
+    levere: "",
     hentested: null,
     leveringssted: null,
-    gruppe: null,
-    vis: "container d-block"
+    gruppe: 0,
+    vis: "container d-block",
+    err: "alert alert-danger d-none"
   }
 
 
   render() {
     return(
       <div className={this.state.vis}>
-        <div className="pt-4 pb-5">
-          <h4>Registrer bestilling</h4>
+        <div className="pt-5 pb-2">
+          <h4>2. Registrer bestilling</h4>
+        </div>
+        <div class={this.state.err}>
+          Sjekk at alle feltene er utfylt!
         </div>
 
         <form>
-          <div className="form-row pt-5">
+          <div className="form-row pt-2">
              <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Fra</label>
                <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.start} onChange={event => this.setState({ start: event.target.value})}/>
@@ -192,7 +207,7 @@ export class Bestilling extends Component {
 
 
   }
-
+  // Overføring av brukerid til denne komponenten
   componentDidUpdate() {
     bestillingService.getKundeId(this.props.fn, this.props.en, this.props.epost, this.props.tlf, svar => {
       this.setState({bid: svar})
@@ -200,15 +215,19 @@ export class Bestilling extends Component {
   }
 
   add2 = () => {
-    bestillingService.addLeietakerNyK(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.bid.brukerid, this.state.hentested, this.state.leveringssted, this.state.gruppe, () => {
-    });
-    this.props.onClick(this.state.bid.brukerid)
-    this.setState({ vis: "container d-none"})
-
+    if (this.state.start != "" && this.state.hente != "" && this.state.slutt != "" && this.state.levere != "" && this.state.hentested != null && this.state.leveringssted != null) {
+      bestillingService.addLeietakerNyK(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.bid.brukerid, this.state.hentested, this.state.leveringssted, this.state.gruppe, () => {
+      });
+      this.props.onClick(this.state.bid.brukerid)
+      this.setState({ vis: "container d-none"})
+    } else {
+      this.setState({ err: "alert alert-danger d-block"})
+    }
   }
 
 }
 
+// Registrer sykler og ekstrautstyr
 export class Ekstrautstyr extends Component {
 
   state = {
@@ -233,7 +252,7 @@ export class Ekstrautstyr extends Component {
 
   render() {
 
-
+    // Brukes for å sjekke antall sykler og utstyr tilgjengelig
     const number = this.state.antallT.length
     const number1 = this.state.antallTandem.length
     const number2 = this.state.antallEl.length
@@ -273,8 +292,8 @@ export class Ekstrautstyr extends Component {
 
     return(
       <div className={this.state.vis}>
-        <div className="pt-4">
-          <h4>Legg til sykler og ekstrautstyr</h4>
+        <div className="pt-5">
+          <h4>3. Legg til sykler og ekstrautstyr</h4>
         </div>
 
         <form>
@@ -414,6 +433,7 @@ export class Ekstrautstyr extends Component {
     })
   }
 
+  // Overføring av leieid til denne komponenten
   componentDidUpdate() {
     bestillingService.getLeieId(this.props.bid, svar => {
       this.setState({lid: svar.leieid})
@@ -462,17 +482,8 @@ export class Ekstrautstyr extends Component {
       });
     }
 
-
-    // for (var i = 0; i < this.state.terreng; i++) {
-    //   idArray.push(this.state.antallT[i].id)
-    // }
-    // for (var i = 0; i < this.state.tandem; i++) {
-    //   idArray.push(this.state.antallTandem[i].id)
-    // }
-    // for (var i = 0; i < this.state.el; i++) {
-    //   idArray.push(this.state.antallEl[i].id)
-    // }
-
+    alert("Bestilling registrert")
+    history.push("/regB")
 
   }
 

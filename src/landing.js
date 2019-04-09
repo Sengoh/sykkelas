@@ -47,6 +47,9 @@ class Nav extends Component {
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
         <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
+        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
+        <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
+
       </NavBar>
     );
   }

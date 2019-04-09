@@ -212,7 +212,7 @@ export class Test extends Component {
     errorEl.innerText = "";
     errorHjelm.innerText = "";
     errorBarn.innerText = "";
-    errorBagasje.innerText = "";
+    errorBarnesete.innerText = "";
     this.sykkelSjekk = 0;
     this.querySjekk = 0;
     if(!gruppe.disabled && gruppe.value != 0) {
@@ -330,15 +330,15 @@ export class Test extends Component {
       this.sykkelSjekk++;
       this.handleSykkel();
     }
-    if(bagasje.value != 0) {
-      ansatteService.getUtstyr("bagasjevogn",parseInt(bagasje.value),utstyr => {
-        if(utstyr.length == bagasje.value) {
+    if(barnesete.value != 0) {
+      ansatteService.getUtstyr("barnesete",parseInt(barnesete.value),utstyr => {
+        if(utstyr.length == barnesete.value) {
           this.utstyr[2] = utstyr;
           this.querySjekk++;
           this.sykkelSjekk++;
           this.handleSykkel();
         } else {
-          errorBagasje.innerText = "Ikke nok bagasjevogner.";
+          errorBarnesete.innerText = "Ikke nok barnesete.";
           this.utstyr[2] = [];
           this.sykkelSjekk++;
           this.handleSykkel();
@@ -483,14 +483,14 @@ export class Test extends Component {
           </div>
         </div>
         <div className="form-group row">
-        <div className="col-sm-2">Bagasjevogn</div>
+        <div className="col-sm-2">Barnesete</div>
         <div className="col-sm-10">
           <div className="form-check">
             <label className="form-check-label">
               Antall
             </label>
-            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="bagasje" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
-            <span className="error" id="errorBagasje"></span><br />
+            <input className="form-control form-control-sm" style={{width: 8 + 'em'}} type="number" id="barnesete" min='0' onChange={e => e.target.value<0 ? e.target.value = 0 : e.target.value = e.target.value} />
+            <span className="error" id="errorBarnesete"></span><br />
           </div>
           </div>
         </div>
@@ -661,7 +661,7 @@ export class Kvittering extends Component {
             <h5>Utstyr</h5>
             <p>Hjelmer: {this.utstyrInfo("hjelm")}</p>
             <p>Barnevogner: {this.utstyrInfo("barnevogn")}</p>
-            <p>Bagasjevogner: {this.utstyrInfo("bagasjevogn")}</p>
+            <p>Barnesete: {this.utstyrInfo("barnesete")}</p>
           </div>
         </div>
         <h5>Tid og sted</h5>

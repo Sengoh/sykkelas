@@ -9,10 +9,7 @@ import AnsattM from './startMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
 import {Best, BestMeny} from './komponenter/bestilling';
-import {Kunde, Bestilling} from './tharmika';
-import AktivBestilling from './natharek';
-import {BestEdit, BestDetails} from './endreBestilling';
-import Best from './bestilling';
+
 
 let remote = require('electron').remote;
 let session = remote.session;

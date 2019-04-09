@@ -80,7 +80,7 @@ export class NavBar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm bg-light navbar-light">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         {
           <NavLink className="navbar-brand" activeClassName="active" exact to="/">
             {this.props.brand}

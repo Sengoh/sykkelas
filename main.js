@@ -6,6 +6,9 @@ const {BrowserWindow} = require('electron')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
+//const { session } = require('electron')
+// session = remote.session;
+
 
 // Reload application on changes in src folder
 require('electron-reload')(path.join(__dirname, 'src'), {
@@ -13,14 +16,30 @@ require('electron-reload')(path.join(__dirname, 'src'), {
   electron: require(path.join(__dirname, 'node_modules', 'electron'))
 });
 
+
+
+
 let mainWindow;
 app.on('ready', () => {
+  // session.defaultSession.cookies.set({
+  //   name:"ansatt",
+  //   value: "0",
+  //   url: "http://localhost/"
+  // },
+  // err => {
+  //   if(err) console.log("Error ", err);
+  // });
+  // session.defaultSession.cookies.get({},(err,cookies) => {
+  //   if(err) console.error(err);
+  //   console.log(cookies[0].value);
+  // })
   mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true } });
 
   // Open Development Tools
   mainWindow.openDevTools();
 
   mainWindow.loadURL('file://' + __dirname + '/public/index.html');
+
 });
 
 app.on('window-all-closed', () => {

@@ -12,9 +12,21 @@ import AktivBestilling from './natharek';
 import {BestEdit, BestDetails} from './endreBestilling';
 import Best from './bestilling';
 
+let remote = require('electron').remote;
+let session = remote.session;
 
 import createHashHistory from "history/createHashHistory";
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
+let ansattid;
+session.defaultSession.cookies.get({},(err,cookies) => {
+  if(err) console.error(err);
+  console.log(cookies[0].value);
+  if(cookies[0].value == 0 || cookies[0].value == null) {
+    alert("Du er ikke logget. Videresender til logg inn side.")
+    window.location.href = "./index.html";
+  }
+  ansattid = cookies[0].value;
+})
 
 class Home extends Component {
   render() {
@@ -27,16 +39,28 @@ class Home extends Component {
 }
 
 class Nav extends Component {
+  ansattid = 0;
+  ansatt = null;
   render() {
+    if(!this.ansatt) return null;
+
     return (
       <NavBar to="/aMeny" brand="Sykkelutleie AS">
         <NavBar.Link to="/regB">Registrer bestilling THAR</NavBar.Link>
         <NavBar.Link to="/Sivert">Registrer bestilling SIV</NavBar.Link>
         <NavBar.Link to="/nat">Aktiv bestilling</NavBar.Link>
-        <NavBar.Link to="/loggut">Logg ut</NavBar.Link>
+        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
+        <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
+
 
       </NavBar>
     );
+  }
+  mounted() {
+    ansatteService.getLogin(ansattid,ansatt => {
+      this.ansatt = ansatt;
+      console.log(ansatt);
+    })
   }
 }
 

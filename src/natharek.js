@@ -17,6 +17,8 @@ class AktivBestilling extends Component {
 
 
   render() {
+    if(!this.bestillinger) return null;
+
     return (
       <div className="container">
         <input type="date" id="dato" onInput={this.finnBestillinger}/>

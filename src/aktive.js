@@ -7,12 +7,13 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { kundeService } from './services';
 import { bestillingService } from './services';
-
-//import {styles} from './style.js';
-
-//import {loginstyle} from "./login.css";
-
-//win.loadUrl(`file://${__dirname}/page.html`);
+let remote = require('electron').remote;
+let session = remote.session;
+let ansattid;
+session.defaultSession.cookies.get({},(err,cookies) => {
+  if(err) console.error(err);
+  ansattid = cookies[0].value;
+})
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -173,7 +174,7 @@ export class Test extends Component {
   handleSykkel() {
     if(this.sykkelSjekk == 6) {
       if(this.querySjekk == 6) {
-        ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, 1, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
+        ansatteService.insertLeie(this.fraDato + " " + this.henteTid + ":00", this.tilDato + " " + this.levereTid + ":00", this.props.match.params.id, ansattid, hente.options[hente.selectedIndex].value, levere.options[levere.selectedIndex].value,this.antallPersoner,leier => {
             ansatteService.getPrevious(current => {
               this.current = current.IDENTITY;
               console.log(this.current)
@@ -717,5 +718,7 @@ export class Kvittering extends Component {
     })
   }
 }
+
+
 // export AktiveBestillinger;
 // export Test;

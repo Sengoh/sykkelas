@@ -7,12 +7,26 @@ import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 
-//import {styles} from './style.js';
 
+let remote = require('electron').remote;
+let session = remote.session;
+session.defaultSession.cookies.set({
+  name:"ansatt",
+  value: "0",
+  url: "http://localhost/"
+},
+err => {
+  if(err) console.log("Error ", err);
+});
+session.defaultSession.cookies.get({},(err,cookies) => {
+  if(err) console.error(err);
+  console.log(cookies[0].value);
+})
 //import {loginstyle} from "./login.css";
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
+
 
 class LogIn extends Component{
   ansatte = [];
@@ -65,12 +79,20 @@ class LogIn extends Component{
     if (!this.form.checkValidity()) return;
 
     ansatteService.getAnsatt(this.epost,this.passord,ansatte => {
-        console.log(ansatte);
+        console.log(ansatte[0].ansattid);
         if(ansatte.length > 0){
           this.ansatte = ansatte;
-          //this.ree();
+          session.defaultSession.cookies.set({
+            name:"ansatt",
+            value: "" + ansatte[0].ansattid + "",
+            url: "http://localhost/"
+          },
+          err => {
+            if(err) console.log("Error ", err);
+          });
           alert("Velkommen " + this.ansatte[0].fornavn + " " + this.ansatte[0].etternavn + ", Epost: " + this.ansatte[0].epost);
-          window.location.href = "./index.html";
+
+          window.location.href = "./landing.html";
 
         } else {
           alert("Skriv inn riktig epost og passord.")

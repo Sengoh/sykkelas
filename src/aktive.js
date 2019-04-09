@@ -40,21 +40,20 @@ export class AktiveBestillinger extends Component {
   render() {
     return (
       <div>
-      <Card>
-      <form className="row">
-      <div className="form-group col">
-        <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
-      </div>
-      <div className="form-group col">
-        <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
-      </div>
-      <div className="form-group col">
-        <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
-      </div>
-      </form>
-      </Card>
+        <div className="container">
+        <form className="row pb-3 pt-4">
+        <div className="form-group col">
+          <input id='kundenummer' className="form-control" placeholder='Kundenummer' type='text'onInput={this.finnKunde} />
+        </div>
+        <div className="form-group col">
+          <input id='epost' className="form-control" placeholder='Epost' type='text' onInput={this.finnKunde}/>
+        </div>
+        <div className="form-group col">
+          <input id='telefon' className="form-control" placeholder='Telefon' type='text' onInput={this.finnKunde}/>
+        </div>
+        </form>
           <table className='table table-hover'>
-          <thead>
+          <thead className="thead-light">
             <tr>
               <th style={{width: 1 + 'em'}} scope="col">Kundenummer</th>
               <th scope="col"><NavLink to={'/kunder/'}></NavLink>Navn</th>
@@ -79,6 +78,7 @@ export class AktiveBestillinger extends Component {
           }
           </tbody>
         </table>
+        </div>
       </div>
     );
   }
@@ -356,7 +356,7 @@ export class Test extends Component {
     if (!this.kunde) return null;
 
     return(
-      <div>
+      <div className="container">
         <table className='table'>
         <thead>
           <tr>
@@ -375,7 +375,7 @@ export class Test extends Component {
               <td>{this.kunde.epost}</td>
               <td>{this.kunde.telefon}</td>
               <td>{this.kunde.addresse}, {this.kunde.postnr} {this.kunde.poststed}</td>
-              <td><Button.Danger><NavLink to="/Sivert" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
+              <td><Button.Danger><NavLink to="/eksisKunde" style={{color:'white',textDecoration:'none'}}>Avbryt</NavLink></Button.Danger></td>
             </tr>
         </tbody>
       </table>
@@ -680,7 +680,7 @@ export class Kvittering extends Component {
           </div>
 
         </div>
-        <NavLink to="/Sivert">Tilbake</NavLink>
+        <NavLink to="/eksisKunde">Tilbake</NavLink>
         </Card>
       </div>
     )

@@ -143,9 +143,10 @@ class BestillingService{
     });
   }
 
+
   getBest(leieid, success) {
     connection.query(
-      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE leieid=? GROUP BY leieid', [leieid],
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt, personer FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE leieid=? GROUP BY leieid', [leieid],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -153,9 +154,9 @@ class BestillingService{
       }
     )
   }
-  getBest1() {
+  getAllBest(success) {
     connection.query(
-      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) as antall, if(GROUP_CONCAT(`sykler_sykkelid`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykler_sykkelid`) ) as sykkelid, if(GROUP_CONCAT(`sykkeltype`) IS NULL,"Ingen sykler",GROUP_CONCAT(`sykkeltype`) ) as sykkeltype, if(GROUP_CONCAT(`utstyr_utstyrid`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyr_utstyrid`) ) as utstyrid, if(GROUP_CONCAT(`utstyrtype`) IS NULL,"Ingen utstyr",GROUP_CONCAT(`utstyrtype`) ) as utstyrtype, sted FROM leietaker l JOIN kunder k on l.kunder_brukerid=k.brukerid LEFT JOIN leietaker_has_sykler ls on l.leieid=ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu on l.leieid=lu.leietaker_leieid LEFT JOIN sykler s on ls.sykler_sykkelid=s.id LEFT JOIN utstyr u on lu.utstyr_utstyrid=u.utstyrid JOIN sted on l.hentested=sted.stedid GROUP BY leieid',
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid GROUP BY leieid',
       (error, results) => {
         if (error) return console.error(error);
 
@@ -172,15 +173,22 @@ class BestillingService{
       }
     )
   }
-  updateBesttest() {
-  connection.query("insert into leietaker (start,slutt,kunder_brukerid,ansatte_ansattid,hentested,leveringssted) values (?,?,?,?,?,?)",[start,slutt,kunde,ansatt,hente,levere],
-      (error, results) => {
-        if (error) return console.error(error);
+  deleteBest(leieid, success) {
+  connection.query('DELETE FROM leietaker WHERE leieid = ?', [leieid], (error, results) => {
+    connection.query('DELETE FROM leietaker_has_sykler WHERE leietaker_leieid = ?', [leieid], (error, results) => {
+      connection.query('DELETE FROM leietaker_has_utstyr WHERE leietaker_leieid = ?', [leieid], (error, results) => {
+            if (error) return console.error(error);
 
-        success(results)
+            success()
+          }
+        )
+       }
+      )
       }
     )
   }
+
+
 
   getBestilling(dato, success) {
     connection.query(

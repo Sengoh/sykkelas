@@ -1,12 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
+import { connection } from "./mysql_connection"
 import {AktiveBestillinger, Test, Kvittering} from './aktive';
 import AnsattM from './startMeny';
+import BestillingsOversikt from './komponenter/BestillingsOversikt';
+import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
+import {Best, BestMeny} from './komponenter/bestilling';
 import {Kunde, Bestilling} from './tharmika';
 import AktivBestilling from './natharek';
 import {BestEdit, BestDetails} from './endreBestilling';
@@ -31,9 +33,7 @@ session.defaultSession.cookies.get({},(err,cookies) => {
 class Home extends Component {
   render() {
     return (
-      <AnsattM>
-        <Nav />
-      </AnsattM>
+      <AnsattM />
     );
   }
 }
@@ -68,22 +68,26 @@ ReactDOM.render(
   <HashRouter>
     <div>
       <Route exact path="/" component={Home} />
-      <Route exact path="/(regB|Sivert|nat|register)" component={Nav} />
-      <Route exact path="/regB" component={Best} />
-
       <Route exact path="/aMeny" component={AnsattM} />
-      <Route exact path="/Sivert" component={AktiveBestillinger} />
-      <Route exact path="/nat" component={AktivBestilling} />
+      <Route exact path="/(regB|nyKunde|eksisKunde|bestillingsOversikt|register)" component={Nav} />
 
-      <Route exact path="/loggut" render={()=>{window.location.href="public/index.html"}} />
-      <Route exact path="/kunde/:leieid/edit" component={Nav} />
-      <Route exact path="/kunde/:leieid/edit" component={BestEdit} />
-
+      <Route exact path="/regB" component={BestMeny} />
+      <Route exact path="/nyKunde" component={Best} />
+      <Route exact path="/eksisKunde" component={AktiveBestillinger} />
 
       <Route exact path="/kunde/:id" component={Test} />
       <Route exact path="/bestilling/:id" component={Kvittering} />
+
+      <Route exact path="/bestillingsOversikt" component={BestillingsOversikt} />
+      <Route exact path="/bestillingsOversikt/:leieid/edit" component={Nav} />
+      <Route exact path="/bestillingsOversikt/:leieid/edit" component={EndreBestilling} />
+
+      <Route exact path="/loggut" render={()=>{window.location.href="public/index.html"}} />
+
+
+
+
     </div>
   </HashRouter>,
   document.getElementById("landing")
 );
-//<Route exact path="/Sivert" render={()=>{window.location.href="Sivert.html"}} />

@@ -12,10 +12,7 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class AnsattM extends Component {
   render() {
     return (
-      <div
-        className="container d-flex justify-content-center"
-        style={{ marginTop: "35vh" }}
-      >
+      <div className="container d-flex justify-content-center" style={{ marginTop: "35vh" }}>
         <Card>
           <button
             type="button"
@@ -29,7 +26,7 @@ class AnsattM extends Component {
             className="btn btn-light m-2"
             onClick={this.routeChange2}
           >
-            Aktive bestillinger
+            Bestillingsoversikt
           </button>
           <button
             type="button"
@@ -46,7 +43,7 @@ class AnsattM extends Component {
     history.push("/regB");
   }
   routeChange2() {
-    history.push("/nat");
+    history.push("/bestillingsOversikt");
   }
   routeChange3() {
     history.push("/statistikk");

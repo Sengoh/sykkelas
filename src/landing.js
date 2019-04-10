@@ -19,7 +19,7 @@ let session = remote.session;
 import createHashHistory from "history/createHashHistory";
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 let ansattid;
-session.defaultSession.cookies.get({},(err,cookies) => {
+session.defaultSession.cookies.get({name:"ansatt"},(err,cookies) => {
   if(err) console.error(err);
   console.log(cookies[0].value);
   if(cookies[0].value == 0 || cookies[0].value == null) {
@@ -41,7 +41,15 @@ class Nav extends Component {
   ansattid = 0;
   ansatt = null;
   render() {
-    if(!this.ansatt) return null;
+    if(!this.ansatt) return (
+      <NavBar to="/aMeny" brand="SykkelUtleie AS">
+        <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
+        <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
+        <NavBar.Link to="/admin">Lager</NavBar.Link>
+        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
+
+      </NavBar>
+    );
 
     return (
       <NavBar to="/aMeny" brand="SykkelUtleie AS">
@@ -85,6 +93,7 @@ ReactDOM.render(
 
       <Route exact path="/admin" component={LagerMeny} />
       <Route exact path="/sykkel" component={BikeList} />
+      <Route exact path="/sykkel/:id/" component={Nav} />
       <Route exact path="/sykkel/:id/" component={BikeDetails} />
       <Route exact path="/utleie" component={Utleie} />
       <Route exact path="/sykler" component={BikeList} />

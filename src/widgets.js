@@ -83,7 +83,7 @@ export class NavBar extends Component {
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         {
           <NavLink className="navbar-brand" activeClassName="active" exact to="/">
-            {this.props.brand}
+            <i className="fas fa-bicycle fa-2x fa-inverse"></i>
           </NavLink>
         }
         <ul className="navbar-nav">{this.props.children}</ul>

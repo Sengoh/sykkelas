@@ -59,7 +59,8 @@ export class BikeList extends Component {
   render() {
     return (
       <div className="container">
-        <table className="table table-hover mt-5">
+        <h3 className="mt-5 mb-4">Sykkelverksted</h3>
+        <table className="table table-hover">
           <thead className="thead-light">
             <tr>
               <th>Merke</th>
@@ -126,6 +127,7 @@ export class BikeDetails extends Component {
             </select>
           </div>
           <div class="form-group">
+          //Må begrense friteksten til 255 chars pga. varchar255 i databasen
             <label for="exampleFormControlTextarea1">Fritekst</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" id="obj" value={this.sykkel.fritekst} maxLength="255" onInput={this.countChars} title="FeedbackMessage" rows="3"></textarea>
             <p>Gjenstående tegn: <span id="charNum">255</span></p>
@@ -199,8 +201,9 @@ render(){
       </form>
       {this.best.map((best,index) => (
           <div key={status.leieid}>
-          <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString()} - {" " + best.slutt}</button>
-          <div className="content1">
+          //toLocaleDateString fjernar ekstra informasjon frå tidsformatet gitt av databasen: (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString)
+          <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})} - {" " + best.slutt.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})}</button>
+          <div className="content">
               {best.fornavn + ' ' + best.etternavn}
               <br />
               Sykler i denne bestillingen:

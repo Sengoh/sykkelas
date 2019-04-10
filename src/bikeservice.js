@@ -64,8 +64,8 @@ class BicycleService {
       }
     );
   }
+  //Inspirert av (https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate)
   collapsible(){
-  //https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate
   var coll = document.getElementsByClassName("collapsible");
   console.log(coll);
 

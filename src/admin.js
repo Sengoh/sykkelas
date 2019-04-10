@@ -198,7 +198,7 @@ render(){
       </form>
       {this.best.map(best => (
           <div key={status.leieid}>
-          //toLocaleDateString fjernar ekstra informasjon frå tidsformatet gitt av databasen: (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString)
+          {/*toLocaleDateString fjernar ekstra informasjon frå tidsformatet gitt av databasen: (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString)*/}
           <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})} - {" " + best.slutt.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})}</button>
           <div className="content">
               {best.fornavn + ' ' + best.etternavn}

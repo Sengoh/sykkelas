@@ -34,7 +34,7 @@ class AnsattM extends Component {
             className="btn btn-light m-2"
             onClick={this.routeChange3}
           >
-            Statistikk
+            Lager
           </button>
           </div>
         </div>
@@ -48,7 +48,7 @@ class AnsattM extends Component {
     history.push("/bestillingsOversikt");
   }
   routeChange3() {
-    history.push("/statistikk");
+    history.push("/admin");
   }
 }
 

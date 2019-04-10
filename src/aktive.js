@@ -11,7 +11,7 @@ import {bikeService} from './bikeservice';
 let remote = require('electron').remote;
 let session = remote.session;
 let ansattid;
-session.defaultSession.cookies.get({},(err,cookies) => {
+session.defaultSession.cookies.get({name:"ansatt"},(err,cookies) => {
   if(err) console.error(err);
   ansattid = cookies[0].value;
 })
@@ -42,14 +42,6 @@ export class AktiveBestillinger extends Component {
   render() {
     return (
       <div>
-      <div>
-        {this.kunder2.map(kunde =>(
-          <div>
-          <button className="collapsible">Test</button>
-          <div className="content1">Yo</div>
-          </div>
-        ))}
-      </div>
         <div className="container">
 
         {/*Sjema for å søke etter kunde med kundenummer,epost eller telefon*/}
@@ -158,18 +150,6 @@ export class AktiveBestillinger extends Component {
 
      this.kunder = results;
     });
-    bikeService.collapsible();
-    // var coll = document.getElementsByClassName("collapsible");
-    // for(let i = 0;i<coll.length;i++) {
-    //   coll[i].addEventListener("click", () => {
-    //     var content = coll[i].nextElementSibling;
-    //     if(content.style.display == "none") {
-    //         content.style.display = "block";
-    //     } else {
-    //       content.style.display = "none";
-    //     }
-    //   })
-    // }
   }
 
 }

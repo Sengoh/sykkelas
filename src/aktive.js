@@ -10,7 +10,6 @@ import { bestillingService } from './services';
 let remote = require('electron').remote;
 let session = remote.session;
 let ansattid;
-session.defaultSession.cookies.get({},(err,cookies) => {
   if(err) console.error(err);
   ansattid = cookies[0].value;
 })

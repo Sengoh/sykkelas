@@ -59,7 +59,8 @@ export class BikeList extends Component {
   render() {
     return (
       <div className="container">
-        <table className="table table-hover mt-5">
+        <h3 className="mt-5 mb-4">Sykkelverksted</h3>
+        <table className="table table-hover">
           <thead className="thead-light">
             <tr>
               <th>Merke</th>

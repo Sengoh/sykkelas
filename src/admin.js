@@ -59,25 +59,32 @@ export class BikeList extends Component {
   render() {
     return (
       <div className="container">
-      <List title='sykler'>
-      <Column>Trykk på sykkelen du vil endre informasjonen til</Column>
-
-      <Row>
-      <ol key={this.sykler.id}>
-        {this.sykler.map(sykkel => (
-          <li key={sykkel.id}>
-            <NavLink activeStyle={{ color:'darkblue'}} to={'/sykkel/' + sykkel.id}>
-            <Column>Merke:  {sykkel.merke}</Column>
-            </NavLink>
-            <Column> {sykkel.modell}</Column>
-            <Column>  {sykkel.sykkeltype}</Column>
-            <Column> Tilgjengelig: {sykkel.tilgjengelig}</Column>
-          </li>
-        ))}
-      </ol>
-        </Row>
-        </List>
-
+        <table className="table table-hover mt-5">
+          <thead className="thead-light">
+            <tr>
+              <th>Merke</th>
+              <th>Modell</th>
+              <th>Sykkeltype</th>
+              <th>Tilgjengelig</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {this.sykler.map(sykkel => (
+          <tr key={sykkel.id}>
+            <td>{sykkel.merke}</td>
+            <td>{sykkel.modell}</td>
+            <td>{sykkel.sykkeltype}</td>
+            <td>{sykkel.tilgjengelig}</td>
+            <td>
+              <button type="button" className="btn btn-primary" onClick={()=>history.push("/sykkel/" + sykkel.id)} >
+                Endre
+              </button>
+            </td>
+          </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -104,75 +111,73 @@ export class BikeDetails extends Component {
 
 
     return(
-      <Row title='Detaljer'>
-      <Column>
-      <p>Sykkelid: {sykkelid}</p>
-      <label htmlFor='statusmeny'>Status: </label>
-      <br/>
-      <select id='statusmeny' defaultValue={this.sykkel.status}>
-        {this.sykkelstatus.map(status => (
+      <div className="container">
+      <h4 className="pt-4">Sykkelid: {sykkelid}</h4>
+        <form>
+          <div class="form-group">
+            <label for="statusmeny">Status</label>
+            <select class="form-control" id='statusmeny' defaultValue={this.sykkel.status}>
+              {this.sykkelstatus.map(status => (
 
-          <option value={status.statusid} key={status.statusid}>
-              {status.statusmelding}
-          </option>
-        ))}
-      </select>
-
-      <br/>
-
-      <div>
-            <textarea id="obj" value={this.sykkel.fritekst} placeholder="Fritekst" maxLength="255" onInput={this.countChars} title="FeedbackMessage"></textarea>
+                <option value={status.statusid} key={status.statusid}>
+                    {status.statusmelding}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Fritekst</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" id="obj" value={this.sykkel.fritekst} maxLength="255" onInput={this.countChars} title="FeedbackMessage" rows="3"></textarea>
             <p>Gjenstående tegn: <span id="charNum">255</span></p>
-						<button type="button" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
-						<button type="button" id="fritekst" title="Back" onClick={this.back}>Tilbake</button>
+          </div>
+          <button type="button" class="btn btn-success m-2" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
+          <button type="button" class="btn btn-danger m-2" id="fritekst" title="Back" onClick={this.back}>Avbryt</button>
+        </form>
 
-
-                </div>
-          </Column>
-      </Row>
+      </div>
     );
   }
 
-  mounted() {
-    bikeService.getBikeStatus(sykkelstatus => {
-      this.sykkelstatus = sykkelstatus;
-    console.log(sykkelstatus);
+    mounted() {
+      bikeService.getBikeStatus(sykkelstatus => {
+        this.sykkelstatus = sykkelstatus;
+      console.log(sykkelstatus);
+    });
+      bikeService.getBikeState(this.props.match.params.id, sykkel => {
+     this.sykkel = sykkel;
+     console.log(sykkel);
   });
-    bikeService.getBikeState(this.props.match.params.id, sykkel => {
-   this.sykkel = sykkel;
-   console.log(sykkel);
-});
 
-  }
- countChars(e){
-    var maxLength = 255;
-    var currentText = e.target.value;
-    var strLength = currentText.length;
-    var charRemain = (maxLength - strLength);
-
-    this.sykkel.fritekst = e.target.value;
-
-    if(charRemain < 0){
-        document.getElementById("charNum").innerHTML = '<span style="color: red;">You have exceeded the limit of '+maxLength+' characters</span>';
-    }else{
-        document.getElementById("charNum").innerHTML = charRemain;
     }
-}
-save() {
+   countChars(e){
+      var maxLength = 255;
+      var currentText = e.target.value;
+      var strLength = currentText.length;
+      var charRemain = (maxLength - strLength);
 
-  bikeService.updateBike(statusmeny.options[statusmeny.selectedIndex].value, obj.value, this.props.match.params.id, results => {
+      this.sykkel.fritekst = e.target.value;
 
-    history.push('/utleie');
-  });
+      if(charRemain < 0){
+          document.getElementById("charNum").innerHTML = '<span style="color: red;">You have exceeded the limit of '+maxLength+' characters</span>';
+      }else{
+          document.getElementById("charNum").innerHTML = charRemain;
+      }
+  }
+  save() {
+
+    bikeService.updateBike(statusmeny.options[statusmeny.selectedIndex].value, obj.value, this.props.match.params.id, results => {
+
+      history.push('/utleie');
+    });
+    }
+
+  back() {
+    history.push('/utleie')
   }
 
-back() {
-  history.push('/utleie')
-}
-
-aktiver(){
-document.getElementById("knapp").disabled = false;
-}
+  aktiver(){
+  document.getElementById("knapp").disabled = false;
+  }
 }
 
 export class Utleie extends Component {
@@ -180,31 +185,43 @@ export class Utleie extends Component {
 
 render(){
   return(
-<div>
+    <div className="container">
+      <div class="pt-5">
+        <h4>Utlevering</h4>
+      </div>
+      <form>
+        <div class="form-group">
+          <label for="dato">Dato</label>
+          <input type="date" class="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
+        </div>
+      </form>
+      {this.best.map(best => (
+          <div key={status.leieid}>
+          <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString()} - {" " + best.slutt}</button>
+          <div className="content">
+              {best.fornavn + ' ' + best.etternavn}
+              <br />
+              Sykler i denne bestillingen:
+              <ol>
+              <li><NavLink to={'/sykkel/' + best.sykkelid}>
+              <Column> {best.sykkeltype}, ID: {best.sykkelid}</Column>
+              </NavLink></li>
+              </ol>
+              <br />
+              Utstyr i denne bestillingen:
+              <Column> {best.utstyrtype} </Column>
+              <br />
+              Leveringssted:
+              <Column> {best.sted} </Column>
+              <br />
+              Hentested:
+              <Column> {best.lager} </Column>
+      </div>
+      </div>
+      ))}
+      </div>
+      )}
 
-<input type="date" className="form-control" id="dato" onInput={this.handleClick}/>
-<p>Collapsible Set:</p>
-<button className="collapsible">Bestilling 1</button>
-<div className="content">
-<div>
-<p>Hei</p>
-  {this.best.map(best => (
-    <div key={status.leieid}>
-        {best.fornavn}
-        <br/>
-        <NavLink to={'/sykkel/' + best.sykkelid}>
-        <Column>{best.sykkeltype}</Column>
-        </NavLink>
-        <br />
-        {best.sted}
-    </div>
-  ))}
-</div>
-</div>
-
-</div>
-  );
-}
 mounted(){
   bikeService.collapsible();
 
@@ -218,18 +235,3 @@ mounted(){
   console.log('The link was clicked.');
 }
 }
-
-// ReactDOM.render(
-//   <HashRouter>
-//     <div>
-//     <Menu />
-//     <Route exact path="/sykkel" component={BikeList} />
-//     <Route exact path="/sykkel/:id/" component={BikeDetails} />
-//     <Route exact path="/utleie" component={Utleie} />
-//     <Route exact path="/" component={Home} />
-//     <Route exact path="/sykler" component={BikeList} />
-//     </div>
-//   </HashRouter>,
-//   document.getElementById('admin')
-// );
-    // <Route exact path="/" component={Home} />

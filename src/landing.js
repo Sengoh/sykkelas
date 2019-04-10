@@ -93,6 +93,7 @@ ReactDOM.render(
 
       <Route exact path="/admin" component={LagerMeny} />
       <Route exact path="/sykkel" component={BikeList} />
+      <Route exact path="/sykkel/:id/" component={Nav} />
       <Route exact path="/sykkel/:id/" component={BikeDetails} />
       <Route exact path="/utleie" component={Utleie} />
       <Route exact path="/sykler" component={BikeList} />

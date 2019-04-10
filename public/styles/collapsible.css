@@ -10,10 +10,6 @@
   font-size: 15px;
 }
 
-.active, .collapsible:hover {
-  background-color: #555;
-}
-
 .content1 {
   padding: 0 18px;
   max-height: 0;

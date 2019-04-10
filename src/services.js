@@ -192,32 +192,12 @@ class BestillingService{
 
   getBestilling(dato, success) {
     connection.query(
-      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE cast(start as Date) = ? GROUP BY leieid;',
-      [dato,dato,dato],(error, results) => {
+      'SELECT leieid, brukerid, fornavn, etternavn, COUNT(id) AS antall, IF( GROUP_CONCAT(`sykler_sykkelid`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykler_sykkelid`) ) AS sykkelid, IF( GROUP_CONCAT(`sykkeltype`) IS NULL, "Ingen sykler", GROUP_CONCAT(`sykkeltype`) ) AS sykkeltype, IF( GROUP_CONCAT(`utstyr_utstyrid`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyr_utstyrid`) ) AS utstyrid, IF( GROUP_CONCAT(`utstyrtype`) IS NULL, "Ingen utstyr", GROUP_CONCAT(`utstyrtype`) ) AS utstyrtype, lager, sted, start, slutt FROM leietaker l JOIN kunder k ON l.kunder_brukerid = k.brukerid LEFT JOIN leietaker_has_sykler ls ON l.leieid = ls.leietaker_leieid LEFT JOIN leietaker_has_utstyr lu ON l.leieid = lu.leietaker_leieid LEFT JOIN sykler s ON ls.sykler_sykkelid = s.id LEFT JOIN utstyr u ON lu.utstyr_utstyrid = u.utstyrid JOIN lager ON l.hentested = lager.lagerid JOIN sted ON l.leveringssted = sted.stedid WHERE cast(start as Date) = ? GROUP BY leieid',
+      [dato],(error, results) => {
         if (error) return console.error(error);
 
         success(results);
       });
-  }
-  getSykler(bestilling,success) {
-    connection.query(
-      'select * from leietaker_has_sykler left join leietaker on leietaker_has_sykler.leietaker_leieid = leietaker.leieid left join sykler on leietaker_has_sykler.sykler_sykkelid = sykler.id WHERE leietaker_leieid = ?',
-      [bestilling],(error,results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    )
-  }
-  getUtstyr(bestilling,success) {
-    connection.query(
-      'select * from leietaker_has_utstyr left join leietaker on leietaker_has_utstyr.leietaker_leieid = leietaker.leieid left join utstyr on leietaker_has_utstyr.utstyr_utstyrid = utstyr.utstyrid WHERE leietaker_leieid = ?',
-      [bestilling],(error,results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    )
   }
 
 }

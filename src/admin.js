@@ -182,6 +182,8 @@ export class BikeDetails extends Component {
 
 export class Utleie extends Component {
   best = [];
+  sykler = [];
+  utstyr = [];
 
 render(){
   return(
@@ -195,21 +197,33 @@ render(){
           <input type="date" class="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
         </div>
       </form>
-      {this.best.map(best => (
+      {this.best.map((best,index) => (
           <div key={status.leieid}>
           <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString()} - {" " + best.slutt}</button>
-          <div className="content">
+          <div className="content1">
               {best.fornavn + ' ' + best.etternavn}
               <br />
               Sykler i denne bestillingen:
               <ol>
-              <li><NavLink to={'/sykkel/' + best.sykkelid}>
-              <Column> {best.sykkeltype}, ID: {best.sykkelid}</Column>
-              </NavLink></li>
+              {this.sykler[index] != null ?
+                this.sykler[index].map(sykkel => (
+                <li key={sykkel.sykler_sykkelid}><NavLink to={'/sykkel/' + sykkel.sykler_sykkelid}>
+                <Column> {sykkel.sykkeltype}, ID: {sykkel.sykler_sykkelid}</Column>
+                </NavLink></li>
+              ))
+            : <Column> Ingen sykler </Column>}
               </ol>
               <br />
               Utstyr i denne bestillingen:
-              <Column> {best.utstyrtype} </Column>
+              <ol>
+              {this.utstyr[index] != null ?
+                this.utstyr[index].map(utstyr => (
+                <li key={utstyr.utstyr_utstyrid}>
+                <Column> {utstyr.utstyrtype}, ID: {utstyr.utstyr_utstyrid}</Column>
+                </li>
+              ))
+            : <Column> Ingen utstyr </Column>}
+              </ol>
               <br />
               Leveringssted:
               <Column> {best.sted} </Column>
@@ -223,14 +237,27 @@ render(){
       )}
 
 mounted(){
-  bikeService.collapsible();
+document.getElementById('dato').valueAsDate = new Date();
 
-  }
+}
   handleClick(e) {
   e.preventDefault();
   bestillingService.getBestilling(dato.value,results => {
   this.best = results;
-  console.log(this.best);
+    for(let i = 0;i<this.best.length;i++) {
+      bestillingService.getSykler(this.best[i].leieid, sykler => {
+        this.sykler.push(sykler);
+        console.log(this.sykler[i].length);
+      });
+      bestillingService.getUtstyr(this.best[i].leieid, utstyr => {
+        this.utstyr.push(utstyr);
+        console.log(this.utstyr);
+      });
+    }
+  // this.sykler = results[1];
+  // this.utstyr = results[2];
+  console.log(this.utstyr);
+  bikeService.collapsible();
 });
   console.log('The link was clicked.');
 }

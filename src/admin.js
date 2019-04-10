@@ -195,25 +195,33 @@ render(){
           <input type="date" class="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
         </div>
       </form>
-
-      <p>Collapsible Set:</p>
-      <button className="collapsible">Bestilling 1</button>
-      <div>
-        {this.best.map(best => (
+      {this.best.map(best => (
           <div key={status.leieid}>
-              {best.fornavn}
-              <br/>
-              <NavLink to={'/sykkel/' + best.sykkelid}>
-              <Column>{best.sykkeltype}</Column>
-              </NavLink>
+          <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString()} - {" " + best.slutt}</button>
+          <div className="content">
+              {best.fornavn + ' ' + best.etternavn}
               <br />
-              {best.sted}
-          </div>
-        ))}
+              Sykler i denne bestillingen:
+              <ol>
+              <li><NavLink to={'/sykkel/' + best.sykkelid}>
+              <Column> {best.sykkeltype}, ID: {best.sykkelid}</Column>
+              </NavLink></li>
+              </ol>
+              <br />
+              Utstyr i denne bestillingen:
+              <Column> {best.utstyrtype} </Column>
+              <br />
+              Leveringssted:
+              <Column> {best.sted} </Column>
+              <br />
+              Hentested:
+              <Column> {best.lager} </Column>
       </div>
-    </div>
-  );
-}
+      </div>
+      ))}
+      </div>
+      )}
+
 mounted(){
   bikeService.collapsible();
 
@@ -227,18 +235,3 @@ mounted(){
   console.log('The link was clicked.');
 }
 }
-
-// ReactDOM.render(
-//   <HashRouter>
-//     <div>
-//     <Menu />
-//     <Route exact path="/sykkel" component={BikeList} />
-//     <Route exact path="/sykkel/:id/" component={BikeDetails} />
-//     <Route exact path="/utleie" component={Utleie} />
-//     <Route exact path="/" component={Home} />
-//     <Route exact path="/sykler" component={BikeList} />
-//     </div>
-//   </HashRouter>,
-//   document.getElementById('admin')
-// );
-    // <Route exact path="/" component={Home} />

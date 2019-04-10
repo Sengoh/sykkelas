@@ -107,6 +107,7 @@ export class BikeDetails extends Component {
       <Row title='Detaljer'>
       <Column>
       <p>Sykkelid: {sykkelid}</p>
+      <p>Sykkelstatus: {this.sykkelstatus.statusid}</p>
       <label htmlFor='statusmeny'>Status: </label>
       <br/>
       <select id='statusmeny' defaultValue={this.sykkel.status}>
@@ -123,8 +124,8 @@ export class BikeDetails extends Component {
       <div>
             <textarea id="obj" value={this.sykkel.fritekst} placeholder="Fritekst" maxLength="255" onInput={this.countChars} title="FeedbackMessage"></textarea>
             <p>Gjenstående tegn: <span id="charNum">255</span></p>
-						<button type="button" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
-						<button type="button" id="fritekst" title="Back" onClick={this.back}>Tilbake</button>
+						<button type="button" id="knapp1" title="Lagre" onClick={this.save}>Lagre</button>
+						<button type="button" id="knapp2" title="Back" onClick={this.back}>Tilbake</button>
 
 
                 </div>

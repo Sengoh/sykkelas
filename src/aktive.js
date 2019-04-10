@@ -7,6 +7,7 @@ import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { ansatteService } from './services';
 import { kundeService } from './services';
 import { bestillingService } from './services';
+import {bikeService} from './bikeservice';
 let remote = require('electron').remote;
 let session = remote.session;
 let ansattid;
@@ -43,7 +44,10 @@ export class AktiveBestillinger extends Component {
       <div>
       <div>
         {this.kunder2.map(kunde =>(
-          <button></button>
+          <div>
+          <button className="collapsible">Test</button>
+          <div className="content1">Yo</div>
+          </div>
         ))}
       </div>
         <div className="container">
@@ -94,7 +98,17 @@ export class AktiveBestillinger extends Component {
     );
   }
   //onClick={()=>history.push("/kunde/"+ kunder.brukerid)}
-
+  press() {
+    // var coll = document.getElementsByClassName('test');
+    // console.log(coll)
+    // for(let i = 0;i<coll.length;i++) {
+    //   if(coll[i].style.display == "none") {
+    //       coll[i].style.display = "block";
+    //   } else {
+    //     coll[i].style.display = "none";
+    //   }
+    // }
+  }
   //Funksjon som finner kunde som tilfredstiller søket
   finnKunde() {
     this.where = [];
@@ -144,6 +158,18 @@ export class AktiveBestillinger extends Component {
 
      this.kunder = results;
     });
+    bikeService.collapsible();
+    // var coll = document.getElementsByClassName("collapsible");
+    // for(let i = 0;i<coll.length;i++) {
+    //   coll[i].addEventListener("click", () => {
+    //     var content = coll[i].nextElementSibling;
+    //     if(content.style.display == "none") {
+    //         content.style.display = "block";
+    //     } else {
+    //       content.style.display = "none";
+    //     }
+    //   })
+    // }
   }
 
 }

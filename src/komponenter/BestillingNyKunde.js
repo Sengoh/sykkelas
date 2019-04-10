@@ -38,7 +38,7 @@ export class Kunde extends Component {
         <div className="pt-4 pb-3">
           <h4>1. Registrer kunde</h4>
         </div>
-        <div class={this.state.err}>
+        <div className={this.state.err}>
           Sjekk at alle feltene er utfylt!
         </div>
 
@@ -109,6 +109,19 @@ export class Kunde extends Component {
 
 // Registerer bestilling
 export class Bestilling extends Component {
+  //Variabler for dato
+  fraDato = "2000-01-01";
+  tilDato = "2000-01-01";
+  dd= null;
+  mm= null;
+  yyyy = null;
+
+  //Variabler for tid
+  henteTid = null;
+  levereTid = null;
+  tid = null;
+  m = null;
+  t = null;
 
   state = {
     bid: null,
@@ -130,7 +143,7 @@ export class Bestilling extends Component {
         <div className="pt-5 pb-2">
           <h4>2. Registrer bestilling</h4>
         </div>
-        <div class={this.state.err}>
+        <div className={this.state.err}>
           Sjekk at alle feltene er utfylt!
         </div>
 
@@ -138,11 +151,11 @@ export class Bestilling extends Component {
           <div className="form-row pt-2">
              <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Fra</label>
-               <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.start} onChange={event => this.setState({ start: event.target.value})}/>
+               <input type="date" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.start} onBlur={this.endreDato} onChange={event => this.setState({ start: event.target.value})}/>
              </div>
              <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Hentetid</label>
-               <input type="time" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={this.state.hente} onChange={event => this.setState({ hente: event.target.value})} />
+               <input type="time" className="form-control" id="henteTid" step="600" aria-describedby="emailHelp" value={this.state.hente} onBlur={this.endreTid} onChange={event => this.setState({ hente: event.target.value})} />
              </div>
              <div className="col-4 mb-3">
                <label htmlFor="exampleInputEmail1">Hentested</label>
@@ -157,11 +170,13 @@ export class Bestilling extends Component {
           <div className="form-row">
              <div className="col mb-3">
                <label htmlFor="exampleInputPass">Til</label>
-               <input type="date" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.state.slutt} onChange={event => this.setState({ slutt: event.target.value})} />
+               <input type="date" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.state.slutt} onBlur={this.endreDato} onChange={event => this.setState({ slutt: event.target.value})} />
+               <span className="error" id="errorD"></span>
              </div>
              <div className="col mb-3">
                <label htmlFor="exampleInputPass">Leveringstid</label>
-               <input type="time" className="form-control" id="exampleInputPass" aria-describedby="emailHelp" value={this.state.levere} onChange={event => this.setState({ levere: event.target.value})} />
+               <input type="time" className="form-control" id="levereTid" step="600" aria-describedby="emailHelp" value={this.state.levere} onBlur={this.endreTid} onChange={event => this.setState({ levere: event.target.value})} />
+               <span className="error" id="errorT"></span>
              </div>
              <div className="col mb-3">
                <label htmlFor="exampleInputPass">Leveringssted</label>
@@ -207,13 +222,98 @@ export class Bestilling extends Component {
 
 
   }
+  endreDato() {
+    errorD.innerText = "";
+
+    //Sjekker om hentedatoen skjer etter leveringdatoen, og endrer leveringdatoen hvis den er det
+    if(this.state.start > this.state.slutt) {
+      errorD.innerText = "Hentedato er etter leveringdato. Leveringdato er endret til hentedato";
+      this.state.slutt = this.state.start;
+    }
+
+    //Sjekker om hentedatoen skjer i fortiden, og endrer den hvis den er det
+    if(this.state.start < (this.yyyy + "-0" + this.mm + "-" + this.dd)) {
+      errorD.innerText = "Valgt dato er feil. Endret til dagens dato.";
+      this.state.start = (this.yyyy + "-0" + this.mm + "-" + this.dd)
+    }
+  }
+  endreTid() {
+    errorT.innerText = "";
+
+    //Endrer hentetid minutter
+    this.tempM = Math.ceil(henteTid.value.split(":")[1]/10)*10;
+    if(this.tempM == 0) {
+      this.tempM = "00";
+    }
+    if(this.tempM >= 60) {
+      this.tempM = "00";
+    }
+    console.log(this.tempM);
+    this.state.hente = henteTid.value.split(":")[0] + ":" + this.tempM;
+
+    //Endrer leveringstid minutter
+    this.tempM = Math.ceil(levereTid.value.split(":")[1]/10)*10;
+    if(this.tempM == 0) {
+      this.tempM = "00";
+    }
+    if(this.tempM >= 60) {
+      this.tempM = "00";
+    }
+    console.log(this.tempM);
+    this.state.levere = levereTid.value.split(":")[0] + ":" + this.tempM;
+
+    //Sjekker om hentetiden er etter leverigstiden og endrer leveringstiden hvis den er det
+    if(this.state.start == this.state.slutt && this.state.hente > this.state.levere) {
+      console.log("wut");
+      this.state.levere = this.state.hente;
+      errorT.innerText = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
+    }
+
+    //Sjekker om hentetiden skjer i fortiden, og endrer den hvis den er det
+    if(this.state.start == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.state.hente < this.t + ":" + this.m) {
+      console.log("wat");
+      this.state.hente = this.t + ":" + this.m;
+      errorT.innerText = "Hentetiden er i fortiden. Hentetid endret.";
+    }
+
+  }
   // Overføring av brukerid til denne komponenten
   componentDidUpdate() {
     bestillingService.getKundeId(this.props.fn, this.props.en, this.props.epost, this.props.tlf, svar => {
       this.setState({bid: svar})
     });
   }
+  mounted() {
+    this.fraDato = new Date();
+    this.ahh = new Date();
+    console.log(this.ahh);
+    this.dd = ("0" + this.fraDato.getDate()).slice(-2);
+    this.mm = this.fraDato.getMonth()+1;
+    this.yyyy = this.fraDato.getFullYear();
+    console.log(this.yyyy);
+    this.fraDato = this.yyyy + "-0" + this.mm + "-" + this.dd;
+    this.state.start = this.fraDato;
+    this.state.slutt = this.fraDato;
+    console.log(this.fraDato);
+    this.tilDato = this.fraDato;
 
+    //Henter tid
+    this.henteTid = new Date();
+    this.tid = new Date();
+    //Finner nærmeste tiende minutt
+    this.m = Math.ceil(this.tid.getMinutes()/10)*10;
+    this.t = this.tid.getHours()
+    if(this.m >= 60) {
+      this.m = "00";
+      this.t++;
+    } else if (this.m >= 0 && this.m < 10) {
+      this.m = "10";
+    }
+    this.henteTid = this.t + ":" + this.m;
+    this.state.hente = this.henteTid;
+    this.state.levere = this.henteTid;
+    this.levereTid = this.henteTid;
+  }
   add2 = () => {
     if (this.state.start != "" && this.state.hente != "" && this.state.slutt != "" && this.state.levere != "" && this.state.hentested != null && this.state.leveringssted != null) {
       bestillingService.addLeietakerNyK(this.state.start + " " + this.state.hente + ":00", this.state.slutt + " " + this.state.levere + ":00", this.state.bid.brukerid, this.state.hentested, this.state.leveringssted, this.state.gruppe, () => {
@@ -483,7 +583,7 @@ export class Ekstrautstyr extends Component {
     }
 
     alert("Bestilling registrert")
-    history.push("/regB")
+    history.push("/bestilling/" + this.state.lid)
 
   }
 

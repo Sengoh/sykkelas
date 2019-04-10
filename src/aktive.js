@@ -668,8 +668,6 @@ export class Test extends Component {
   mounted() {
     //Henter dato
     this.fraDato = new Date();
-    this.ahh = new Date();
-    console.log(this.ahh);
     this.dd = ("0" + this.fraDato.getDate()).slice(-2);
     this.mm = this.fraDato.getMonth()+1;
     this.yyyy = this.fraDato.getFullYear();
@@ -681,6 +679,7 @@ export class Test extends Component {
     //Henter tid
     this.henteTid = new Date();
     this.tid = new Date();
+    
     //Finner nærmeste tiende minutt
     this.m = Math.ceil(this.tid.getMinutes()/10)*10;
     this.t = this.tid.getHours()

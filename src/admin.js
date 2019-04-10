@@ -48,9 +48,6 @@ export class LagerMeny extends Component {
   }
 }
 
-/*<button className="btn btn-primary btn-large centerButton"
-type="submit" autoFocus onClick={e => this.input = event.target.value}>Send</button>*/
-
 
 
 export class BikeList extends Component {
@@ -175,7 +172,7 @@ export class BikeDetails extends Component {
     });
     bikeService.updateBikeTilgj();
     }
-    
+
   aktiver(){
   document.getElementById("knapp").disabled = false;
   }

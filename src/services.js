@@ -201,13 +201,6 @@ class BestillingService{
   }
 
 }
-// getInfo(success) {
-//   connection.query("select count(case when sykkeltype = 'terreng' then 1 end) as terreng, count(case when sykkeltype = 'el' then 1 end) as tandem,count(case when sykkeltype = 'el' then 1 end) as el from sykler where tilgjengelig=1 and status=1;select * from utstyr;",(error,results) => {
-//     if(error) return console.error(error);
-//
-//     success(results);
-//   });
-// }
 
 
 class KundeService {

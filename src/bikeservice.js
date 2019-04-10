@@ -68,8 +68,7 @@ class BicycleService {
   collapsible(){
   var coll = document.getElementsByClassName("collapsible");
   console.log(coll);
-  //For at datovelgaren i lagersida skal 'defaulte' til dagens dato.
-  document.getElementById('dato').valueAsDate = new Date();
+
 
   for (let i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {

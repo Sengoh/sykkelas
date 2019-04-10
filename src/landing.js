@@ -10,6 +10,7 @@ import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
 import {Best, BestMeny} from './komponenter/bestilling';
 import { ansatteService } from './services';
+import { LagerMeny, BikeList, BikeDetails, Utleie } from './admin';
 
 
 let remote = require('electron').remote;
@@ -46,6 +47,7 @@ class Nav extends Component {
       <NavBar to="/aMeny" brand="SykkelUtleie AS">
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
+        <NavBar.Link to="/admin">Lager</NavBar.Link>
         <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
         <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
 
@@ -68,7 +70,7 @@ ReactDOM.render(
     <div>
       <Route exact path="/" component={Home} />
       <Route exact path="/aMeny" component={AnsattM} />
-      <Route exact path="/(regB|nyKunde|eksisKunde|bestillingsOversikt|register)" component={Nav} />
+      <Route exact path="/(regB|nyKunde|eksisKunde|bestillingsOversikt|admin|utleie|sykkel|register)" component={Nav} />
 
       <Route exact path="/regB" component={BestMeny} />
       <Route exact path="/nyKunde" component={Best} />
@@ -81,6 +83,11 @@ ReactDOM.render(
       <Route exact path="/bestillingsOversikt/:leieid/edit" component={Nav} />
       <Route exact path="/bestillingsOversikt/:leieid/edit" component={EndreBestilling} />
 
+      <Route exact path="/admin" component={LagerMeny} />
+      <Route exact path="/sykkel" component={BikeList} />
+      <Route exact path="/sykkel/:id/" component={BikeDetails} />
+      <Route exact path="/utleie" component={Utleie} />
+      <Route exact path="/sykler" component={BikeList} />
 
 
 

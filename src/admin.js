@@ -6,7 +6,6 @@ import { connection } from "./mysql_connection";
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import {bikeService} from './bikeservice';
 import {bestillingService} from './services'
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
 
 
@@ -14,45 +13,52 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Menu extends Component {
+export class LagerMeny extends Component {
   render() {
     return (
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <NavLink exact activeStyle={{ color: 'darkblue' }} to="/utleie">
-                Utlevering
-              </NavLink>
-            </td>
-            <td>
-              <NavLink exact activeStyle={{ color: 'darkblue' }} to="/sykkel">
-                Sykkelverksted
-              </NavLink>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    );
+      <div className="container d-flex justify-content-center" style={{ marginTop: "35vh" }}>
+      <div className="card border-dark">
+        <div className="card-body">
+
+        <button
+          type="button"
+          className="btn btn-light m-2"
+          onClick={this.routeChange1}
+        >
+          Utlevering
+        </button>
+        <button
+          type="button"
+          className="btn btn-light m-2"
+          onClick={this.routeChange2}
+        >
+          Sykkelverksted
+        </button>
+
+        </div>
+      </div>
+    </div>
+    )
+  }
+  routeChange1() {
+    history.push("/utleie");
+  }
+  routeChange2() {
+    history.push("/sykkel");
   }
 }
 
 /*<button className="btn btn-primary btn-large centerButton"
 type="submit" autoFocus onClick={e => this.input = event.target.value}>Send</button>*/
 
-class Home extends Component {
-  render() {
-    return <div>Lagersiden</div>;
-  }
-}
 
-class BikeList extends Component {
+
+export class BikeList extends Component {
   sykler = [];
 
   render() {
     return (
-      <div>
-      <Card>
+      <div className="container">
       <List title='sykler'>
       <Column>Trykk på sykkelen du vil endre informasjonen til</Column>
 
@@ -71,11 +77,7 @@ class BikeList extends Component {
       </ol>
         </Row>
         </List>
-        </Card>
 
-        <button type="button">
-          New
-        </button>
       </div>
     );
   }
@@ -87,7 +89,7 @@ class BikeList extends Component {
   }
 }
 
-class BikeDetails extends Component {
+export class BikeDetails extends Component {
   statusid = '';
   sykkelstatus = null;
   statusmelding = '';
@@ -173,8 +175,7 @@ document.getElementById("knapp").disabled = false;
 }
 }
 
-
-class Utleie extends Component {
+export class Utleie extends Component {
   best = [];
 
 render(){
@@ -200,14 +201,7 @@ render(){
   ))}
 </div>
 </div>
-<button className="collapsible">Open Section 2</button>
-<div className="content1">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
-<button className="collapsible">Open Section 3</button>
-<div className="content1">
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
+
 </div>
   );
 }
@@ -225,17 +219,17 @@ mounted(){
 }
 }
 
-ReactDOM.render(
-  <HashRouter>
-    <div>
-    <Menu />
-    <Route exact path="/sykkel" component={BikeList} />
-    <Route exact path="/sykkel/:id/" component={BikeDetails} />
-    <Route exact path="/utleie" component={Utleie} />
-    <Route exact path="/" component={Home} />
-    <Route exact path="/sykler" component={BikeList} />
-    </div>
-  </HashRouter>,
-  document.getElementById('admin')
-);
+// ReactDOM.render(
+//   <HashRouter>
+//     <div>
+//     <Menu />
+//     <Route exact path="/sykkel" component={BikeList} />
+//     <Route exact path="/sykkel/:id/" component={BikeDetails} />
+//     <Route exact path="/utleie" component={Utleie} />
+//     <Route exact path="/" component={Home} />
+//     <Route exact path="/sykler" component={BikeList} />
+//     </div>
+//   </HashRouter>,
+//   document.getElementById('admin')
+// );
     // <Route exact path="/" component={Home} />

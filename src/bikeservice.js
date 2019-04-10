@@ -64,10 +64,11 @@ class BicycleService {
       }
     );
   }
+  //Inspirert av (https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate)
   collapsible(){
-  //https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate
   var coll = document.getElementsByClassName("collapsible");
   console.log(coll);
+  //For at datovelgaren i lagersida skal 'defaulte' til dagens dato.
   document.getElementById('dato').valueAsDate = new Date();
 
   for (let i = 0; i < coll.length; i++) {

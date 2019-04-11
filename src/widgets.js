@@ -17,6 +17,24 @@ export class Card extends Component {
   }
 }
 
+//Renders a button that sends user back a page
+//Får en warning på sider den er importert, men 'it works'
+export class BackButton extends Component {
+  static contextTypes = {
+    router: () => true, // replace with PropTypes.object if you use them
+  }
+
+  render() {
+    return (
+      <button
+        className="btn btn-danger m-2"
+        onClick={this.context.router.history.goBack}>
+          Tilbake
+      </button>
+    )
+  }
+}
+
 // Renders a list group item using Bootstrap styles
 // Attributes: to
 class ListItem extends Component {

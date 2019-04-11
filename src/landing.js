@@ -68,7 +68,7 @@ class Nav extends Component {
   mounted() {
     ansatteService.getLogin(ansattid,ansatt => {
       this.ansatt = ansatt;
-      console.log(ansatt);
+      
     })
   }
 }

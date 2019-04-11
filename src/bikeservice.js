@@ -54,6 +54,23 @@ class BicycleService {
       }
     );
   }
+//Gjør det på denne måten fordi eg ikkje fekk IF-statements eller CASE til å fungera i SQL. :(
+  updateBikeTilgj() {
+    connection.query('update sykler set tilgjengelig = 1 where status = 1', (error, results) => {
+      if (error) return console.error(error);
+      });
+    connection.query('update sykler set tilgjengelig=0 where NOT status=1', (error, results) => {
+      if (error) return console.error(error);
+    });
+  }
+
+  getBikes(success) {
+    connection.query('select * from sykler', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 
   addBike(merke, modell, type, status) {
     connection.query(
@@ -84,32 +101,3 @@ class BicycleService {
   }
 }
 export let bikeService = new BicycleService();
-
-/* const stil =
-.collapsible {
-  background-color: #777;
-  color: white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-}
-
-.active, .collapsible:hover {
-  background-color: #555;
-}
-
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
-.error {
-  color: red;
-  font-size: 80%;
-}
-*/

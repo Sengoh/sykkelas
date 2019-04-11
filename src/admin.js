@@ -3,7 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection";
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { BackButton, Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import {bikeService} from './bikeservice';
 import {bestillingService} from './services'
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
@@ -48,9 +48,6 @@ export class LagerMeny extends Component {
   }
 }
 
-/*<button className="btn btn-primary btn-large centerButton"
-type="submit" autoFocus onClick={e => this.input = event.target.value}>Send</button>*/
-
 
 
 export class BikeList extends Component {
@@ -67,7 +64,7 @@ export class BikeList extends Component {
               <th>Modell</th>
               <th>Sykkeltype</th>
               <th>Tilgjengelig</th>
-              <th></th>
+              <th>Info</th>
             </tr>
           </thead>
           <tbody>
@@ -77,6 +74,7 @@ export class BikeList extends Component {
             <td>{sykkel.modell}</td>
             <td>{sykkel.sykkeltype}</td>
             <td>{sykkel.tilgjengelig}</td>
+            <td>{sykkel.fritekst}</td>
             <td>
               <button type="button" className="btn btn-primary" onClick={()=>history.push("/sykkel/" + sykkel.id)} >
                 Endre
@@ -106,7 +104,9 @@ export class BikeDetails extends Component {
 
 
   render() {
+    {/*Må ha dei to neste linjene for å sørge for at data vert henta frå databasen før innholdet blir teikna*/}
     if(!this.sykkelstatus) return null;
+    if(!this.sykkel.status) return null;
     let sykkelid = this.props.match.params.id;
 
 
@@ -116,7 +116,7 @@ export class BikeDetails extends Component {
       <h4 className="pt-4">Sykkelid: {sykkelid}</h4>
         <form>
           <div class="form-group">
-            <label for="statusmeny">Status</label>
+            <label htmlFor="statusmeny">Status</label>
             <select class="form-control" id='statusmeny' defaultValue={this.sykkel.status}>
               {this.sykkelstatus.map(status => (
 
@@ -127,13 +127,13 @@ export class BikeDetails extends Component {
             </select>
           </div>
           <div class="form-group">
-          //Må begrense friteksten til 255 chars pga. varchar255 i databasen
-            <label for="exampleFormControlTextarea1">Fritekst</label>
+          {/*Må begrense friteksten til 255 chars pga. varchar255 i databasen*/}
+            <label htmlFor="exampleFormControlTextarea1">Fritekst</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" id="obj" value={this.sykkel.fritekst} maxLength="255" onInput={this.countChars} title="FeedbackMessage" rows="3"></textarea>
             <p>Gjenstående tegn: <span id="charNum">255</span></p>
           </div>
           <button type="button" class="btn btn-success m-2" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
-          <button type="button" class="btn btn-danger m-2" id="fritekst" title="Back" onClick={this.back}>Avbryt</button>
+          <BackButton type="button" id="fritekst" title="Back">Avbryt</BackButton>
         </form>
 
       </div>
@@ -143,11 +143,11 @@ export class BikeDetails extends Component {
     mounted() {
       bikeService.getBikeStatus(sykkelstatus => {
         this.sykkelstatus = sykkelstatus;
-      console.log(sykkelstatus);
+
     });
       bikeService.getBikeState(this.props.match.params.id, sykkel => {
      this.sykkel = sykkel;
-     console.log(sykkel);
+
   });
 
     }
@@ -168,14 +168,10 @@ export class BikeDetails extends Component {
   save() {
 
     bikeService.updateBike(statusmeny.options[statusmeny.selectedIndex].value, obj.value, this.props.match.params.id, results => {
-
       history.push('/utleie');
     });
+    bikeService.updateBikeTilgj();
     }
-
-  back() {
-    history.push('/utleie')
-  }
 
   aktiver(){
   document.getElementById("knapp").disabled = false;
@@ -195,13 +191,13 @@ render(){
       </div>
       <form>
         <div class="form-group">
-          <label for="dato">Dato</label>
+          <label htmlFor="dato">Dato</label>
           <input type="date" class="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
         </div>
       </form>
       {this.best.map((best,index) => (
           <div key={status.leieid}>
-
+          {/*toLocaleDateString fjernar ekstra informasjon frå tidsformatet gitt av databasen: (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString)*/}
           <button className="collapsible">Bestilling {" " + best.start.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})} - {" " + best.slutt.toLocaleDateString([], {hour: '2-digit', minute:'2-digit'})}</button>
           <div className="content">
               {best.fornavn + ' ' + best.etternavn}
@@ -250,15 +246,14 @@ document.getElementById('dato').valueAsDate = new Date();
     for(let i = 0;i<this.best.length;i++) {
       bestillingService.getSykler(this.best[i].leieid, sykler => {
         this.sykler.push(sykler);
-        console.log(this.sykler[i].length);
+
       });
       bestillingService.getUtstyr(this.best[i].leieid, utstyr => {
         this.utstyr.push(utstyr);
-        console.log(this.utstyr);
+
       });
     }
   bikeService.collapsible();
 });
-  console.log('The link was clicked.');
 }
 }

@@ -158,7 +158,7 @@ export class BestillingSkjema extends Component {
   tandem = 0;
   el = 0;
   querySjekk = 0; //Brukes til å sjekke om det er nok sykler og utstyr
-  sykkelSjekk = 0; //Brukes til å sjekke om programmet har gått gjennom alle syklene og utstyret
+  sykkelSjekk = 0; //Brukes til å sjekke om programmet har gått gjennom alle syklene og utstyret, kan være unødvending
   lager = [];
   steder = [];
   antallPersoner = 1; //Antall personer bestillingen er for
@@ -170,7 +170,7 @@ export class BestillingSkjema extends Component {
   //Funksjon som kjører for hver sykkel-og utstyrstype, og lagrer ny bestilling hvis alt stemmer
   handleSykkel() {
 
-    //Sjekker om alle sykkel- og utstyrtypene har blitt sjekket
+    //Sjekker om alle sykkel- og utstyrtypene har blitt sjekket, kan være unødvending
     if(this.sykkelSjekk == 6) {
 
       //Sjekker om det er nok av alle sykkel- og utstyrstype for de som har blitt valgt

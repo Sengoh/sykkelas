@@ -427,7 +427,7 @@ export class BestillingSkjema extends Component {
 
     return(
       <div className="container">
-        <table className='table'>
+        <table className='table mt-4'>
         <thead>
           <tr>
             <th style={{width: 1 + 'em'}} scope="col">Kundenummer</th>
@@ -449,7 +449,8 @@ export class BestillingSkjema extends Component {
             </tr>
         </tbody>
       </table>
-      <Card>
+      <hr className="pt-1 pb-4"></hr>
+
       <form onSubmit={this.handleSubmit}>
       <div className="row">
       <div className="col">
@@ -565,9 +566,8 @@ export class BestillingSkjema extends Component {
           </div>
         </div>
       </Card>
-      <input type="submit" className="btn btn-success" value="Register bestilling" />
+      <input type="submit" className="btn btn-success float-right my-5" value="Register bestilling" />
       </form>
-      </Card>
       </div>
     )
   }

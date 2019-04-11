@@ -46,7 +46,7 @@ class Nav extends Component {
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
         <NavBar.Link to="/admin">Lager</NavBar.Link>
-        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
+        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i class="fas fa-sign-out-alt fa-inverse"></i></span>
 
       </NavBar>
     );
@@ -56,8 +56,9 @@ class Nav extends Component {
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
         <NavBar.Link to="/admin">Lager</NavBar.Link>
-        <span className="nav-link" onClick={this.loggUt}>Logg ut</span>
-        <span className="nav-link" style={{position: 'absolute', right: 0}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
+
+        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i class="fas fa-sign-out-alt fa-inverse"></i></span>
+        <span className="nav-link" style={{position: 'absolute', right: '90px'}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
 
       </NavBar>
     );
@@ -84,6 +85,7 @@ ReactDOM.render(
       <Route exact path="/nyKunde" component={Best} />
       <Route exact path="/eksisKunde" component={KundeOversikt} />
 
+      <Route exact path="/kunde/:id" component={Nav} />
       <Route exact path="/kunde/:id" component={BestillingSkjema} />
       <Route exact path="/bestilling/:id" component={Kvittering} />
       <Route exact path="/bestilling/:id" component={Nav} />

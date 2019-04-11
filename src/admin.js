@@ -65,6 +65,7 @@ export class BikeList extends Component {
               <th>Sykkeltype</th>
               <th>Tilgjengelig</th>
               <th>Info</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

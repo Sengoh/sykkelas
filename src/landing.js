@@ -68,7 +68,7 @@ class Nav extends Component {
   mounted() {
     ansatteService.getLogin(ansattid,ansatt => {
       this.ansatt = ansatt;
-      
+
     })
   }
 }
@@ -86,6 +86,7 @@ ReactDOM.render(
 
       <Route exact path="/kunde/:id" component={BestillingSkjema} />
       <Route exact path="/bestilling/:id" component={Kvittering} />
+      <Route exact path="/bestilling/:id" component={Nav} />
 
       <Route exact path="/bestillingsOversikt" component={BestillingsOversikt} />
       <Route exact path="/bestillingsOversikt/:leieid/edit" component={Nav} />

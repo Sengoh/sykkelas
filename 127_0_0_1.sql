@@ -293,8 +293,8 @@ CREATE TABLE `sykler` (
 
 INSERT INTO `sykler` (`id`, `merke`, `modell`, `sykkeltype`, `status`, `tilgjengelig`, `lagerid`, `fritekst`, `creation_time`, `modification_time`) VALUES
 (1, 'Diamant', 'Mogul 7', 'terreng', 2, '1', 1, 'Forhjul', '2019-03-28 13:58:11', '2019-04-09 17:19:18'),
-(2, 'Diamant', 'Mogul 7', 'terreng', 1, '0', 1, NULL, '2019-03-28 13:58:11', '2019-04-10 13:17:34'),
-(3, 'Diamant', 'Mogul 7', 'terreng', 1, '0', 1, NULL, '2019-03-28 13:58:11', '2019-04-10 13:14:13'),
+(2, 'Diamant', 'Mogul 7', 'terreng', 1, '1', 1, NULL, '2019-03-28 13:58:11', '2019-04-10 13:17:34'),
+(3, 'Diamant', 'Mogul 7', 'terreng', 1, '1', 1, NULL, '2019-03-28 13:58:11', '2019-04-10 13:14:13'),
 (4, 'Diamant', 'Mogul 7', 'terreng', 4, '1', 1, '2123', '2019-03-28 13:58:11', '2019-04-09 17:23:34'),
 (5, 'Trek', 'T900', 'tandem', 1, '1', 1, NULL, '2019-03-28 13:58:11', '2019-04-09 17:14:30'),
 (6, 'Trek', 'T900', 'tandem', 1, '1', 1, NULL, '2019-03-28 13:58:11', '2019-04-09 17:14:32'),

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { connection } from "./mysql_connection"
-import {AktiveBestillinger, Test, Kvittering} from './aktive';
+import {KundeOversikt,BestillingSkjema,Kvittering} from './aktive';
 import AnsattM from './startMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
@@ -82,9 +82,9 @@ ReactDOM.render(
 
       <Route exact path="/regB" component={BestMeny} />
       <Route exact path="/nyKunde" component={Best} />
-      <Route exact path="/eksisKunde" component={AktiveBestillinger} />
+      <Route exact path="/eksisKunde" component={KundeOversikt} />
 
-      <Route exact path="/kunde/:id" component={Test} />
+      <Route exact path="/kunde/:id" component={BestillingSkjema} />
       <Route exact path="/bestilling/:id" component={Kvittering} />
 
       <Route exact path="/bestillingsOversikt" component={BestillingsOversikt} />

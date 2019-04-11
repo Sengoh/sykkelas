@@ -4,9 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { connection } from "./mysql_connection"
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
-import { kundeService } from './services';
-import { bestillingService } from './services';
+import { ansatteService,kundeService,bestillingService } from './services';
 import {bikeService} from './bikeservice';
 let remote = require('electron').remote;
 let session = remote.session;
@@ -19,16 +17,8 @@ session.defaultSession.cookies.get({name:"ansatt"},(err,cookies) => {
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
-class Home extends Component {
-  render() {
-    return(
-      <Card title="Sykkelutleie AS">Logg inn for ansatte</Card>
-    )
-  }
-}
-
-
-export class AktiveBestillinger extends Component {
+//Komponent som gir oversikt over kunder den ansatte kan velge
+export class KundeOversikt extends Component {
   kundenr = null;
   epost = null;
   tlf = null;
@@ -37,7 +27,6 @@ export class AktiveBestillinger extends Component {
   whereState = "";
   i = 0;
   kunder = [];
-  kunder2 = [{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"},{name:"lol"}];
 
   render() {
     return (
@@ -89,18 +78,7 @@ export class AktiveBestillinger extends Component {
       </div>
     );
   }
-  //onClick={()=>history.push("/kunde/"+ kunder.brukerid)}
-  press() {
-    // var coll = document.getElementsByClassName('test');
-    // console.log(coll)
-    // for(let i = 0;i<coll.length;i++) {
-    //   if(coll[i].style.display == "none") {
-    //       coll[i].style.display = "block";
-    //   } else {
-    //     coll[i].style.display = "none";
-    //   }
-    // }
-  }
+
   //Funksjon som finner kunde som tilfredstiller søket
   finnKunde() {
     this.where = [];
@@ -154,7 +132,8 @@ export class AktiveBestillinger extends Component {
 
 }
 //{this.kunde.brukerid}
-export class Test extends Component {
+//Komponent for bestillingskjema
+export class BestillingSkjema extends Component {
   kunde = null;
 
   //Variabler for dato
@@ -170,6 +149,7 @@ export class Test extends Component {
   tid = null;
   m = null;
   t = null;
+  tempM = null; //Brukes for validering av tid
 
   //Variabler for sykkelvalg
   hente = null;
@@ -177,26 +157,15 @@ export class Test extends Component {
   terreng = 0;
   tandem = 0;
   el = 0;
-  querySjekk = 0;
-  sykkelSjekk = 0;
+  querySjekk = 0; //Brukes til å sjekke om det er nok sykler og utstyr
+  sykkelSjekk = 0; //Brukes til å sjekke om programmet har gått gjennom alle syklene og utstyret
   lager = [];
   steder = [];
-  antallPersoner = 1;
+  antallPersoner = 1; //Antall personer bestillingen er for
 
-  temp = 0;
-  tempM = null;
-  sql = "";
+  //Arrays som lagrer syklene og utstyr for hver type
   sykler = [[],[],[]];
   utstyr = [[],[],[]];
-  current = null;
-
-
-  syklerInfo = null;
-  utstyrInfo = null;
-
-  listTerreng = [];
-  listTandem = [];
-  listEl = [];
 
   //Funksjon som kjører for hver sykkel-og utstyrstype, og lagrer ny bestilling hvis alt stemmer
   handleSykkel() {
@@ -241,7 +210,6 @@ export class Test extends Component {
       }
     //Returnerer hvis alle syklene og utstyrene ikke har blitt sjekket enda
     } else {
-      console.log("nah");
       return;
     }
     console.log(this.sykkelSjekk);
@@ -263,7 +231,7 @@ export class Test extends Component {
 
     //Sjekker om gruppe er valgt og legger til antall personer i gruppen
     if(!gruppe.disabled && gruppe.value != 0) {
-      this.antallPersoner += parseInt(gruppe.value);
+      this.antallPersoner = parseInt(gruppe.value);
     }
 
     //Sjekker om terreng er valgt
@@ -366,13 +334,21 @@ export class Test extends Component {
       this.sykkelSjekk++;
       this.handleSykkel();
     }
+
+    //Sjekker om hjlem er valgt
     if(hjelm.value != 0) {
+
+      //Sjekker om det finnes nok antall hjelmer
       ansatteService.getUtstyr("hjelm",parseInt(hjelm.value),utstyr=> {
+
+        //Hvis det finnes nok utstyr, lagres utstyret i en array
         if(utstyr.length == hjelm.value) {
           this.utstyr[0] = utstyr;
           this.querySjekk++;
           this.sykkelSjekk++;
           this.handleSykkel();
+
+        //Hvis det ikke finnes nok utstyr, sendes en tilbakemelding om dette
         } else {
           errorHjelm.innerText = "Ikke nok hjelmer.";
           this.utstyr[0] = [];
@@ -380,18 +356,28 @@ export class Test extends Component {
           this.handleSykkel();
         }
       })
+
+    //Kjører hvis hjelm ikke er valgt
     } else {
       this.querySjekk++;
       this.sykkelSjekk++;
       this.handleSykkel();
     }
+
+    //Sjekker om barnevogn er valgt
     if(barnevogn.value != 0) {
+
+      //Sjekker om det finnes nok antall barnevogner
       ansatteService.getUtstyr("barnevogn",parseInt(barnevogn.value),utstyr => {
+
+        //Hvis det finnes nok utstyr, lagres utstyret i en array
         if(utstyr.length == barnevogn.value) {
           this.utstyr[1] = utstyr;
           this.querySjekk++;
           this.sykkelSjekk++;
           this.handleSykkel();
+
+        //Hvis det ikke finnes nok utstyr, sendes en tilbakemelding om dette
         } else {
           errorBarn.innerText = "Ikke nok barnevogner.";
           this.utstyr[1] = [];
@@ -399,25 +385,35 @@ export class Test extends Component {
           this.handleSykkel();
         }
       })
+    //Kjører hvis barnevogn ikke er valgt
     } else {
       this.querySjekk++;
       this.sykkelSjekk++;
       this.handleSykkel();
     }
+
+    //Sjekker om barnesete er valgt
     if(barnesete.value != 0) {
+
+      //Sjekker om det finnes nok antall barneseter
       ansatteService.getUtstyr("barnesete",parseInt(barnesete.value),utstyr => {
+
+        //Hvis det finnes nok utstyr, lagres utstyret i en array
         if(utstyr.length == barnesete.value) {
           this.utstyr[2] = utstyr;
           this.querySjekk++;
           this.sykkelSjekk++;
           this.handleSykkel();
+
+        //Hvis det ikke finnes nok utstyr, sendes en tilbakemelding om dette
         } else {
-          errorBarnesete.innerText = "Ikke nok barnesete.";
+          errorBarnesete.innerText = "Ikke nok barneseter.";
           this.utstyr[2] = [];
           this.sykkelSjekk++;
           this.handleSykkel();
         }
       })
+    //Kjører hvis barnesete ikke er valgt
     } else {
       this.querySjekk++;
       this.sykkelSjekk++;
@@ -575,7 +571,7 @@ export class Test extends Component {
       </div>
     )
   }
-  //Funksjon som endrer disabler og enabler input-feltene for sykkeltypene
+  //Funksjon som disabler og enabler input-feltene for sykkeltypene
   sykkelValg(sykkel) {
 
 
@@ -661,8 +657,6 @@ export class Test extends Component {
     }
 
   }
-  //
-  //onClick={()=>history.push("/")}
 
   //Henter dato, tid, kundeinfo og hente og leveringsinfo når komponentet lastes
   mounted() {
@@ -679,7 +673,7 @@ export class Test extends Component {
     //Henter tid
     this.henteTid = new Date();
     this.tid = new Date();
-    
+
     //Finner nærmeste tiende minutt
     this.m = Math.ceil(this.tid.getMinutes()/10)*10;
     this.t = this.tid.getHours()
@@ -736,12 +730,14 @@ export class Kvittering extends Component {
         <p>Bestillingsnummer: {this.props.match.params.id}</p>
         <p>Kunde: {this.bestilling.fornavn} {this.bestilling.etternavn}</p>
         <div className="row">
+          {/*Viser informasjon om sykler*/}
           <div className="col-2">
             <h5>Sykler</h5>
             <p>Terreng: {this.sykkelInfo("terreng")}</p>
             <p>Tandem: {this.sykkelInfo("tandem")}</p>
             <p>El: {this.sykkelInfo("el")}</p>
           </div>
+          {/*Viser informasjon om utstyr*/}
           <div className="col-2">
             <h5>Utstyr</h5>
             <p>Hjelmer: {this.utstyrInfo("hjelm")}</p>
@@ -749,18 +745,19 @@ export class Kvittering extends Component {
             <p>Barnesete: {this.utstyrInfo("barnesete")}</p>
           </div>
         </div>
+        {/*Viser informasjon om tid og sted*/}
         <h5>Tid og sted</h5>
         <div className="row">
           <div className="col-2">
             <h6>Hente</h6>
-            <p>Dato: {this.bestilling.start.getDate()}.{this.bestilling.start.getMonth()}.{this.bestilling.start.getFullYear()}</p>
-            <p>Tid: {this.bestilling.start.getHours()}:{this.bestilling.start.getMinutes()}</p>
+            <p>Dato: {this.bestilling.start.toLocaleDateString()}</p>
+            <p>Tid: {("0" + this.bestilling.start.getHours()).slice(-2)}:{("0" + this.bestilling.start.getMinutes()).slice(-2)}</p>
             <p>Hentedted: {this.bestilling.lager}</p>
           </div>
           <div className="col-2">
             <h6>Levere</h6>
-            <p>Dato: {this.bestilling.slutt.getDate()}.{this.bestilling.slutt.getMonth()}.{this.bestilling.slutt.getFullYear()}</p>
-            <p>Tid: {this.bestilling.slutt.getHours()}:{this.bestilling.slutt.getMinutes()}</p>
+            <p>Dato: {this.bestilling.start.toLocaleDateString()}</p>
+            <p>Tid: {("0" + this.bestilling.slutt.getHours()).slice(-2)}:{("0" + this.bestilling.slutt.getMinutes()).slice(-2)}</p>
             <p>Leveringssted: {this.bestilling.sted}</p>
           </div>
 
@@ -770,6 +767,8 @@ export class Kvittering extends Component {
       </div>
     )
   }
+
+  //Finner antall sykler for hver type
   sykkelInfo(type) {
     for(var i = 0;i<this.sykler.length;i++) {
       if(this.sykler[i].sykkeltype == type) {
@@ -778,6 +777,8 @@ export class Kvittering extends Component {
     }
     return 0;
   }
+
+  //Finner antall utstyr for hver type
   utstyrInfo(type) {
     for(var i = 0;i<this.utstyr.length;i++) {
       if(this.utstyr[i].utstyrtype == type) {
@@ -786,6 +787,8 @@ export class Kvittering extends Component {
     }
     return 0;
   }
+
+  //Henter informasjon om bestillingen
   mounted() {
     console.log(this.props.location.pathname);
     kundeService.kvittering(this.props.match.params.id,bestilling => {

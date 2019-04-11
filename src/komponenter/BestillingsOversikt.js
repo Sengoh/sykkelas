@@ -49,9 +49,9 @@ class BestillingsOversikt extends Component {
                 <td>{bestilling.leieid}</td>
                 <td>{bestilling.fornavn} {bestilling.etternavn}</td>
                 <td>{bestilling.antall}</td>
-                <td>{bestilling.start.getHours()}:{bestilling.start.getMinutes()}<br></br>{bestilling.start.getDate()}.{bestilling.start.getMonth()+1}.{bestilling.start.getFullYear()}</td>
+                <td>{("0" + bestilling.start.getHours()).slice(-2)}:{("0" + bestilling.start.getMinutes()).slice(-2)}<br></br>{bestilling.start.toLocaleDateString()}</td>
                 <td>{bestilling.lager}</td>
-                <td>{bestilling.slutt.getHours()}:{bestilling.slutt.getMinutes()} {bestilling.slutt.getDate()}.{bestilling.slutt.getMonth()+1}.{bestilling.slutt.getFullYear()}</td>
+                <td>{("0" + bestilling.slutt.getHours()).slice(-2)}:{("0" + bestilling.slutt.getMinutes()).slice(-2)} {bestilling.start.toLocaleDateString()}</td>
                 <td>{bestilling.sted}</td>
                 <td>
                   <button type="button" className="btn btn-primary" key={bestilling.leieid} onClick={()=>history.push("/bestillingsOversikt/"+ bestilling.leieid + "/edit")} >

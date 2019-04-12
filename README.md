@@ -41,6 +41,9 @@ Manuell installasjon:
  
 
 !VIKTIG!
+< - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - >
+!VIKTIG!
+
 Kort om mappestrukturen:
 
 index.js er logg inn siden og den lastes inn for seg selv.

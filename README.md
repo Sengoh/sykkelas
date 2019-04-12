@@ -46,8 +46,8 @@ Manuell installasjon:
 
 Kort om mappestrukturen:
 
-index.js er logg inn siden og den lastes inn for seg selv.
-landing.js er selve hovedsiden du kommer til etter at du har logget inn. Denne siden brukes til å vise alle komponenentene.
+  index.js er logg inn siden og den lastes inn for seg selv.
+  landing.js er selve hovedsiden du kommer til etter at du har logget inn. Denne siden brukes til å vise alle komponenentene.
 
     
   

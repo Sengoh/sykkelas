@@ -62,6 +62,7 @@ class LogIn extends Component{
                     <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
                     <label className="form-check-label" htmlFor="exampleCheck1">Husk meg</label>
                   </div>
+                  <p>epost:pass<br></br>test@test:test<br></br>perpet@sykkelas.no:1234</p>
                   <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
               </form>
             </div>

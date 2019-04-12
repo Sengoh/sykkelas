@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection";
-import { BackButton, Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import {bikeService} from './bikeservice';
-import {bestillingService} from './services'
+import { connection } from "../mysql_connection";
+import { BackButton, Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
+import {bikeService} from '../bikeservice';
+import {bestillingService} from '../services'
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
 
 

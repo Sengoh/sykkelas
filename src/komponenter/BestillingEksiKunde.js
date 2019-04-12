@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService,kundeService,bestillingService } from './services';
-import {bikeService} from './bikeservice';
+import { connection } from "../mysql_connection"
+import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
+import { ansatteService,kundeService,bestillingService } from '../services';
+import {bikeService} from '../bikeservice';
 let remote = require('electron').remote;
 let session = remote.session;
 let ansattid;
@@ -808,7 +808,3 @@ export class Kvittering extends Component {
     })
   }
 }
-
-
-// export AktiveBestillinger;
-// export Test;

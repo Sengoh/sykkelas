@@ -4,13 +4,13 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { connection } from "./mysql_connection"
-import {KundeOversikt,BestillingSkjema,Kvittering} from './BestillingEksiKunde';
-import AnsattM from './startMeny';
+import {KundeOversikt,BestillingSkjema,Kvittering} from './komponenter/BestillingEksiKunde';
+import AnsattM from './komponenter/StartMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
 import {Best, BestMeny} from './komponenter/bestilling';
 import { ansatteService } from './services';
-import { LagerMeny, BikeList, BikeDetails, Utleie } from './admin';
+import { LagerMeny, BikeList, BikeDetails, Utleie } from './komponenter/Lager';
 
 
 let remote = require('electron').remote;
@@ -100,9 +100,6 @@ ReactDOM.render(
       <Route exact path="/sykkel/:id/" component={BikeDetails} />
       <Route exact path="/utleie" component={Utleie} />
       <Route exact path="/sykler" component={BikeList} />
-
-
-
 
     </div>
   </HashRouter>,

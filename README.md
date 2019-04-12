@@ -39,8 +39,13 @@ Manuell installasjon:
   
   For å starte applikasjonen neste gang, repeter steg 2 og 4.
  
-    
-    
+
+!VIKTIG!
+Kort om mappestrukturen:
+
+index.js er logg inn siden og den lastes inn for seg selv.
+landing.js er selve hovedsiden du kommer til etter at du har logget inn. Denne siden brukes til å vise alle komponenentene.
+
     
   
 

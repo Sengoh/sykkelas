@@ -15,9 +15,9 @@ class EndreBestilling extends Component {
     slutt: "",
     hente: "",
     levere: "",
-    hentested: null,
-    leveringssted: null,
-    gruppe: null,
+    hentested: "",
+    leveringssted: "",
+    gruppe: "",
     err: "alert alert-danger d-none"
   }
 
@@ -65,11 +65,11 @@ class EndreBestilling extends Component {
           <div>
             <h4>Endre bestilling</h4>
           </div>
-          <div class={this.state.err}>
+          <div className={this.state.err}>
             Endring mislykket, velg hentested og leveringssted!
           </div>
           {this.bestillinger.map(bestilling => (
-          <form>
+          <form key={bestilling.leieid}>
             <div className="form-row pt-3">
                <div className="col mb-3">
                  <label htmlFor="exampleInputEmail1">Fra</label>
@@ -147,14 +147,15 @@ class EndreBestilling extends Component {
       this.bestillinger = bestilling;
       // Henter bestilling og oppdaterer state
       this.setState({
-        start: bestilling[0].start.getFullYear()+"-"+(bestilling[0].start.getMonth() < 10 ? '0'+bestilling[0].start.getMonth() :bestilling[0].start.getMonth())+"-"+(bestilling[0].start.getDate() < 10 ? '0'+bestilling[0].start.getDate() :bestilling[0].start.getDate()),
-        slutt: bestilling[0].slutt.getFullYear()+"-"+(bestilling[0].slutt.getMonth() < 10 ? '0'+bestilling[0].slutt.getMonth() :bestilling[0].slutt.getMonth())+"-"+(bestilling[0].slutt.getDate() < 10 ? '0'+bestilling[0].slutt.getDate() :bestilling[0].slutt.getDate()),
+        start: bestilling[0].start.getFullYear()+"-"+("0" + (bestilling[0].start.getMonth()+1)).slice(-2)+"-"+("0" + bestilling[0].start.getDate()).slice(-2),
+        slutt: bestilling[0].slutt.getFullYear()+"-"+("0" + (bestilling[0].slutt.getMonth()+1)).slice(-2)+"-"+("0" + bestilling[0].slutt.getDate()).slice(-2),
         hente: (bestilling[0].start.getHours() < 10 ? '0'+bestilling[0].start.getHours() :bestilling[0].start.getHours())+":"+(bestilling[0].start.getMinutes() < 10 ? '0'+bestilling[0].start.getMinutes() :bestilling[0].start.getMinutes()),
         levere: (bestilling[0].slutt.getHours() < 10 ? '0'+bestilling[0].slutt.getHours() :bestilling[0].slutt.getHours())+":"+(bestilling[0].slutt.getMinutes() < 10 ? '0'+bestilling[0].slutt.getMinutes() :bestilling[0].slutt.getMinutes()),
         hentested: bestilling[0].lager,
         leveringssted: bestilling[0].sted,
         gruppe: bestilling[0].personer
       })
+      console.log(this.state.start)
     });
   }
 

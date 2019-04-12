@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 import { connection } from "./mysql_connection"
-import {KundeOversikt,BestillingSkjema,Kvittering} from './aktive';
+import {KundeOversikt,BestillingSkjema,Kvittering} from './BestillingEksiKunde';
 import AnsattM from './startMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
@@ -46,7 +46,7 @@ class Nav extends Component {
         <NavBar.Link to="/regB">Registrer bestilling</NavBar.Link>
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
         <NavBar.Link to="/admin">Lager</NavBar.Link>
-        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i class="fas fa-sign-out-alt fa-inverse"></i></span>
+        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i className="fas fa-sign-out-alt fa-inverse"></i></span>
 
       </NavBar>
     );
@@ -57,7 +57,7 @@ class Nav extends Component {
         <NavBar.Link to="/bestillingsOversikt">Bestillingsoversikt</NavBar.Link>
         <NavBar.Link to="/admin">Lager</NavBar.Link>
 
-        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i class="fas fa-sign-out-alt fa-inverse"></i></span>
+        <span className="nav-link active" onClick={this.loggUt} style={{cursor: 'pointer', position: 'absolute', right: 0}}>Logg ut <i className="fas fa-sign-out-alt fa-inverse"></i></span>
         <span className="nav-link" style={{position: 'absolute', right: '90px'}}>Ansatt: {this.ansatt.fornavn} {this.ansatt.etternavn}</span>
 
       </NavBar>

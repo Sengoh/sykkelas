@@ -15,11 +15,11 @@ export class Kunde extends Component {
     fn: "",
     en: "",
     epost: "",
-    tlf: null,
+    tlf: "",
     bid: null,
     addresse: "",
     poststed: "",
-    postnr: null,
+    postnr: "",
     vis: "container d-block",
     err: "alert alert-danger d-none"
 
@@ -131,7 +131,7 @@ export class Bestilling extends Component {
     levere: "",
     hentested: null,
     leveringssted: null,
-    gruppe: 0,
+    gruppe: 1,
     vis: "container d-block",
     err: "alert alert-danger d-none"
   }
@@ -411,8 +411,8 @@ export class Ekstrautstyr extends Component {
                  <div className="col mb-3">
                    <select className="custom-select" onChange={event => this.setState({ terreng: event.target.value})}>
                     <option defaultValue>Velg antall</option>
-                     {listT.map(antall => (
-                       <option key={antall.id} value={antall}>{antall}</option>
+                     {listT.map((antall,index) => (
+                       <option key={index} value={antall}>{antall}</option>
                      ))}
                   </select>
                </div>
@@ -426,8 +426,8 @@ export class Ekstrautstyr extends Component {
             <div className="col mb-3">
               <select className="custom-select" onChange={event => this.setState({ tandem: event.target.value})}>
                 <option defaultValue>Velg antall</option>
-                {listTandem.map(antall => (
-                  <option key={antall.id} value={antall} >{antall}</option>
+                {listTandem.map((antall,index) => (
+                  <option key={index} value={antall} >{antall}</option>
                 ))}
               </select>
             </div>
@@ -441,8 +441,8 @@ export class Ekstrautstyr extends Component {
             <div className="col mb-3">
               <select className="custom-select" onChange={event => this.setState({ el: event.target.value})}>
                 <option defaultValue>Velg antall</option>
-                {listEl.map(antall => (
-                  <option key={antall.id} value={antall}>{antall}</option>
+                {listEl.map((antall,index) => (
+                  <option key={index} value={antall}>{antall}</option>
                 ))}
               </select>
             </div>
@@ -459,8 +459,8 @@ export class Ekstrautstyr extends Component {
                <div className="col mb-3">
                  <select className="custom-select" onChange={event => this.setState({ hjelm: event.target.value})}>
                    <option defaultValue>Velg antall</option>
-                   {listHjelm.map(antall => (
-                     <option key={antall.id} value={antall}>{antall}</option>
+                   {listHjelm.map((antall,index) => (
+                     <option key={index} value={antall}>{antall}</option>
                    ))}
                  </select>
                </div>
@@ -474,8 +474,8 @@ export class Ekstrautstyr extends Component {
             <div className="col mb-3">
               <select className="custom-select" onChange={event => this.setState({ sete: event.target.value})}>
                 <option defaultValue>Velg antall</option>
-                {listSete.map(antall => (
-                  <option key={antall.id} value={antall}>{antall}</option>
+                {listSete.map((antall,index) => (
+                  <option key={index} value={antall}>{antall}</option>
                 ))}
               </select>
             </div>
@@ -489,8 +489,8 @@ export class Ekstrautstyr extends Component {
             <div className="col mb-3">
               <select className="custom-select" onChange={event => this.setState({ vogn: event.target.value})}>
                 <option defaultValue>Velg antall</option>
-                {listVogn.map(antall => (
-                  <option key={antall.id} value={antall}>{antall}</option>
+                {listVogn.map((antall,index) => (
+                  <option key={index} value={antall}>{antall}</option>
                 ))}
               </select>
             </div>

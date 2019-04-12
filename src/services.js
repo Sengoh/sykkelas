@@ -200,6 +200,28 @@ class BestillingService{
       });
   }
 
+
+  getSykler(bestilling,success) {
+      connection.query(
+        'select * from leietaker_has_sykler left join leietaker on leietaker_has_sykler.leietaker_leieid = leietaker.leieid left join sykler on leietaker_has_sykler.sykler_sykkelid = sykler.id WHERE leietaker_leieid = ?',
+        [bestilling],(error,results) => {
+          if (error) return console.error(error);
+
+          success(results);
+        }
+      )
+    }
+    getUtstyr(bestilling,success) {
+      connection.query(
+        'select * from leietaker_has_utstyr left join leietaker on leietaker_has_utstyr.leietaker_leieid = leietaker.leieid left join utstyr on leietaker_has_utstyr.utstyr_utstyrid = utstyr.utstyrid WHERE leietaker_leieid = ?',
+        [bestilling],(error,results) => {
+          if (error) return console.error(error);
+
+          success(results);
+        }
+      )
+    }
+
   getTyper(success) {
     connection.query('select sykkeltype from sykler group by sykkeltype', (error, results) => {
       if (error) return console.error(error);
@@ -220,7 +242,7 @@ class KundeService {
     });
   }
   kvittering(id, success) {
-    connection.query("select leieid,fornavn,etternavn,start,slutt,lager,sted from leietaker left join kunder on kunder_brukerid = brukerid left join lager on hentested = lagerid left join sted on leveringssted = stedid where leieid=?", [id],(error, results) => {
+    connection.query("select leieid,fornavn,etternavn,start,slutt,lager,sted,personer from leietaker left join kunder on kunder_brukerid = brukerid left join lager on hentested = lagerid left join sted on leveringssted = stedid where leieid=?", [id],(error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);

@@ -116,9 +116,9 @@ export class BikeDetails extends Component {
       <div className="container">
       <h4 className="pt-4">Sykkelid: {sykkelid}</h4>
         <form>
-          <div class="form-group">
+          <div className="form-group">
             <label htmlFor="statusmeny">Status</label>
-            <select class="form-control" id='statusmeny' defaultValue={this.sykkel.status}>
+            <select className="form-control" id='statusmeny' defaultValue={this.sykkel.status}>
               {this.sykkelstatus.map(status => (
 
                 <option value={status.statusid} key={status.statusid}>
@@ -127,13 +127,13 @@ export class BikeDetails extends Component {
               ))}
             </select>
           </div>
-          <div class="form-group">
+          <div className="form-group">
           {/*Må begrense friteksten til 255 chars pga. varchar255 i databasen*/}
             <label htmlFor="exampleFormControlTextarea1">Fritekst</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" id="obj" value={this.sykkel.fritekst} maxLength="255" onInput={this.countChars} title="FeedbackMessage" rows="3"></textarea>
+            <textarea className="form-control" id="exampleFormControlTextarea1" id="obj" value={this.sykkel.fritekst} maxLength="255" onInput={this.countChars} title="FeedbackMessage" rows="3"></textarea>
             <p>Gjenstående tegn: <span id="charNum">255</span></p>
           </div>
-          <button type="button" class="btn btn-success m-2" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
+          <button type="button" className="btn btn-success m-2" id="fritekst" title="Lagre" onClick={this.save}>Lagre</button>
           <BackButton type="button" id="fritekst" title="Back">Avbryt</BackButton>
         </form>
 
@@ -187,13 +187,13 @@ export class Utleie extends Component {
 render(){
   return(
     <div className="container">
-      <div class="pt-5">
+      <div className="pt-5">
         <h4>Utlevering</h4>
       </div>
       <form>
-        <div class="form-group">
+        <div className="form-group">
           <label htmlFor="dato">Dato</label>
-          <input type="date" class="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
+          <input type="date" className="form-control" id="dato" onInput={this.handleClick} aria-describedby="emailHelp" placeholder="Enter email"/>
         </div>
       </form>
       {this.best.map((best,index) => (

@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "./mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { ansatteService } from './services';
+import { connection } from './services/mysql_connection'
+import { Card, List, Row, Column, NavBar, Button, Form } from './komponenter/widgets';
+import { ansatteService } from './services/services';
 
 
 let remote = require('electron').remote;
@@ -62,7 +62,7 @@ class LogIn extends Component{
                     <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
                     <label className="form-check-label" htmlFor="exampleCheck1">Husk meg</label>
                   </div>
-                  <p>epost:pass<br></br>test@test:test<br></br>perpet@sykkelas.no:1234</p>
+                  <p>perpet@sykkelas.no:1234<br></br>test@test:test</p>
                   <button type="submit" onClick={this.login} className="btn btn-primary float-right">Logg inn</button>
               </form>
             </div>

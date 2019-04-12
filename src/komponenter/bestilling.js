@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { connection } from "../mysql_connection"
-import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
-import { ansatteService, bestillingService } from '../services';
+import { connection } from '../services/mysql_connection'
+import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { ansatteService, bestillingService } from '../services/services';
 import {Kunde, Bestilling, Ekstrautstyr } from "./BestillingNyKunde";
 
 

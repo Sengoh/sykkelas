@@ -2,14 +2,14 @@ import React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
-import { connection } from "./mysql_connection"
+import { Card, List, Row, Column, NavBar, Button, Form } from './komponenter/widgets';
+import { connection } from './services/mysql_connection'
 import {KundeOversikt,BestillingSkjema,Kvittering} from './komponenter/BestillingEksiKunde';
 import AnsattM from './komponenter/StartMeny';
 import BestillingsOversikt from './komponenter/BestillingsOversikt';
 import {EndreBestilling, BestDetails} from './komponenter/EndreBestilling';
 import {Best, BestMeny} from './komponenter/bestilling';
-import { ansatteService } from './services';
+import { ansatteService } from './services/services';
 import { LagerMeny, BikeList, BikeDetails, Utleie } from './komponenter/Lager';
 
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { ansatteService, bestillingService } from '../services';
-import { connection } from "../mysql_connection";
+import { ansatteService, bestillingService } from '../services/services';
+import { connection } from '../services/mysql_connection';
 
 
 import createHashHistory from "history/createHashHistory";

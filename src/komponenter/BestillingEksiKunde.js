@@ -236,7 +236,6 @@ export class BestillingSkjema extends Component {
 
     //Sjekker om terreng er valgt
     if(!terreng.disabled && terreng.value != 0) {
-      console.log("test");
       console.log(terreng.value);
 
       //Sjekker om det finnes nok antall terreng sykler
@@ -245,7 +244,6 @@ export class BestillingSkjema extends Component {
 
         //Hvis det finnes nok sykler, lagres syklene i en array
         if(sykler.length == terreng.value) {
-          console.log("yea");
           this.sykler[0] = sykler;
           this.querySjekk++;
           this.sykkelSjekk++;
@@ -270,14 +268,12 @@ export class BestillingSkjema extends Component {
 
   //Sjekker om tandem er valgt
   if(!tandem.disabled && tandem.value != 0) {
-    console.log("test");
 
     //Sjekker om det finnes nok antall tandem sykler
     ansatteService.getSykkel("tandem",parseInt(tandem.value),sykler => {
 
       //Hvis det finnes nok sykler, lagres syklene i en array
       if(sykler.length == tandem.value) {
-        console.log("yea");
         this.sykler[1] = sykler;
         this.querySjekk++;
         this.sykkelSjekk++;
@@ -303,14 +299,12 @@ export class BestillingSkjema extends Component {
 
   //Sjekker om elsykkel er valgt
   if(!el.disabled && el.value != 0) {
-    console.log("test");
 
     //Sjekker om det finnes nok antall elsykler
     ansatteService.getSykkel("el",parseInt(el.value),sykler => {
 
       //Hvis det finnes nok sykler, lagres syklene i en array
       if(sykler.length == el.value) {
-        console.log("yea");
         this.sykler[2] = sykler;
         this.querySjekk++;
         this.sykkelSjekk++;
@@ -613,9 +607,9 @@ export class BestillingSkjema extends Component {
     }
 
     //Sjekker om hentedatoen skjer i fortiden, og endrer den hvis den er det
-    if(this.fraDato < (this.yyyy + "-0" + this.mm + "-" + this.dd)) {
+    if(this.fraDato < (this.yyyy + "-" +this.mm + "-" + this.dd)) {
       errorD.innerText = "Valgt dato er feil. Endret til dagens dato.";
-      this.fraDato = (this.yyyy + "-0" + this.mm + "-" + this.dd)
+      this.fraDato = (this.yyyy + "-" + this.mm + "-" + this.dd)
     }
   }
   endreTid() {
@@ -645,14 +639,12 @@ export class BestillingSkjema extends Component {
 
     //Sjekker om hentetiden er etter leverigstiden og endrer leveringstiden hvis den er det
     if(this.fraDato == this.tilDato && this.henteTid > this.levereTid) {
-      console.log("wut");
       this.levereTid = this.henteTid;
       errorT.innerText = "Hentetid kan ikke være etter leveringstid. Leveringstid endret.";
     }
 
     //Sjekker om hentetiden skjer i fortiden, og endrer den hvis den er det
-    if(this.fraDato == (this.yyyy + "-0" + this.mm + "-" + this.dd) && this.henteTid < this.t + ":" + this.m) {
-      console.log("wat");
+    if(this.fraDato == (this.yyyy + "-" + this.mm + "-" + this.dd) && this.henteTid < this.t + ":" + this.m) {
       this.henteTid = this.t + ":" + this.m;
       errorT.innerText = "Hentetiden er i fortiden. Hentetid endret.";
     }
